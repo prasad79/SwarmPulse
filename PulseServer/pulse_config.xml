@@ -8,7 +8,7 @@
      <serverPortClient>8446</serverPort>
     <serverThreads>5</serverThreads>
     <sqlHostname>localhost</sqlHostname>
-    <sqlPassword>ATnHTEKXAm5tQU8z</sqlPassword>
+    <sqlPassword></sqlPassword>
     <sqlPort>3306</sqlPort>
     <sqlUsername>prasad</sqlUsername>
     <sqlDatabase>pulse</sqlDatabase>
