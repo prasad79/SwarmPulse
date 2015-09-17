@@ -604,7 +604,7 @@ $(document)
 								color : "#FFFFFF",//getLightColor(msg.properties.level),
 								weight : 1,
 								opacity : 0.7,
-								fillOpacity : 0.5,
+								fillOpacity : 1,
 								type : msg.properties.readingType,
 								value : msg.properties.level,
 								startTime : new Date().getTime()
@@ -616,7 +616,7 @@ $(document)
 								color : "#FFFFFF",//getNoiseColor(msg.properties.level),
 								weight : 1,
 								opacity : 0.7,
-								fillOpacity : 0.5,
+								fillOpacity : 1,
 								type : msg.properties.readingType,
 								value : msg.properties.level,
 								startTime : new Date().getTime()
@@ -628,7 +628,7 @@ $(document)
 								color : '#FFFFFF',
 								weight : 1,
 								opacity : 0.7,
-								fillOpacity : 0.5,
+								fillOpacity : 1,
 								type : msg.properties.readingType,
 								value : msg.properties.message,
 								startTime : new Date().getTime()
