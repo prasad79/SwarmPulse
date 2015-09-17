@@ -69,7 +69,21 @@ $(document)
 
 					map.addControl(layerControl);
 					
-				
+					
+					
+					/***************OverlappingMarkerSpiderfier-Leaflet********************/
+					var oms = new OverlappingMarkerSpiderfier(map);
+					var popup = new L.Popup();
+					oms.addListener('click', function(marker) {
+					  popup.setContent(marker.desc);
+					  popup.setLatLng(marker.getLatLng());
+					  map.openPopup(popup);
+					});
+					oms.addListener('spiderfy', function(markers) {
+						  map.closePopup();
+						})
+					
+					/***************OverlappingMarkerSpiderfier-Leaflet********************/
 
 					/***********************************/
 					/** ****Pulse Logo****** */
@@ -161,6 +175,42 @@ $(document)
 						}
 						return div;
 					};
+					
+					/******************************/
+					/*************Server Connected Status Button*****************/
+					var conButton = L.easyButton( {
+						  states:[
+						          {
+						            stateName: 'disconnected',
+						            icon: 'fa-chain-broken',
+						            title: 'Server disconnected',
+						            onClick: function(control){
+						              control.state("connecting");
+						              doConnect();
+						            }
+						          }, {
+						            stateName: 'connecting',
+						            icon: 'fa-spinner fa-spin',
+						            title: 'connecting...'
+						          }, {
+						            stateName: 'connected',
+						            icon: 'fa-chain',
+						            title: 'Server Connected'
+						          }, {
+						            stateName: 'error',
+						            icon: 'fa-exclamation-circle',
+						            title: 'Error.'
+						          }
+						        ]
+						      });
+					
+					conButton.addTo(map);
+					conButton.state('connecting');
+					
+					
+					/******************************/
+					
+					
 
 					/** ********** */
 
@@ -374,6 +424,7 @@ $(document)
 													
 							markerArray.push(lightMarker);
 							markersCluster.addLayer(lightMarker);
+							oms.addMarker(lightMarker);
 							lightMarker.openPopup();
 							
 						} else if (msg.properties.readingType == 1
@@ -399,6 +450,7 @@ $(document)
 							
 							markerArray.push(noiseMarker);
 							markersCluster.addLayer(noiseMarker);
+							oms.addMarker(noiseMarker);
 							noiseMarker.openPopup();
 							
 						} else if (msg.properties.readingType == 2 && current_layer == 2) {
@@ -425,6 +477,7 @@ $(document)
 							
 							markerArray.push(msgMarker);
 							markersCluster.addLayer(msgMarker);
+							oms.addMarker(msgMarker);
 							msgMarker.openPopup();
 						}
 					}
@@ -499,78 +552,172 @@ $(document)
 
 					
 					/*********Websocket**************/
-					var socket = new WebSocket("ws://129.132.255.27:8446");
+					
+					  function doConnect()
+					  {
+					    if (window.MozWebSocket)
+					    {
+					        logToConsole('<span style="color: red;"><strong>Info:</strong> This browser supports WebSocket using the MozWebSocket constructor</span>');
+					        window.WebSocket = window.MozWebSocket;
+					    }
+					    else if (!window.WebSocket)
+					    {
+					        logToConsole('<span style="color: red;"><strong>Error:</strong> This browser does not have support for WebSocket</span>');
+					        return;
+					    }
 
-					// Open the socket
-					socket.onopen = function(event) {
+					 
+					    websocket = new WebSocket("ws://129.132.255.27:8446");
+					    websocket.onopen = function(evt) { onOpen(evt) };
+					    websocket.onclose = function(evt) { onClose(evt) };
+					    websocket.onmessage = function(evt) { onMessage(evt) };
+					    websocket.onerror = function(evt) { onError(evt) };
+					  }
+					  
+					  function doDisconnect()
+					  {
+					    websocket.close()
+					  }
+					  
+					  function onOpen(evt)
+					  {
+						  conButton.state('connected');
+							// Send an initial message
+							socket.send('WebClient Listening!');
+					  }
 
-						// Send an initial message
-						socket.send('WebClient Listening!');
-
-						// Listen for messages
-						socket.onmessage = function(event) {
-							var msg = JSON.parse(event.data);
-//							console.log("Received Msg - "+JSON.stringify(msg) );
-							var geojsonMarkerOptions;
-							if (msg.properties.readingType == 0)
-								geojsonMarkerOptions = {
-									radius : 4,
-									fillColor : getLightColor(msg.properties.level),
-									color : "#FFFFFF",//getLightColor(msg.properties.level),
-									weight : 1,
-									opacity : 0.7,
-									fillOpacity : 0.5,
-									type : msg.properties.readingType,
-									value : msg.properties.level,
-									startTime : new Date().getTime()
-								};
-							else if (msg.properties.readingType == 1)
-								geojsonMarkerOptions = {
-									radius : 4,
-									fillColor : getNoiseColor(msg.properties.level),
-									color : "#FFFFFF",//getNoiseColor(msg.properties.level),
-									weight : 1,
-									opacity : 0.7,
-									fillOpacity : 0.5,
-									type : msg.properties.readingType,
-									value : msg.properties.level,
-									startTime : new Date().getTime()
-								};
-							else if (msg.properties.readingType == 2)
-								geojsonMarkerOptions = {
-									radius : 4,
-									fillColor : '#FFFFFF',
-									color : '#FFFFFF',
-									weight : 1,
-									opacity : 0.7,
-									fillOpacity : 0.5,
-									type : msg.properties.readingType,
-									value : msg.properties.message,
-									startTime : new Date().getTime()
-								};
-
-							addMarker(msg, geojsonMarkerOptions);
-
-						};
-
-						// Listen for socket closes
-						socket.onclose = function(event) {
-							console.log('Client notified socket has closed',
+					  function onClose(evt)
+					  {
+						  console.log('Client notified socket has closed',
 									event);
-						};
+							conButton.state('disconnected');
+					  }
 
-						// To close the socket....
-						// socket.close()
+					  function onMessage(evt)
+					  {
+						var msg = JSON.parse(event.data);
+						var geojsonMarkerOptions;
+						if (msg.properties.readingType == 0)
+							geojsonMarkerOptions = {
+								radius : 4,
+								fillColor : getLightColor(msg.properties.level),
+								color : "#FFFFFF",//getLightColor(msg.properties.level),
+								weight : 1,
+								opacity : 0.7,
+								fillOpacity : 0.5,
+								type : msg.properties.readingType,
+								value : msg.properties.level,
+								startTime : new Date().getTime()
+							};
+						else if (msg.properties.readingType == 1)
+							geojsonMarkerOptions = {
+								radius : 4,
+								fillColor : getNoiseColor(msg.properties.level),
+								color : "#FFFFFF",//getNoiseColor(msg.properties.level),
+								weight : 1,
+								opacity : 0.7,
+								fillOpacity : 0.5,
+								type : msg.properties.readingType,
+								value : msg.properties.level,
+								startTime : new Date().getTime()
+							};
+						else if (msg.properties.readingType == 2)
+							geojsonMarkerOptions = {
+								radius : 4,
+								fillColor : '#FFFFFF',
+								color : '#FFFFFF',
+								weight : 1,
+								opacity : 0.7,
+								fillOpacity : 0.5,
+								type : msg.properties.readingType,
+								value : msg.properties.message,
+								startTime : new Date().getTime()
+							};
 
-					};
+						addMarker(msg, geojsonMarkerOptions);
 
-					socket.onerror = function(evt) {
-						onError(evt)
-					};
+					  }
 
-					function onError(evt) {
-						console.log('ERROR ', evt.data);
-					}
+					  function onError(evt)
+					  {
+						  conButton.state('error');
+					  }
+					
+					  doConnect();
+//					var socket = new WebSocket("ws://129.132.255.27:8446");
+//
+//					// Open the socket
+//					socket.onopen = function(event) {
+//						conButton.state('connected');
+//						// Send an initial message
+//						socket.send('WebClient Listening!');
+//
+//						// Listen for messages
+//						socket.onmessage = function(event) {
+//							var msg = JSON.parse(event.data);
+////							console.log("Received Msg - "+JSON.stringify(msg) );
+//							var geojsonMarkerOptions;
+//							if (msg.properties.readingType == 0)
+//								geojsonMarkerOptions = {
+//									radius : 4,
+//									fillColor : getLightColor(msg.properties.level),
+//									color : "#FFFFFF",//getLightColor(msg.properties.level),
+//									weight : 1,
+//									opacity : 0.7,
+//									fillOpacity : 0.5,
+//									type : msg.properties.readingType,
+//									value : msg.properties.level,
+//									startTime : new Date().getTime()
+//								};
+//							else if (msg.properties.readingType == 1)
+//								geojsonMarkerOptions = {
+//									radius : 4,
+//									fillColor : getNoiseColor(msg.properties.level),
+//									color : "#FFFFFF",//getNoiseColor(msg.properties.level),
+//									weight : 1,
+//									opacity : 0.7,
+//									fillOpacity : 0.5,
+//									type : msg.properties.readingType,
+//									value : msg.properties.level,
+//									startTime : new Date().getTime()
+//								};
+//							else if (msg.properties.readingType == 2)
+//								geojsonMarkerOptions = {
+//									radius : 4,
+//									fillColor : '#FFFFFF',
+//									color : '#FFFFFF',
+//									weight : 1,
+//									opacity : 0.7,
+//									fillOpacity : 0.5,
+//									type : msg.properties.readingType,
+//									value : msg.properties.message,
+//									startTime : new Date().getTime()
+//								};
+//
+//							addMarker(msg, geojsonMarkerOptions);
+//
+//						};
+//
+//						// Listen for socket closes
+//						socket.onclose = function(event) {
+//							console.log('Client notified socket has closed',
+//									event);
+//							conButton.state('disconnected');
+//						};
+//
+//						// To close the socket....
+//						// socket.close()
+//
+//					};
+//
+//					socket.onerror = function(evt) {
+//						conButton.state('error');
+//						onError(evt)
+//					};
+//
+//					function onError(evt) {
+//						console.log('ERROR ', evt.data);
+//					}
 
 					function openPopUp(e) {
 						var popup = L.popup().setLatLng(e.latlng).setContent(
