@@ -12,3 +12,11 @@
 hs_err_pid*
 
 PulseServer/pulse_config.xml
+
+PulseServer/res/pulse_config.xml
+
+PulseServer/pulse_config.xml.back
+
+PulseServer/pulse_configbackup.xml
+
+PulseServer/log.txt

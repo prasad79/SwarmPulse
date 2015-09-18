@@ -90,6 +90,83 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					}
 					feature.add("properties", properties);
 
+					/*****SQL insert********/
+					//Insert data
+					PreparedStatement datastmt = sqlse.getSensorInsertStatement(connection, reading.type == 0? 4 : (reading.type == 1 ? 8 : 10));
+					if (datastmt != null) {
+						System.out.println("datastmt - "+datastmt.toString());
+						List<Integer> types = sqlse.getArgumentExpectation(reading.type == 0? 4 : (reading.type == 1 ? 8 : 10));
+
+						if(reading.type == 0){
+							datastmt.setLong(1, reading.timestamp);
+							datastmt.setDouble(2, ((LightReading) reading).lightVal);
+							datastmt.setDouble(3, reading.location.latnLong[0]);
+							datastmt.setDouble(4, reading.location.latnLong[1]);	
+						}else if(reading.type == 1){
+							datastmt.setLong(1, reading.timestamp);
+							datastmt.setDouble(2, ((NoiseReading) reading).soundVal);
+							datastmt.setDouble(3, reading.location.latnLong[0]);
+							datastmt.setDouble(4, reading.location.latnLong[1]);	
+						}else if(reading.type == 2){
+							datastmt.setLong(1, reading.timestamp);
+							datastmt.setString(2, ((TextVisual) reading).textMsg);
+							datastmt.setDouble(3, reading.location.latnLong[0]);
+							datastmt.setDouble(4, reading.location.latnLong[1]);	
+						}
+						System.out.println("datastmt after populating - "+datastmt.toString());
+						
+						datastmt.addBatch();
+//						for (SensorData sd : sensorValues) {
+//							try {
+//								datastmt.setBytes(1, uuid);
+//								datastmt.setLong(2, sd.getRecordTime());
+//
+//								Iterator<Boolean> iterBool = sd.getValueBoolList().iterator();
+//								Iterator<Integer> iterInteger = sd.getValueInt32List().iterator();
+//								Iterator<Long> iterLong = sd.getValueInt64List().iterator();
+//								Iterator<Float> iterFloat = sd.getValueFloatList().iterator();
+//								Iterator<Double> iterDouble = sd.getValueDoubleList().iterator();
+//								Iterator<String> iterString = sd.getValueStringList().iterator();
+//
+//								int counter = 3;
+//								for (Integer type : types) {
+//									switch (type) {
+//									case SqlSetup.TYPE_BOOL:
+//										datastmt.setBoolean(counter, iterBool.next());
+//										break;
+//									case SqlSetup.TYPE_INT32:
+//										datastmt.setInt(counter, iterInteger.next());
+//										break;
+//									case SqlSetup.TYPE_INT64:
+//										datastmt.setLong(counter, iterLong.next());
+//										break;
+//									case SqlSetup.TYPE_FLOAT:
+//										datastmt.setFloat(counter, iterFloat.next());
+//										break;
+//									case SqlSetup.TYPE_DOUBLE:
+//										datastmt.setDouble(counter, iterDouble.next());
+//										break;
+//									case SqlSetup.TYPE_STRING:
+//										datastmt.setString(counter, iterString.next());
+//										break;
+//									default:
+//										break;
+//									}
+//									counter++;
+//								}
+//								datastmt.addBatch();
+//							} catch (NoSuchElementException e) {
+//								Log.getInstance().append(Log.FLAG_WARNING, "Sensor data type mismatch with database");
+//							}
+//						}
+						// Add sensor data to the database
+						datastmt.executeBatch();
+						datastmt.close();
+					}
+					/*************/
+					
+					
+					
 				} catch (JsonParseException e) {
 					System.out.println("can't save json object: "
 							+ e.toString());

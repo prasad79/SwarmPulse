@@ -22,14 +22,19 @@ table {
 	height: 100%;
 }
 
+
+ .fa-chain-broken {color:red;}
+ 
+ 
 button {
-	background: #f29c40;
-    border: 2px solid rgba(33, 68, 72, 0.59);  
-    /*Step 3: Text Styles*/
-    color: rgba(0, 0, 0, 0.55);
-    text-align: top;
-	vertical-align: middle;
-    font: bold, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	 -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: solid 1px #20538D;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
      
 }
 
@@ -80,7 +85,7 @@ button {
 	
 
 #count, #speed, .fa {
-	color: #1bcd57;
+	color: #000000;
 }
 
 .progress-bar {
@@ -454,4 +459,11 @@ opacity
 	color: #fff;
 	text-align: center;
 	background: #000
+}
+
+
+.ui-dialog.success-dialog {
+    font-family: Verdana,Arial,sans-serif;
+    background: #f0f0d4;
+  font-size: 1em;
 }

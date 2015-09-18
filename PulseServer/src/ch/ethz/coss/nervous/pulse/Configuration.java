@@ -3,6 +3,7 @@ package ch.ethz.coss.nervous.pulse;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,7 +170,7 @@ public class Configuration {
 
 	public static synchronized Configuration getInstance() {
 		if (config == null) {
-			config = new Configuration(".././pulse_config.xml");
+			config = new Configuration("pulse_config.xml");
 			// Load configuration from file
 			unmarshal();
 		}
@@ -226,17 +227,27 @@ public class Configuration {
 			Unmarshaller um = context.createUnmarshaller();
 			System.out.println("Config path --"
 					+ Configuration.config.getConfigPath());
-			Configuration config = (Configuration) um.unmarshal(new FileReader(
-					Configuration.config.getConfigPath()));
+			
+			
+			InputStream in =  Configuration.class.getClassLoader().getResourceAsStream(Configuration.config.getConfigPath());
+//			FileReader fReader = new FileReader(
+//					Configuration.config.getConfigPath());
+//
+//			if(fReader == null)
+//				System.out.println("fReader is null");
+			
+			Configuration config = (Configuration) um.unmarshal(in);
 			Configuration.config = config;
 			return;
-		} catch (IOException ioe) {
-			Log.getInstance().append(Log.FLAG_WARNING,
-					"Couldn't read the configuration file");
 		} catch (JAXBException jbe) {
+			jbe.printStackTrace();
 			Log.getInstance().append(Log.FLAG_ERROR,
 					"Error parsing the configuration file");
-		}
+		}catch (Exception ioe) {
+			ioe.printStackTrace();
+			Log.getInstance().append(Log.FLAG_WARNING,
+					"Couldn't read the configuration file");
+		} 
 		// Error reading the configuration, write current configuration after
 		// backing up
 		try {
@@ -245,6 +256,6 @@ public class Configuration {
 							Configuration.config.getConfigPath() + ".back"));
 		} catch (IOException e) {
 		}
-		marshal();
+//		marshal();
 	}
 }

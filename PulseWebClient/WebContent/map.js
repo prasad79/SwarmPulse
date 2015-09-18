@@ -1,6 +1,7 @@
 $(document)
 		.ready(
 				function() {
+					var websocket;
 					var counter = 0;
 					var data = [];
 					var map = L.map('map', {
@@ -8,26 +9,22 @@ $(document)
 					}).setView([ 47.379977, 8.545751 ], 2);
 					var current_layer = 0;
 					var last_layer = 0;
-					
+
 					var lightMarkers = new L.LayerGroup();
 					var noiseMarkers = new L.LayerGroup();
 					var msgMarkers = new L.LayerGroup();
-					
-					
+
 					new L.Control.Zoom({
 						position : 'topright'
 					}).addTo(map);
-					
-					
+
 					var mapNoLabels = L
-					.tileLayer(
-							'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
-							{
-								attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-								maxZoom : 22
-							});
-					
-					
+							.tileLayer(
+									'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
+									{
+										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+										maxZoom : 22
+									});
 
 					var mapWithLabels = L
 							.tileLayer(
@@ -37,62 +34,24 @@ $(document)
 										maxZoom : 22
 									});
 
-//					var mapNoLabels = L
-//							.tileLayer(
-//									'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png',
-//									{
-//										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-//										maxZoom : 22
-//									});
+					// var mapNoLabels = L
+					// .tileLayer(
+					// 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png',
+					// {
+					// attribution : '&copy; <a
+					// href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
+					// contributors, &copy; <a
+					// href="http://cartodb.com/attributions">CartoDB</a>',
+					// maxZoom : 22
+					// });
 
-
-					var baseMaps = {		
-								"Hide Labels" : mapNoLabels,
-								"Show Labels" : mapWithLabels							
-					};
-
-					
-					var groupedOverlays = {
-							"Overlays":{
-									    "Light": lightMarkers,
-									    "Noise": noiseMarkers,
-										"Messages": msgMarkers
-										  
-									}
-							};
-
-					
-					var options = { exclusiveGroups: ["Overlays"],groupCheckboxes: true  };			
-
-					var layerControl = L.control.groupedLayers(baseMaps, groupedOverlays, options);
-					
-
-					map.addControl(layerControl);
-					
-					
-					
-					/***************OverlappingMarkerSpiderfier-Leaflet********************/
-					var oms = new OverlappingMarkerSpiderfier(map);
-					var popup = new L.Popup();
-					oms.addListener('click', function(marker) {
-					  popup.setContent(marker.desc);
-					  popup.setLatLng(marker.getLatLng());
-					  map.openPopup(popup);
-					});
-					oms.addListener('spiderfy', function(markers) {
-						  map.closePopup();
-						})
-					
-					/***************OverlappingMarkerSpiderfier-Leaflet********************/
-
-					/***********************************/
 					/** ****Pulse Logo****** */
 					var info = L.control({
 						position : 'topleft'
 					});
 
 					info.onAdd = function(map) {
-						this._div = L.DomUtil.create('div', 'info'); 
+						this._div = L.DomUtil.create('div', 'info');
 						this.update();
 						return this._div;
 					};
@@ -101,14 +60,56 @@ $(document)
 					// feature properties passed
 					info.update = function(props) {
 						this._div.style.fontSize = "80%"
-						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\' > <p width=\'20%\' align: \'bottom\'  style=\'color: #FFA500; display:inline-block; vertical-align: -7px;\'> <i>powered by NervousNet</p><br>';
-						this._div.innerHTML += '<a align = "left" href=\'Pulse.apk\'> <p width=\'20%\' align: \'center\'  style=\'color: #E9E9E9; display:inline-block; vertical-align: -7px; textSize: 10px\'> <i>Download Mobile App</p><br>';
+						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\' > <p width=\'20%\' align: \'left\'  style=\'color: #FFA500; display:inline-block; vertical-align: -7px;\'> <i>powered by NervousNet</p><br>';
 
 					};
 
 					info.addTo(map);
 
-					/** ******************************* */
+					/********************************* */
+
+					/*****************Layer Control********************* */
+					var baseMaps = {
+						"Hide Labels" : mapNoLabels,
+						"Show Labels" : mapWithLabels
+					};
+
+					var groupedOverlays = {
+						"Overlays" : {
+							"Light" : lightMarkers,
+							"Noise" : noiseMarkers,
+							"Messages" : msgMarkers
+
+						}
+					};
+
+					var options = {
+						exclusiveGroups : [ "Overlays" ],
+						groupCheckboxes : true,
+						position : 'topleft'
+					};
+
+					var layerControl = L.control.groupedLayers(baseMaps,
+							groupedOverlays, options);
+
+					map.addControl(layerControl);
+					/** ***************Layer Control********************* */
+
+					/** *************OverlappingMarkerSpiderfier-Leaflet******************* */
+					var oms = new OverlappingMarkerSpiderfier(map);
+					var popup = new L.Popup();
+					oms.addListener('click', function(marker) {
+						// popup.setContent(marker.desc);
+						// popup.setLatLng(marker.getLatLng());
+						map.openPopup(popup);
+					});
+					oms.addListener('spiderfy', function(markers) {
+						map.closePopup();
+					})
+
+					/** *************OverlappingMarkerSpiderfier-Leaflet******************* */
+
+					/** ******************************** */
 
 					/** *****Legend for Color levels for noise***** */
 					var legendSound = L.control({
@@ -122,7 +123,7 @@ $(document)
 								labels = [ "  0-10  ", "10-30", "30-50",
 										"50-70", "70-100", "100-120",
 										"120-140", "   140+  " ];
-						
+
 						div.style.border = "1px solid #ffffff";
 						div.style.borderRadius = "2px";
 						div.style.backgroundColor = "#2A2A2A";
@@ -139,7 +140,6 @@ $(document)
 
 						}
 
-						
 						return div;
 					};
 					/** ********** */
@@ -175,74 +175,84 @@ $(document)
 						}
 						return div;
 					};
-					
-					/******************************/
-					/*************Server Connected Status Button*****************/
-					var conButton = L.easyButton( {
-						  states:[
-						          {
-						            stateName: 'disconnected',
-						            icon: 'fa-chain-broken',
-						            title: 'Server disconnected',
-						            onClick: function(control){
-						              control.state("connecting");
-						              doConnect();
-						            }
-						          }, {
-						            stateName: 'connecting',
-						            icon: 'fa-spinner fa-spin',
-						            title: 'connecting...'
-						          }, {
-						            stateName: 'connected',
-						            icon: 'fa-chain',
-						            title: 'Server Connected'
-						          }, {
-						            stateName: 'error',
-						            icon: 'fa-exclamation-circle',
-						            title: 'Error.'
-						          }
-						        ]
-						      });
-					
+
+					/** *************************** */
+
+					/** ****************************** */
+					var downloadAppButton = L.easyButton({
+						states : [ {
+							stateName : 'downloadApp',
+							icon : 'fa-mobile fa-lg',
+							title : 'Download Mobile App',
+							onClick : function(control) {
+								control.state("connecting");
+								// window.open("./Pulse.apk");
+								showDialog();
+							}
+						} ],
+						position : "topright"
+					});
+
+					downloadAppButton.addTo(map);
+					/** ****************************** */
+					/** ***********Server Connected Status Button**************** */
+					var conButton = L.easyButton({
+						states : [ {
+							stateName : 'disconnected',
+							icon : 'fa-chain-broken fa-lg red',
+							title : 'Server disconnected',
+							onClick : function(control) {
+								control.state("connecting");
+								doConnect();
+							}
+						}, {
+							stateName : 'connecting',
+							icon : 'fa-spinner fa-lg fa-spin',
+							title : 'connecting...'
+						}, {
+							stateName : 'connected',
+							icon : 'fa-chain fa-lg',
+							title : 'Server Connected'
+						}, {
+							stateName : 'error',
+							icon : 'fa-exclamation-circle fa-lg',
+							title : 'Error.'
+						} ],
+						position : "topright"
+					});
+
 					conButton.addTo(map);
 					conButton.state('connecting');
-					
-					
-					/******************************/
-					
-					
+
+					/** *************************** */
 
 					/** ********** */
 
-
 					mapNoLabels.addTo(map);
-//					legendLight.addTo(map);
-
-
+					// legendLight.addTo(map);
 
 					map.on('overlayadd', function(a) {
 						if (a.name == "Light" && current_layer != 0) {
 							current_layer = 0;
 							resetToLightReadings();
 							last_layer = 0;
-						} else if (a.name == "Noise"  && current_layer != 1) {
+						} else if (a.name == "Noise" && current_layer != 1) {
 							current_layer = 1;
 							resetToNoiseReadings();
 							last_layer = 1;
-						} else if (a.name == "Messages"  && current_layer != 2) {
+						} else if (a.name == "Messages" && current_layer != 2) {
 							current_layer = 2;
 							resetToMessagesOverlay();
 							last_layer = 2;
 						}
 					});
 
-
 					function resetToLightReadings() {
 						removeAllMarkers();
 						lightMarkers.addLayer(markersCluster);
 						map.addLayer(lightMarkers);
 						legendLight.addTo(map);
-						if(last_layer == 1)
+						if (last_layer == 1)
 							legendSound.removeFrom(map);
 					}
 
@@ -251,19 +261,19 @@ $(document)
 						noiseMarkers.addLayer(markersCluster);
 						map.addLayer(noiseMarkers);
 						legendSound.addTo(map);
-						if(last_layer == 0)
+						if (last_layer == 0)
 							legendLight.removeFrom(map);
 					}
-					
+
 					function resetToMessagesOverlay() {
 						removeAllMarkers();
 						msgMarkers.addLayer(markersCluster);
 						map.addLayer(msgMarkers);
-						if(last_layer == 1)
+						if (last_layer == 1)
 							legendSound.removeFrom(map);
-						else if(last_layer == 0)
+						else if (last_layer == 0)
 							legendLight.removeFrom(map);
-				
+
 					}
 
 					function removeAllMarkers() {
@@ -280,8 +290,7 @@ $(document)
 						counter = 0;
 					}
 
-
-					/********************/
+					/** ***************** */
 
 					function getNoiseColor(d) {
 						return d > 140 ? '#800026' : d > 120 ? '#BD0026'
@@ -311,7 +320,6 @@ $(document)
 							return '#3A6A34';
 						}
 					}
-					
 
 					var markersCluster = new L.MarkerClusterGroup(
 							{
@@ -321,7 +329,7 @@ $(document)
 									var markersCount = markers.length;
 									var width = 0;
 									var height = 0;
-									
+
 									if (markersCount < 10) {
 										width = 15;
 										height = 15;
@@ -353,16 +361,15 @@ $(document)
 														+ cluster
 																.getChildCount()
 														+ '</div>',
-														
-												className: 'cluster',
-												iconSize: L.point(0,0)
+
+												className : 'cluster',
+												iconSize : L.point(0, 0)
 											});
 								},
 								disableClusteringAtZoom : 10,
-								maxClusterRadius:10,
-								showCoverageOnHover:true
+								maxClusterRadius : 10,
+								showCoverageOnHover : true
 							});
-
 
 					function getMarkerClusterColor(markers) {
 						var sum;
@@ -390,6 +397,7 @@ $(document)
 
 					var markerArray = [];
 					function addMarker(msg, geojsonMarkerOptions) {
+
 						counter++;
 						var d = new Date();
 						if (msg.properties.readingType == 0
@@ -413,20 +421,20 @@ $(document)
 								lightMarker.closePopup();
 							});
 
-							
-//							markersCluster
-//									.bindPopup(
-//											'<p style="color:black" ><strong> MARKER CLUSTER</strong> db',
-//											{
-//												closeButton : false,
-//												offset : L.point(0, -5)
-//											});
-													
+							// markersCluster
+							// .bindPopup(
+							// '<p style="color:black" ><strong> MARKER
+							// CLUSTER</strong> db',
+							// {
+							// closeButton : false,
+							// offset : L.point(0, -5)
+							// });
+
 							markerArray.push(lightMarker);
+							// lightMarker.openPopup();
 							markersCluster.addLayer(lightMarker);
 							oms.addMarker(lightMarker);
-							lightMarker.openPopup();
-							
+
 						} else if (msg.properties.readingType == 1
 								&& current_layer == 1) {
 							var noiseMarker = L.circleMarker(
@@ -439,55 +447,53 @@ $(document)
 										closeButton : false,
 										offset : L.point(0, -5)
 									});
-							
-							
-								noiseMarker.on('mouseover', function() {
-									noiseMarker.openPopup();
-								});
-								noiseMarker.on('mouseout', function() {
-									noiseMarker.closePopup();
-								});
-							
+
+							noiseMarker.on('mouseover', function() {
+								noiseMarker.openPopup();
+							});
+							noiseMarker.on('mouseout', function() {
+								noiseMarker.closePopup();
+							});
+
 							markerArray.push(noiseMarker);
 							markersCluster.addLayer(noiseMarker);
 							oms.addMarker(noiseMarker);
-							noiseMarker.openPopup();
-							
-						} else if (msg.properties.readingType == 2 && current_layer == 2) {
+							// noiseMarker.openPopup();
+
+						} else if (msg.properties.readingType == 2
+								&& current_layer == 2) {
 							var msgMarker = L.circleMarker(
 									msg.geometry.coordinates,
 									geojsonMarkerOptions);
-							
-							msgMarker.bindPopup(
-									'<p style="color:black" align="center"><strong>'
-											+ replaceURLWithHTMLLinks(msg.properties.message)
-											+ '</strong>', {
-										closeButton : false,
-										offset : L.point(0, -5)
-									});
-							
-							
-								msgMarker.on('mouseover', function() {
-									msgMarker.openPopup();
-								});
-								msgMarker.on('mouseout', function() {
-									msgMarker.closePopup();
-								});
-						
-							
+
+							msgMarker
+									.bindPopup(
+											'<p style="color:black" align="center"><strong>'
+													+ replaceURLWithHTMLLinks(msg.properties.message)
+													+ '</strong>', {
+												closeButton : false,
+												offset : L.point(0, -5)
+											});
+
+							msgMarker.on('mouseover', function() {
+								msgMarker.openPopup();
+							});
+							msgMarker.on('mouseout', function() {
+								msgMarker.closePopup();
+							});
+
 							markerArray.push(msgMarker);
 							markersCluster.addLayer(msgMarker);
 							oms.addMarker(msgMarker);
-							msgMarker.openPopup();
+							// msgMarker.openPopup();
 						}
 					}
 					;
-					
-					function replaceURLWithHTMLLinks(text)
-				    {
-				      var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-				      return text.replace(exp,"<a href='$1'>$1</a>"); 
-				    }
+
+					function replaceURLWithHTMLLinks(text) {
+						var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+						return text.replace(exp, "<a href='$1'>$1</a>");
+					}
 
 					function getOuterColor(type, d) {
 
@@ -509,22 +515,21 @@ $(document)
 					}
 					;
 
-					/******Update****** */
-					
-//					var tickerBox = L.Control.extend({
-//						options: {
-//						position: 'bottomleft'
-//						},
-//
-//					    onAdd: function (map) {
-//					    	var div = L.DomUtil.create('div', 'ticker');
-//
-//					        return div;
-//					    }
-//					})
-//					
-//					map.addControl(new tickerBox());
+					/** ****Update****** */
 
+					// var tickerBox = L.Control.extend({
+					// options: {
+					// position: 'bottomleft'
+					// },
+					//
+					// onAdd: function (map) {
+					// var div = L.DomUtil.create('div', 'ticker');
+					//
+					// return div;
+					// }
+					// })
+					//					
+					// map.addControl(new tickerBox());
 					var box = L.control.messagebox().addTo(map);
 
 					L.control.liveupdate({
@@ -541,67 +546,70 @@ $(document)
 							var marker = markerArray[i];
 							var d = new Date();
 							if (d.getTime() - marker.options.startTime >= 30000) {
-								
-//								markersCluster.removeLayer(marker);
 
-//								markerArray.splice(i, 1);
-//								counter--;
+								// markersCluster.removeLayer(marker);
+
+								// markerArray.splice(i, 1);
+								// counter--;
 							}
 						}
 					}
 
-					
-					/*********Websocket**************/
-					
-					  function doConnect()
-					  {
-					    if (window.MozWebSocket)
-					    {
-					        logToConsole('<span style="color: red;"><strong>Info:</strong> This browser supports WebSocket using the MozWebSocket constructor</span>');
-					        window.WebSocket = window.MozWebSocket;
-					    }
-					    else if (!window.WebSocket)
-					    {
-					        logToConsole('<span style="color: red;"><strong>Error:</strong> This browser does not have support for WebSocket</span>');
-					        return;
-					    }
+					/** *******Websocket************* */
 
-					 
-					    websocket = new WebSocket("ws://129.132.255.27:8446");
-					    websocket.onopen = function(evt) { onOpen(evt) };
-					    websocket.onclose = function(evt) { onClose(evt) };
-					    websocket.onmessage = function(evt) { onMessage(evt) };
-					    websocket.onerror = function(evt) { onError(evt) };
-					  }
-					  
-					  function doDisconnect()
-					  {
-					    websocket.close()
-					  }
-					  
-					  function onOpen(evt)
-					  {
-						  conButton.state('connected');
-							// Send an initial message
-							socket.send('WebClient Listening!');
-					  }
+					function doConnect() {
+						if (window.MozWebSocket) {
+							console
+									.log("This browser supports WebSocket using the MozWebSocket constructor");
+							window.WebSocket = window.MozWebSocket;
+						} else if (!window.WebSocket) {
+							console
+									.log("This browser does not have support for WebSocket");
+							return;
+						}
 
-					  function onClose(evt)
-					  {
-						  console.log('Client notified socket has closed',
-									event);
-							conButton.state('disconnected');
-					  }
+						websocket = new WebSocket("ws://129.132.255.27:8446");
+						websocket.onopen = function(evt) {
+							onOpen(evt)
+						};
+						websocket.onclose = function(evt) {
+							onClose(evt)
+						};
+						websocket.onmessage = function(evt) {
+							onMessage(evt)
+						};
+						websocket.onerror = function(evt) {
+							onError(evt)
+						};
+					}
 
-					  function onMessage(evt)
-					  {
-						var msg = JSON.parse(event.data);
+					function doDisconnect() {
+						websocket.close()
+					}
+
+					function onOpen(evt) {
+						// Send an initial message
+						websocket.send('WebClient Listening!');
+
+						conButton.state('connected');
+					}
+
+					function onClose(evt) {
+						conButton.state('disconnected');
+						console.log('Client notified socket has closed', evt);
+					}
+
+					function onMessage(evt) {
+//						console.log(evt.data);
+						var msg = JSON.parse(evt.data);
+//						console.log("msg.properties.readingType "
+//								+ msg.properties.readingType);
 						var geojsonMarkerOptions;
 						if (msg.properties.readingType == 0)
 							geojsonMarkerOptions = {
 								radius : 4,
 								fillColor : getLightColor(msg.properties.level),
-								color : "#FFFFFF",//getLightColor(msg.properties.level),
+								color : "#FFFFFF",// getLightColor(msg.properties.level),
 								weight : 1,
 								opacity : 0.7,
 								fillOpacity : 1,
@@ -613,7 +621,7 @@ $(document)
 							geojsonMarkerOptions = {
 								radius : 4,
 								fillColor : getNoiseColor(msg.properties.level),
-								color : "#FFFFFF",//getNoiseColor(msg.properties.level),
+								color : "#FFFFFF",// getNoiseColor(msg.properties.level),
 								weight : 1,
 								opacity : 0.7,
 								fillOpacity : 1,
@@ -636,88 +644,14 @@ $(document)
 
 						addMarker(msg, geojsonMarkerOptions);
 
-					  }
+					}
 
-					  function onError(evt)
-					  {
-						  conButton.state('error');
-					  }
-					
-					  doConnect();
-//					var socket = new WebSocket("ws://129.132.255.27:8446");
-//
-//					// Open the socket
-//					socket.onopen = function(event) {
-//						conButton.state('connected');
-//						// Send an initial message
-//						socket.send('WebClient Listening!');
-//
-//						// Listen for messages
-//						socket.onmessage = function(event) {
-//							var msg = JSON.parse(event.data);
-////							console.log("Received Msg - "+JSON.stringify(msg) );
-//							var geojsonMarkerOptions;
-//							if (msg.properties.readingType == 0)
-//								geojsonMarkerOptions = {
-//									radius : 4,
-//									fillColor : getLightColor(msg.properties.level),
-//									color : "#FFFFFF",//getLightColor(msg.properties.level),
-//									weight : 1,
-//									opacity : 0.7,
-//									fillOpacity : 0.5,
-//									type : msg.properties.readingType,
-//									value : msg.properties.level,
-//									startTime : new Date().getTime()
-//								};
-//							else if (msg.properties.readingType == 1)
-//								geojsonMarkerOptions = {
-//									radius : 4,
-//									fillColor : getNoiseColor(msg.properties.level),
-//									color : "#FFFFFF",//getNoiseColor(msg.properties.level),
-//									weight : 1,
-//									opacity : 0.7,
-//									fillOpacity : 0.5,
-//									type : msg.properties.readingType,
-//									value : msg.properties.level,
-//									startTime : new Date().getTime()
-//								};
-//							else if (msg.properties.readingType == 2)
-//								geojsonMarkerOptions = {
-//									radius : 4,
-//									fillColor : '#FFFFFF',
-//									color : '#FFFFFF',
-//									weight : 1,
-//									opacity : 0.7,
-//									fillOpacity : 0.5,
-//									type : msg.properties.readingType,
-//									value : msg.properties.message,
-//									startTime : new Date().getTime()
-//								};
-//
-//							addMarker(msg, geojsonMarkerOptions);
-//
-//						};
-//
-//						// Listen for socket closes
-//						socket.onclose = function(event) {
-//							console.log('Client notified socket has closed',
-//									event);
-//							conButton.state('disconnected');
-//						};
-//
-//						// To close the socket....
-//						// socket.close()
-//
-//					};
-//
-//					socket.onerror = function(evt) {
-//						conButton.state('error');
-//						onError(evt)
-//					};
-//
-//					function onError(evt) {
-//						console.log('ERROR ', evt.data);
-//					}
+					function onError(evt) {
+						conButton.state('error');
+						console.log("WebSocket Error - " + evt.data);
+					}
+
+					doConnect();
 
 					function openPopUp(e) {
 						var popup = L.popup().setLatLng(e.latlng).setContent(
@@ -728,6 +662,47 @@ $(document)
 						L.popup().close;
 					}
 
-					
+					function showDialog() {
+						$('#dialog').dialog(
+								// ...which upon when it's opened...
+								{
+									open : function(event, ui) {
+										$(".ui-dialog-titlebar-close",
+												ui.dialog | ui).hide();
+									},
+									modal : true,
+									resizable : false,
+									closeOnEscape : true,
+									buttons : [ {
+										text : "Android",
+										"class" : 'button',
+										click : function() {
+											// Cancel code here
+										}
+									}, {
+										text : "iOS",
+										"class" : 'button',
+										click : function() {
+											// Save code here
+										}
+									} ],
+									dialogClass: 'no-close success-dialog',
+									position: 'center'
+								});
+
+						// $("#downloadAppDialog").dialog({
+						// buttons: {
+						// 'Android': function() {
+						// //do something
+						// $(this).dialog('close');
+						// },
+						// 'iOS': function() {
+						// $(this).dialog('close');
+						// }
+						// }
+						// });
+						//						
+						// $( "#downloadAppDialog" ).dialog( "open" );
+					}
 					resetToLightReadings();
-});
+				});
