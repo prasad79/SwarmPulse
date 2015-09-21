@@ -225,7 +225,32 @@ $(document)
 					conButton.state('connecting');
 
 					/** *************************** */
+					/** ***********Real Time or Time Machine Button**************** */
+					var realTimeButton = L.easyButton({
+						states : [ {
+							stateName : 'realTime',
+							icon : 'fa-clock-o fa-lg red',
+							title : 'Real Time',
+							onClick : function(control) {
+								control.state("timeMachine");
+								doDisconnect();
+							}
+						}, {
+							stateName : 'timeMachine',
+							icon : 'fa-history fa-lg',
+							title : 'Time Machine',
+							onClick : function(control) {
+								control.state("realTime");
+								doConnect();
+							}
+						} ],
+						position : "topright"
+					});
 
+					realTimeButton.addTo(map);
+					realTimeButton.state('realTime');
+
+					/** *************************** */
 					/** ********** */
 
 					mapNoLabels.addTo(map);
