@@ -42,7 +42,6 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.Handshakedata;
 import org.java_websocket.handshake.ServerHandshakeBuilder;
 
-import ch.ethz.coss.nervous.pulse.PulseWebSocketImpl;
 
 /**
  * <tt>WebSocketServer</tt> is an abstract class that only takes care of the
