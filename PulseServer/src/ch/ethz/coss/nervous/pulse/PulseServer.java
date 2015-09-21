@@ -48,7 +48,7 @@ public class PulseServer {
 				sqlse);
 
 		PulseWebSocketServer pWebSocketServer = new PulseWebSocketServer(8446);
-		 pWebSocketServer.start();
+		pWebSocketServer.start();
 //		 Start server
 		PulseConcurrentServer server = new PulseConcurrentServer(8445,
 				pWebSocketServer, config.getServerThreads(), factory);
@@ -67,62 +67,14 @@ public class PulseServer {
 			}
 		}
 
-		// Tear down server
+		// Stop server
 		server.stop();
 
 		log.append(Log.FLAG_INFO, "Server terminated");
 
-		// int port = 8446; // 843 flash policy port
-		// try {
-		// port = Integer.parseInt(args[0]);
-		// } catch (Exception ex) {
-		// }
-
-		// PulseServer pulseServer = new PulseServer(port);
-		// ServerSocket mobileAppSocket = null;
-		//
-		// try {
-		// mobileAppSocket = new ServerSocket(smartphonesPort);
-		// ReadingListener readingListener = new ReadingListener(
-		// mobileAppSocket, pulseServer);
-		// new Thread(readingListener).start();
-		//
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// mobileAppSocket.close();
-		// return;
-		// }
-		//
-		// pulseServer.start();
-		// System.out.println("Pulse Server started on ip: "
-		// + pulseServer.getAddress() + " and port: "
-		// + pulseServer.getPort());
-		// InetAddress IP = InetAddress.getLocalHost();
-		// System.out.println("IP of Server is := " + IP.getHostAddress());
-		//
-		// BufferedReader sysin = new BufferedReader(new InputStreamReader(
-		// System.in));
-		// while (true) {
-		// String in = sysin.readLine();
-		// pulseServer.sendToAll(in);
-		// if (in.equals("exit")) {
-		// pulseServer.stop();
-		// break;
-		// } else if (in.equals("restart")) {
-		// pulseServer.stop();
-		// pulseServer.start();
-		// break;
-		// }
-		// }
-
+		
 	}
 
 	public static int smartphonesPort = 8445;
 	public static Configuration config;
-	private int sport = 0;
-	private ServerSocket ssocket = null;
-	private boolean stopped = false;
-	private Thread runThread = null;
-	private ExecutorService threadPool;
-	// private ConcurrentSocketWorkerFactory factory;
 }

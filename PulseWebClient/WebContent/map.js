@@ -233,7 +233,7 @@ $(document)
 							title : 'Real Time',
 							onClick : function(control) {
 								control.state("timeMachine");
-								doDisconnect();
+								changeSocketToTimeMachine();
 							}
 						}, {
 							stateName : 'timeMachine',
@@ -241,7 +241,8 @@ $(document)
 							title : 'Time Machine',
 							onClick : function(control) {
 								control.state("realTime");
-								doConnect();
+//								doConnect();
+								changeSocketToRealTime();
 							}
 						} ],
 						position : "topright"
@@ -685,6 +686,14 @@ $(document)
 
 					function closePopUp(e) {
 						L.popup().close;
+					}
+					
+					
+					function changeSocketToTimeMachine(){
+						websocket.send('TYPE=1');
+					}
+					function changeSocketToRealTime(){
+						websocket.send('TYPE=0');
 					}
 
 					function showDialog() {
