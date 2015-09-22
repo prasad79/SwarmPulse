@@ -1,18 +1,10 @@
 package ch.ethz.coss.nervous.pulse.socket;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.java_websocket.WebSocket;
-import org.java_websocket.framing.Framedata;
-import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.server.WebSocketServer;
 
 import ch.ethz.coss.nervous.pulse.PulseWebSocketServer;
 import ch.ethz.coss.nervous.pulse.utils.Log;

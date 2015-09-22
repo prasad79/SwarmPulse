@@ -66,8 +66,6 @@ public class SqlSetup {
 			return null;
 		}
 	}
-	
-
 
 	private void setupPulseTables() {
 		for (PulseElementConfiguration element : config.getSensors()) {
@@ -87,7 +85,7 @@ public class SqlSetup {
 					+ "`.`ELEMENT_" + Long.toHexString(element.getElementID())
 					+ "` (\n");
 			sb.append("`RecordID` INT NOT NULL UNIQUE AUTO_INCREMENT,\n");
-//			sb.append("`UUID` BINARY(16) NOT NULL,\n");
+			// sb.append("`UUID` BINARY(16) NOT NULL,\n");
 			sb.append("`RecordTime` BIGINT UNSIGNED NOT NULL,\n");
 			for (PulseElementAttribute attribute : element.getAttributes()) {
 				types.add(attribute.getType());

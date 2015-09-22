@@ -5,9 +5,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import ch.ethz.coss.nervous.pulse.xml.HexIdAdapter;
 
 public class PulseElementConfiguration {
 

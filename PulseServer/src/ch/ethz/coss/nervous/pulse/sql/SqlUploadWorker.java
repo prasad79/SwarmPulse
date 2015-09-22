@@ -1,22 +1,14 @@
-	package ch.ethz.coss.nervous.pulse.sql;
+package ch.ethz.coss.nervous.pulse.sql;
 
 import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 
 import ch.ethz.coss.nervous.pulse.PulseWebSocketServer;
 import ch.ethz.coss.nervous.pulse.model.LightReading;
@@ -25,6 +17,11 @@ import ch.ethz.coss.nervous.pulse.model.TextVisual;
 import ch.ethz.coss.nervous.pulse.model.Visual;
 import ch.ethz.coss.nervous.pulse.socket.ConcurrentSocketWorker;
 import ch.ethz.coss.nervous.pulse.utils.Log;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 
 public class SqlUploadWorker extends ConcurrentSocketWorker {
 
@@ -43,8 +40,8 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 		// InputStream is;
 		ObjectInputStream in = null;
 		try {
-			 in = new ObjectInputStream(
-					new BufferedInputStream(socket.getInputStream()));
+			in = new ObjectInputStream(new BufferedInputStream(
+					socket.getInputStream()));
 			boolean connected = true;
 			while (connected) {
 				connected &= !socket.isClosed();
@@ -90,83 +87,97 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					}
 					feature.add("properties", properties);
 
-					/*****SQL insert********/
-					//Insert data
-					PreparedStatement datastmt = sqlse.getSensorInsertStatement(connection, reading.type == 0? 4 : (reading.type == 1 ? 8 : 10));
+					/***** SQL insert ********/
+					// Insert data
+					PreparedStatement datastmt = sqlse
+							.getSensorInsertStatement(connection,
+									reading.type == 0 ? 4
+											: (reading.type == 1 ? 8 : 10));
 					if (datastmt != null) {
-						System.out.println("datastmt - "+datastmt.toString());
-						List<Integer> types = sqlse.getArgumentExpectation(reading.type == 0? 4 : (reading.type == 1 ? 8 : 10));
+						System.out.println("datastmt - " + datastmt.toString());
+						List<Integer> types = sqlse
+								.getArgumentExpectation(reading.type == 0 ? 4
+										: (reading.type == 1 ? 8 : 10));
 
-						if(reading.type == 0){
+						if (reading.type == 0) {
 							datastmt.setLong(1, reading.timestamp);
-							datastmt.setDouble(2, ((LightReading) reading).lightVal);
+							datastmt.setDouble(2,
+									((LightReading) reading).lightVal);
 							datastmt.setDouble(3, reading.location.latnLong[0]);
-							datastmt.setDouble(4, reading.location.latnLong[1]);	
-						}else if(reading.type == 1){
+							datastmt.setDouble(4, reading.location.latnLong[1]);
+						} else if (reading.type == 1) {
 							datastmt.setLong(1, reading.timestamp);
-							datastmt.setDouble(2, ((NoiseReading) reading).soundVal);
+							datastmt.setDouble(2,
+									((NoiseReading) reading).soundVal);
 							datastmt.setDouble(3, reading.location.latnLong[0]);
-							datastmt.setDouble(4, reading.location.latnLong[1]);	
-						}else if(reading.type == 2){
+							datastmt.setDouble(4, reading.location.latnLong[1]);
+						} else if (reading.type == 2) {
 							datastmt.setLong(1, reading.timestamp);
-							datastmt.setString(2, ((TextVisual) reading).textMsg);
+							datastmt.setString(2,
+									((TextVisual) reading).textMsg);
 							datastmt.setDouble(3, reading.location.latnLong[0]);
-							datastmt.setDouble(4, reading.location.latnLong[1]);	
+							datastmt.setDouble(4, reading.location.latnLong[1]);
 						}
-						System.out.println("datastmt after populating - "+datastmt.toString());
-						
+						System.out.println("datastmt after populating - "
+								+ datastmt.toString());
+
 						datastmt.addBatch();
-//						for (SensorData sd : sensorValues) {
-//							try {
-//								datastmt.setBytes(1, uuid);
-//								datastmt.setLong(2, sd.getRecordTime());
-//
-//								Iterator<Boolean> iterBool = sd.getValueBoolList().iterator();
-//								Iterator<Integer> iterInteger = sd.getValueInt32List().iterator();
-//								Iterator<Long> iterLong = sd.getValueInt64List().iterator();
-//								Iterator<Float> iterFloat = sd.getValueFloatList().iterator();
-//								Iterator<Double> iterDouble = sd.getValueDoubleList().iterator();
-//								Iterator<String> iterString = sd.getValueStringList().iterator();
-//
-//								int counter = 3;
-//								for (Integer type : types) {
-//									switch (type) {
-//									case SqlSetup.TYPE_BOOL:
-//										datastmt.setBoolean(counter, iterBool.next());
-//										break;
-//									case SqlSetup.TYPE_INT32:
-//										datastmt.setInt(counter, iterInteger.next());
-//										break;
-//									case SqlSetup.TYPE_INT64:
-//										datastmt.setLong(counter, iterLong.next());
-//										break;
-//									case SqlSetup.TYPE_FLOAT:
-//										datastmt.setFloat(counter, iterFloat.next());
-//										break;
-//									case SqlSetup.TYPE_DOUBLE:
-//										datastmt.setDouble(counter, iterDouble.next());
-//										break;
-//									case SqlSetup.TYPE_STRING:
-//										datastmt.setString(counter, iterString.next());
-//										break;
-//									default:
-//										break;
-//									}
-//									counter++;
-//								}
-//								datastmt.addBatch();
-//							} catch (NoSuchElementException e) {
-//								Log.getInstance().append(Log.FLAG_WARNING, "Sensor data type mismatch with database");
-//							}
-//						}
+						// for (SensorData sd : sensorValues) {
+						// try {
+						// datastmt.setBytes(1, uuid);
+						// datastmt.setLong(2, sd.getRecordTime());
+						//
+						// Iterator<Boolean> iterBool =
+						// sd.getValueBoolList().iterator();
+						// Iterator<Integer> iterInteger =
+						// sd.getValueInt32List().iterator();
+						// Iterator<Long> iterLong =
+						// sd.getValueInt64List().iterator();
+						// Iterator<Float> iterFloat =
+						// sd.getValueFloatList().iterator();
+						// Iterator<Double> iterDouble =
+						// sd.getValueDoubleList().iterator();
+						// Iterator<String> iterString =
+						// sd.getValueStringList().iterator();
+						//
+						// int counter = 3;
+						// for (Integer type : types) {
+						// switch (type) {
+						// case SqlSetup.TYPE_BOOL:
+						// datastmt.setBoolean(counter, iterBool.next());
+						// break;
+						// case SqlSetup.TYPE_INT32:
+						// datastmt.setInt(counter, iterInteger.next());
+						// break;
+						// case SqlSetup.TYPE_INT64:
+						// datastmt.setLong(counter, iterLong.next());
+						// break;
+						// case SqlSetup.TYPE_FLOAT:
+						// datastmt.setFloat(counter, iterFloat.next());
+						// break;
+						// case SqlSetup.TYPE_DOUBLE:
+						// datastmt.setDouble(counter, iterDouble.next());
+						// break;
+						// case SqlSetup.TYPE_STRING:
+						// datastmt.setString(counter, iterString.next());
+						// break;
+						// default:
+						// break;
+						// }
+						// counter++;
+						// }
+						// datastmt.addBatch();
+						// } catch (NoSuchElementException e) {
+						// Log.getInstance().append(Log.FLAG_WARNING,
+						// "Sensor data type mismatch with database");
+						// }
+						// }
 						// Add sensor data to the database
 						datastmt.executeBatch();
 						datastmt.close();
 					}
 					/*************/
-					
-					
-					
+
 				} catch (JsonParseException e) {
 					System.out.println("can't save json object: "
 							+ e.toString());
@@ -175,19 +186,19 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 				System.out.println("featureCollection=" + feature.toString());
 
 				String message = feature.toString();
-				 pSocketServer.sendToAll(message);
+				pSocketServer.sendToAll(message);
 
 			}
 
 		} catch (EOFException e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 			Log.getInstance().append(Log.FLAG_WARNING,
 					"EOFException occurred, but ignored it for now.");
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.getInstance().append(Log.FLAG_WARNING,
 					"Opening data stream from socket failed");
-		}  catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			Log.getInstance().append(Log.FLAG_WARNING, "Generic error");
 		} finally {
@@ -197,7 +208,8 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 				in = null;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();;
+				e.printStackTrace();
+				;
 			}
 		}
 	}

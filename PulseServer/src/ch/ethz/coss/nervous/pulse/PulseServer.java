@@ -1,8 +1,6 @@
 package ch.ethz.coss.nervous.pulse;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.util.concurrent.ExecutorService;
 
 import org.java_websocket.WebSocketImpl;
 
@@ -49,7 +47,7 @@ public class PulseServer {
 
 		PulseWebSocketServer pWebSocketServer = new PulseWebSocketServer(8446);
 		pWebSocketServer.start();
-//		 Start server
+		// Start server
 		PulseConcurrentServer server = new PulseConcurrentServer(8445,
 				pWebSocketServer, config.getServerThreads(), factory);
 		Thread serverThread = new Thread(server);
@@ -72,7 +70,6 @@ public class PulseServer {
 
 		log.append(Log.FLAG_INFO, "Server terminated");
 
-		
 	}
 
 	public static int smartphonesPort = 8445;

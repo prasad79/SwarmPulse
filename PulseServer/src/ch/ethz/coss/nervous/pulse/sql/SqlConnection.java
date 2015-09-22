@@ -2,7 +2,6 @@ package ch.ethz.coss.nervous.pulse.sql;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
