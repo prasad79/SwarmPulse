@@ -302,6 +302,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	}
 
 	// Runnable IMPLEMENTATION /////////////////////////////////////////////////
+	@Override
 	public void run() {
 		synchronized (this) {
 			if (selectorthread != null)
@@ -810,6 +811,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 		public WebSocketImpl createWebSocket(WebSocketAdapter a, Draft d,
 				Socket s);
 
+		@Override
 		public WebSocketImpl createWebSocket(WebSocketAdapter a,
 				List<Draft> drafts, Socket s);
 

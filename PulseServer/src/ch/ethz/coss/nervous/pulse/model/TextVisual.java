@@ -15,6 +15,7 @@ public class TextVisual extends Visual implements Serializable {
 		serialVersionUID = 4L;
 	}
 
+	@Override
 	public String toString() {
 		return "TextVisual = (" + timestamp + ") -> " + "(" + textMsg + ") @ "
 				+ Arrays.toString(location.latnLong);

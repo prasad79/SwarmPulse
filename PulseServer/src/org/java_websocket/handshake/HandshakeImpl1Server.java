@@ -18,10 +18,12 @@ public class HandshakeImpl1Server extends HandshakedataImpl1 implements
 		return httpstatus;
 	}
 
+	@Override
 	public void setHttpStatusMessage(String message) {
 		this.httpstatusmessage = message;
 	}
 
+	@Override
 	public void setHttpStatus(short status) {
 		httpstatus = status;
 	}

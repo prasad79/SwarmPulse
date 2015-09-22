@@ -15,6 +15,7 @@ public class NoiseReading extends Visual implements Serializable {
 		serialVersionUID = 3L;
 	}
 
+	@Override
 	public String toString() {
 		return "NoiseReading = (" + timestamp + ") -> " + "(" + soundVal
 				+ ") @ " + Arrays.toString(location.latnLong);

@@ -7,6 +7,7 @@ public class HandshakeImpl1Client extends HandshakedataImpl1 implements
 	public HandshakeImpl1Client() {
 	}
 
+	@Override
 	public void setResourceDescriptor(String resourceDescriptor)
 			throws IllegalArgumentException {
 		if (resourceDescriptor == null)
@@ -15,6 +16,7 @@ public class HandshakeImpl1Client extends HandshakedataImpl1 implements
 		this.resourceDescriptor = resourceDescriptor;
 	}
 
+	@Override
 	public String getResourceDescriptor() {
 		return resourceDescriptor;
 	}

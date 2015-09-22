@@ -16,6 +16,7 @@ public class AccReading extends Visual implements Serializable {
 		serialVersionUID = 1L;
 	}
 
+	@Override
 	public String toString() {
 		return "AccReading = (" + "," + timestamp + ") -> " + "(" + x + "," + y
 				+ "," + z + ")";

@@ -233,9 +233,14 @@ $(document)
 							title : 'Real Time',
 							onClick : function(control) {
 								control.state("timeMachine");
-								changeSocketToTimeMachine();
+//								changeSocketToTimeMachine();
+								var d = new Date();
+								var n = d.getTime()
+								sendTimeMachineRequest(current_layer, n - 8640000, n);
 //								map.addControl(sliderControl);
 								removeAllMarkers();
+								lightMarkers.addLayer(markersCluster);
+								map.addLayer(lightMarkers);
 //								document.getElementById('footer').appendChild(controlDiv);
 //								sliderControl.startSlider();
 								
@@ -719,10 +724,14 @@ $(document)
 					
 					
 					function changeSocketToTimeMachine(){
-						websocket.send('TYPE=1');
+						websocket.send('type=1');
 					}
 					function changeSocketToRealTime(){
-						websocket.send('TYPE=0');
+						websocket.send('type=0');
+					}
+					
+					function sendTimeMachineRequest(readingType, startTime, endTime){
+						websocket.send('type=1,'+readingType+','+startTime+','+endTime);
 					}
 
 					function showDialog() {

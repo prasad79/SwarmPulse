@@ -603,6 +603,7 @@ public class WebSocketImpl implements WebSocket {
 		closeConnection(closecode, closemessage, closedremotely);
 	}
 
+	@Override
 	public void closeConnection(int code, String message) {
 		closeConnection(code, message, false);
 	}

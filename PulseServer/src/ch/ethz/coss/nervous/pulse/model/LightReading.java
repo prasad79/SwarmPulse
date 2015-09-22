@@ -15,6 +15,7 @@ public class LightReading extends Visual implements Serializable {
 		serialVersionUID = 2L;
 	}
 
+	@Override
 	public String toString() {
 		return "LightReading = (" + "," + timestamp + ") -> " + "(" + lightVal
 				+ ")  @ " + Arrays.toString(location.latnLong);

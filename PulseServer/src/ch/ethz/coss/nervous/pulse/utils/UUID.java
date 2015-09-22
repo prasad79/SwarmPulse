@@ -29,14 +29,14 @@ public class UUID {
 		return (((long) uuid[0]) << 56) | (((long) uuid[1]) << 48)
 				| (((long) uuid[2]) << 40) | (((long) uuid[3]) << 32)
 				| (((long) uuid[4]) << 24) | (((long) uuid[5]) << 16)
-				| (((long) uuid[6]) << 8) | (((long) uuid[7]));
+				| (((long) uuid[6]) << 8) | ((uuid[7]));
 	}
 
 	public static long getLowUUID(byte[] uuid) {
 		return (((long) uuid[8]) << 56) | (((long) uuid[9]) << 48)
 				| (((long) uuid[10]) << 40) | (((long) uuid[11]) << 32)
 				| (((long) uuid[12]) << 24) | (((long) uuid[13]) << 16)
-				| (((long) uuid[14]) << 8) | (((long) uuid[15]));
+				| (((long) uuid[14]) << 8) | ((uuid[15]));
 	}
 
 }

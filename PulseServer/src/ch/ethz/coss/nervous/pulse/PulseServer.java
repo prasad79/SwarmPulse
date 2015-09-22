@@ -5,6 +5,9 @@ import java.io.IOException;
 import org.java_websocket.WebSocketImpl;
 
 import ch.ethz.coss.nervous.pulse.socket.PulseConcurrentServer;
+import ch.ethz.coss.nervous.pulse.socket.PulseRequestHandlingServer;
+import ch.ethz.coss.nervous.pulse.socket.SqlFetchWorkerFactory;
+import ch.ethz.coss.nervous.pulse.sql.PulseElementConfiguration;
 import ch.ethz.coss.nervous.pulse.sql.SqlConnection;
 import ch.ethz.coss.nervous.pulse.sql.SqlSetup;
 import ch.ethz.coss.nervous.pulse.sql.SqlUploadWorkerFactory;
@@ -44,16 +47,28 @@ public class PulseServer {
 		// database
 		SqlUploadWorkerFactory factory = new SqlUploadWorkerFactory(sqlco,
 				sqlse);
-
-		PulseWebSocketServer pWebSocketServer = new PulseWebSocketServer(8446);
+		
+		SqlFetchWorkerFactory sqlFfactory = new SqlFetchWorkerFactory(sqlco,
+				sqlse);
+		PulseRequestHandlingServer prhServer  = new PulseRequestHandlingServer(config.getServerThreads()+5, sqlFfactory);
+		Thread reqServerThread = new Thread(prhServer);
+		reqServerThread.start();
+		
+		
+		PulseWebSocketServer pWebSocketServer = new PulseWebSocketServer(8446, prhServer);
 		pWebSocketServer.start();
+		
 		// Start server
 		PulseConcurrentServer server = new PulseConcurrentServer(8445,
-				pWebSocketServer, config.getServerThreads(), factory);
+				pWebSocketServer, 5, factory);
 		Thread serverThread = new Thread(server);
 		serverThread.start();
 		log.append(Log.FLAG_INFO, "PulseConcurrentServer Started");
-
+		
+		
+		Thread sqlFetchThread = new Thread(prhServer);
+		sqlFetchThread.start();
+		
 		boolean running = true;
 
 		while (running) {
@@ -67,7 +82,7 @@ public class PulseServer {
 
 		// Stop server
 		server.stop();
-
+		prhServer.stop();
 		log.append(Log.FLAG_INFO, "Server terminated");
 
 	}

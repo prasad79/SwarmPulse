@@ -10,15 +10,22 @@ import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
+import ch.ethz.coss.nervous.pulse.socket.PulseRequestHandlingServer;
+
+
 public class PulseWebSocketServer extends WebSocketServer {
 
 	// private ArrayList<WebSocket> timeMachineConnectionsList = new
 	// ArrayList<WebSocket>();
 
-	private Hashtable<WebSocket, PulseTimeMachineRequest> hTimeMachineConnectionList = new Hashtable<WebSocket, PulseTimeMachineRequest>();
-
-	public PulseWebSocketServer(int port) throws UnknownHostException {
+	private PulseRequestHandlingServer prhServer;
+	
+	
+	public PulseWebSocketServer(int port, PulseRequestHandlingServer prhServer) throws UnknownHostException {
 		super(new InetSocketAddress(port));
+		this.prhServer = prhServer;
+		this.prhServer.setPulseServer(this);
+		
 	}
 
 	public PulseWebSocketServer(InetSocketAddress address) {
@@ -45,8 +52,8 @@ public class PulseWebSocketServer extends WebSocketServer {
 		System.out.println("Total Connections = " + connections().size());
 		System.out.println("/************************************/");
 
-		if (hTimeMachineConnectionList.containsKey(conn))
-			hTimeMachineConnectionList.remove(conn);
+		if (prhServer.hTimeMachineConnectionList.containsKey(conn))
+			prhServer.hTimeMachineConnectionList.remove(conn);
 	}
 
 	@Override
@@ -58,19 +65,31 @@ public class PulseWebSocketServer extends WebSocketServer {
 		System.out.println("/************************************/");
 
 		if (message.contains("type=")) {
+			System.out.println("Type = "+(message.substring(message.indexOf("=") + 1, message.indexOf("=") + 2)));
 			int type = Integer
-					.parseInt(message.substring(message.indexOf("=") + 1));
+					.parseInt(message.substring(message.indexOf("=") + 1,message.indexOf("=") + 2));
+			
+			
 			switch (type) {
 			case 0:
-				hTimeMachineConnectionList.remove(conn);
-				System.out.println("type=0");
+				prhServer.hTimeMachineConnectionList.remove(conn);
+				System.out.println("Switched conn to RealTime.");
+				System.out.println("hTimeMachineConnectionList size = "+prhServer.hTimeMachineConnectionList.size());
+				
 				break;
 			case 1:
-
-				if (!hTimeMachineConnectionList.contains(conn))
-					hTimeMachineConnectionList.put(conn, null);
-
-				System.out.println("type=1");
+				String request = message.substring(message.indexOf(",") + 1);
+				if(request.length() > 0){
+					PulseTimeMachineRequest pulseTimeMachineRequest = new PulseTimeMachineRequest(request, conn);
+					prhServer.addToRequestList(pulseTimeMachineRequest);
+					Thread reqServerThread = new Thread(prhServer);
+					reqServerThread.start();
+				
+	
+				}else 
+					prhServer.hTimeMachineConnectionList.put(conn, null);
+				
+				System.out.println("TYPE=1");
 				break;
 			}
 
@@ -104,7 +123,7 @@ public class PulseWebSocketServer extends WebSocketServer {
 		Collection<WebSocket> con = connections();
 		synchronized (con) {
 			for (WebSocket c : con) {
-				if (!hTimeMachineConnectionList.containsKey(c)) {
+				if (!prhServer.hTimeMachineConnectionList.containsKey(c)) {
 					c.send(text);
 					System.out.println("sent Text - " + text);
 				} else {
@@ -126,35 +145,21 @@ public class PulseWebSocketServer extends WebSocketServer {
 	 * @throws InterruptedException
 	 *             When socket related I/O errors occur.
 	 */
-	public void sendToSocket(WebSocket conn, String text) {
-		System.out.println("sendToAll Text - " + text);
-		Collection<WebSocket> con = connections();
+	public void sendToSocket(WebSocket conn, long requestID, String text) {
+		System.out.println("inside sendToSocket " );
+System.out.println("prhServer.hTimeMachineConnectionList size "+prhServer.hTimeMachineConnectionList.size());
+		if (prhServer.hTimeMachineConnectionList.containsKey(conn)) {
+			System.out.println(" sendToSocket Text - " + text);
 
-		synchronized (con) {
-			if (hTimeMachineConnectionList.containsKey(conn)) {
+			PulseTimeMachineRequest ptmRequest = prhServer.hTimeMachineConnectionList.get(conn);
+			if(ptmRequest.requestID == requestID)
 				conn.send(text);
-			}
+			
+			prhServer.hTimeMachineConnectionList.remove(conn);
 		}
 
-		// synchronized (con) {
-		// for (WebSocket c : con) {
-		//
-		// c.send(text);
-		// System.out.println("sent Text - " + text);
-		// }
-		//
-		// }
-	}
-
-}
-
-class PulseTimeMachineRequest {
-
-	public int readingType = 0;
-	public long startTime = 0;
-	public long endTime = 0;
-
-	public PulseTimeMachineRequest(int readingType, long startTime, long endTime) {
+		if (prhServer.hTimeMachineConnectionList.size() == 0)
+			PulseTimeMachineRequest.ID_COUNTER = 0;
 
 	}
 

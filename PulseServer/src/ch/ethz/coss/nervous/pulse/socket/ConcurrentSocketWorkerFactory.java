@@ -8,5 +8,5 @@ public abstract class ConcurrentSocketWorkerFactory {
 
 	public abstract ConcurrentSocketWorker createWorker(Socket socket,
 			PulseWebSocketServer pSocketServer);
-
+	
 }

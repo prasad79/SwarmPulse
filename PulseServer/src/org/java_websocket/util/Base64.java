@@ -1333,7 +1333,7 @@ public class Base64 {
 				throw new java.io.IOException(
 						String.format(
 								"Bad Base64 input character decimal %d in array position %d",
-								((int) source[i]) & 0xFF, i));
+								(source[i]) & 0xFF, i));
 			} // end else:
 		} // each input character
 
@@ -1396,7 +1396,7 @@ public class Base64 {
 		boolean dontGunzip = (options & DONT_GUNZIP) != 0;
 		if ((bytes != null) && (bytes.length >= 4) && (!dontGunzip)) {
 
-			int head = ((int) bytes[0] & 0xff) | ((bytes[1] << 8) & 0xff00);
+			int head = (bytes[0] & 0xff) | ((bytes[1] << 8) & 0xff00);
 			if (java.util.zip.GZIPInputStream.GZIP_MAGIC == head) {
 				java.io.ByteArrayInputStream bais = null;
 				java.util.zip.GZIPInputStream gzis = null;

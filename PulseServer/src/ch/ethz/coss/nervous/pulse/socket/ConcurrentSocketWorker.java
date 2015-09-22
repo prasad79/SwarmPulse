@@ -7,6 +7,7 @@ import ch.ethz.coss.nervous.pulse.PulseWebSocketServer;
 import ch.ethz.coss.nervous.pulse.utils.Log;
 
 public abstract class ConcurrentSocketWorker implements Runnable {
+	@Override
 	public abstract void run();
 
 	protected Socket socket;
@@ -20,6 +21,7 @@ public abstract class ConcurrentSocketWorker implements Runnable {
 
 	protected void cleanup() {
 		try {
+			if(socket != null)
 			socket.close();
 		} catch (IOException e) {
 

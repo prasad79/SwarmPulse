@@ -66,6 +66,23 @@ public class SqlSetup {
 			return null;
 		}
 	}
+	
+	
+	
+	/**
+	 * 
+	 * SELECT * FROM `Element_` WHERE RecordTime  BETWEEN x and y
+	 */
+	
+	public PreparedStatement getSensorValuesFetchStatement(Connection con, int readingType, long startTime, long endTime) throws SQLException {
+			StringBuilder sb = new StringBuilder();
+			sb.append("SELECT * FROM `ELEMENT_" + readingType 
+					+ "` WHERE RecordTime BETWEEN "+startTime+" AND "+endTime+";");
+			
+			System.out.println(" ---- ---- "+sb.toString());
+			return con.prepareStatement(sb.toString());
+		
+	}
 
 	private void setupPulseTables() {
 		for (PulseElementConfiguration element : config.getSensors()) {

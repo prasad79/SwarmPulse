@@ -103,6 +103,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	 * For more infos see
 	 * https://github.com/TooTallNate/Java-WebSocket/wiki/Drafts
 	 */
+	@Override
 	public Draft getDraft() {
 		return draft;
 	}
@@ -134,6 +135,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	 * In oder to make sure the connection is closed use
 	 * <code>closeBlocking</code>
 	 */
+	@Override
 	public void close() {
 		if (writeThread != null) {
 			engine.close(CloseFrame.NORMAL);
@@ -151,6 +153,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	 * @param text
 	 *            The string which will be transmitted.
 	 */
+	@Override
 	public void send(String text) throws NotYetConnectedException {
 		engine.send(text);
 	}
@@ -161,10 +164,12 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	 * @param data
 	 *            The byte-Array of data to send to the WebSocket server.
 	 */
+	@Override
 	public void send(byte[] data) throws NotYetConnectedException {
 		engine.send(data);
 	}
 
+	@Override
 	public void run() {
 		try {
 			if (socket == null) {
@@ -254,6 +259,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	/**
 	 * This represents the state of the connection.
 	 */
+	@Override
 	public READYSTATE getReadyState() {
 		return engine.getReadyState();
 	}

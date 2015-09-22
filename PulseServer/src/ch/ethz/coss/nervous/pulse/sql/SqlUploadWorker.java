@@ -214,6 +214,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 		}
 	}
 
+	@Override
 	protected void cleanup() {
 		super.cleanup();
 		try {

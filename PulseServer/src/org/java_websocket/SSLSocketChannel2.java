@@ -246,6 +246,7 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 		bufferallocations++;
 	}
 
+	@Override
 	public int write(ByteBuffer src) throws IOException {
 		if (!isHandShakeComplete()) {
 			processHandshake();
@@ -269,6 +270,7 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 	 * 
 	 * @return the number of bytes read.
 	 **/
+	@Override
 	public int read(ByteBuffer dst) throws IOException {
 		if (!dst.hasRemaining())
 			return 0;
@@ -354,6 +356,7 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 		return socketChannel.isConnected();
 	}
 
+	@Override
 	public void close() throws IOException {
 		sslEngine.closeOutbound();
 		sslEngine.getSession().invalidate();
