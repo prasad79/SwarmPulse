@@ -7,7 +7,7 @@ $(document)
 					var map = L.map('map', {
 						zoomControl : false
 					}).setView([ 47.379977, 8.545751 ], 2);
-					var current_layer = 0;
+					var current_layer = -1;
 					var last_layer = 0;
 
 					var lightMarkers = new L.LayerGroup();
@@ -224,8 +224,8 @@ $(document)
 					conButton.addTo(map);
 					conButton.state('connecting');
 
-					/** *************************** */
-					/** ***********Real Time or Time Machine Button**************** */
+					/***************************** */
+					/*************Real Time or Time Machine Button**************** */
 					var realTimeButton = L.easyButton({
 						states : [ {
 							stateName : 'realTime',
@@ -234,6 +234,13 @@ $(document)
 							onClick : function(control) {
 								control.state("timeMachine");
 								changeSocketToTimeMachine();
+//								map.addControl(sliderControl);
+								removeAllMarkers();
+//								document.getElementById('footer').appendChild(controlDiv);
+//								sliderControl.startSlider();
+								
+								$('#datePicker').show(0);
+								
 							}
 						}, {
 							stateName : 'timeMachine',
@@ -242,16 +249,36 @@ $(document)
 							onClick : function(control) {
 								control.state("realTime");
 //								doConnect();
+								resetToLightReadings();
 								changeSocketToRealTime();
+//								sliderControl.removeFrom(controlDiv);
+//								document.getElementById('footer').removeChild(controlDiv);
+
+								$('#datePicker').hide(0);
 							}
 						} ],
 						position : "topright"
+							
 					});
 
 					realTimeButton.addTo(map);
 					realTimeButton.state('realTime');
 
+					
 					/** *************************** */
+					
+					
+					/**************Slider Control*********************/
+//					var DatePickerControl = L.control.sliderControl({layer: lightMarkers, 
+//			            timeAttribute: "epoch",
+//			            isEpoch: true,
+//			            range: true});
+//					
+//					var controlDiv = DatePickerControl.onAdd(map);
+					
+					/*************************************************//** ***************** */
+
+				
 					/** ********** */
 
 					mapNoLabels.addTo(map);
@@ -277,7 +304,8 @@ $(document)
 						removeAllMarkers();
 						lightMarkers.addLayer(markersCluster);
 						map.addLayer(lightMarkers);
-						legendLight.addTo(map);
+						if (current_layer != 0)
+							legendLight.addTo(map);
 						if (last_layer == 1)
 							legendSound.removeFrom(map);
 					}
@@ -286,7 +314,9 @@ $(document)
 						removeAllMarkers();
 						noiseMarkers.addLayer(markersCluster);
 						map.addLayer(noiseMarkers);
-						legendSound.addTo(map);
+						if (current_layer != 1)
+							legendSound.addTo(map);
+						
 						if (last_layer == 0)
 							legendLight.removeFrom(map);
 					}
@@ -316,8 +346,7 @@ $(document)
 						counter = 0;
 					}
 
-					/** ***************** */
-
+				/**************************************/
 					function getNoiseColor(d) {
 						return d > 140 ? '#800026' : d > 120 ? '#BD0026'
 								: d > 100 ? '#E31A1C' : d > 70 ? '#FC4E2A'
