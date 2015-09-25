@@ -236,7 +236,7 @@ $(document)
 //								changeSocketToTimeMachine();
 								var d = new Date();
 								var n = d.getTime()
-								sendTimeMachineRequest(current_layer, n - 8640000, n);
+								sendTimeMachineRequest(current_layer, n - 5000000000, n);
 //								map.addControl(sliderControl);
 								removeAllMarkers();
 								lightMarkers.addLayer(markersCluster);
@@ -662,47 +662,24 @@ $(document)
 					function onMessage(evt) {
 //						console.log(evt.data);
 						var msg = JSON.parse(evt.data);
+						var features = msg.features;
+						 if (Array.isArray(features)) {
+							 for(var i = 0; i < features.length; i++) {
+								    var feature = features[i];
+
+								    parseFeature(feature);
+								}
+							 
+						 } else {
+							 
+							 parseFeature(features);
+							 
+							
+						 }
+						
 //						console.log("msg.properties.readingType "
 //								+ msg.properties.readingType);
-						var geojsonMarkerOptions;
-						if (msg.properties.readingType == 0)
-							geojsonMarkerOptions = {
-								radius : 4,
-								fillColor : getLightColor(msg.properties.level),
-								color : "#FFFFFF",// getLightColor(msg.properties.level),
-								weight : 1,
-								opacity : 0.7,
-								fillOpacity : 1,
-								type : msg.properties.readingType,
-								value : msg.properties.level,
-								startTime : new Date().getTime()
-							};
-						else if (msg.properties.readingType == 1)
-							geojsonMarkerOptions = {
-								radius : 4,
-								fillColor : getNoiseColor(msg.properties.level),
-								color : "#FFFFFF",// getNoiseColor(msg.properties.level),
-								weight : 1,
-								opacity : 0.7,
-								fillOpacity : 1,
-								type : msg.properties.readingType,
-								value : msg.properties.level,
-								startTime : new Date().getTime()
-							};
-						else if (msg.properties.readingType == 2)
-							geojsonMarkerOptions = {
-								radius : 4,
-								fillColor : '#FFFFFF',
-								color : '#FFFFFF',
-								weight : 1,
-								opacity : 0.7,
-								fillOpacity : 1,
-								type : msg.properties.readingType,
-								value : msg.properties.message,
-								startTime : new Date().getTime()
-							};
-
-						addMarker(msg, geojsonMarkerOptions);
+						
 
 					}
 
@@ -776,5 +753,48 @@ $(document)
 						//						
 						// $( "#downloadAppDialog" ).dialog( "open" );
 					}
+					
+					function parseFeature(feature){
+						 var geojsonMarkerOptions;
+							if (feature.properties.readingType == 0)
+								geojsonMarkerOptions = {
+									radius : 4,
+									fillColor : getLightColor(feature.properties.level),
+									color : "#FFFFFF",// getLightColor(msg.properties.level),
+									weight : 1,
+									opacity : 0.7,
+									fillOpacity : 1,
+									type : feature.properties.readingType,
+									value : feature.properties.level,
+									startTime : new Date().getTime()
+								};
+							else if (feature.properties.readingType == 1)
+								geojsonMarkerOptions = {
+									radius : 4,
+									fillColor : getNoiseColor(feature.properties.level),
+									color : "#FFFFFF",// getNoiseColor(msg.properties.level),
+									weight : 1,
+									opacity : 0.7,
+									fillOpacity : 1,
+									type : feature.properties.readingType,
+									value : feature.properties.level,
+									startTime : new Date().getTime()
+								};
+							else if (feature.properties.readingType == 2)
+								geojsonMarkerOptions = {
+									radius : 4,
+									fillColor : '#FFFFFF',
+									color : '#FFFFFF',
+									weight : 1,
+									opacity : 0.7,
+									fillOpacity : 1,
+									type : feature.properties.readingType,
+									value : feature.properties.message,
+									startTime : new Date().getTime()
+								};
+
+							addMarker(feature, geojsonMarkerOptions);
+					}
+					
 					resetToLightReadings();
 				});

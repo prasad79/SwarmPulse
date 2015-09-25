@@ -33,6 +33,9 @@ public class SqlRequestWorker extends SqlFetchWorker {
 		try {
 			
 				JsonObject feature = null;
+				JsonArray features = null;
+				JsonObject featureCollection = null;
+				
 				try {
 
 					/***** SQL get ********/
@@ -42,8 +45,8 @@ public class SqlRequestWorker extends SqlFetchWorker {
 									ptmRequest.readingType == 0 ? 4
 											: (ptmRequest.readingType == 1 ? 8 : 10), ptmRequest.startTime, ptmRequest.endTime);
 					ResultSet rs = datastmt.executeQuery();
-					feature = new JsonObject();
-					feature.addProperty("type", "Feature");
+					featureCollection = new JsonObject();
+					features = new JsonArray();
 					while (rs.next()) {
 
 					
@@ -78,9 +81,14 @@ public class SqlRequestWorker extends SqlFetchWorker {
 							System.out.println("Reading instance not known");
 						}
 						feature.add("properties", properties);
-						System.out.println(" GEOJSON = "+ feature.toString());
-						pSocketServer.sendToSocket(ptmRequest.webSocket, ptmRequest.requestID, feature.toString());
+						
+						features.add(feature);
 					}
+					
+					featureCollection.add("features", features);
+					System.out.println("Feature collection + "+featureCollection.toString());
+					pSocketServer.sendToSocket(ptmRequest.webSocket, ptmRequest.requestID, featureCollection.toString());
+					
 					/*************/
 
 				} catch (JsonParseException e) {

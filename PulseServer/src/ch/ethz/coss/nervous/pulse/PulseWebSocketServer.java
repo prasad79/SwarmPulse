@@ -119,13 +119,13 @@ public class PulseWebSocketServer extends WebSocketServer {
 	 *             When socket related I/O errors occur.
 	 */
 	public void sendToAll(String text) {
-		System.out.println("sendToAll Text - " + text);
+//		System.out.println("sendToAll Text - " + text);
 		Collection<WebSocket> con = connections();
 		synchronized (con) {
 			for (WebSocket c : con) {
 				if (!prhServer.hTimeMachineConnectionList.containsKey(c)) {
 					c.send(text);
-					System.out.println("sent Text - " + text);
+//					System.out.println("sent Text - " + text);
 				} else {
 					System.out
 							.println("Not sending message to this connection because it is in time-machine state");
@@ -149,7 +149,7 @@ public class PulseWebSocketServer extends WebSocketServer {
 		System.out.println("inside sendToSocket " );
 System.out.println("prhServer.hTimeMachineConnectionList size "+prhServer.hTimeMachineConnectionList.size());
 		if (prhServer.hTimeMachineConnectionList.containsKey(conn)) {
-			System.out.println(" sendToSocket Text - " + text);
+//			System.out.println(" sendToSocket Text - " + text);
 
 			PulseTimeMachineRequest ptmRequest = prhServer.hTimeMachineConnectionList.get(conn);
 			if(ptmRequest.requestID == requestID)
