@@ -48,7 +48,6 @@ public class SqlRequestWorker extends SqlFetchWorker {
 					featureCollection = new JsonObject();
 					features = new JsonArray();
 					while (rs.next()) {
-
 					
 						String lat = rs.getString("lat");
 						String lon = rs.getString("lon");
@@ -83,11 +82,23 @@ public class SqlRequestWorker extends SqlFetchWorker {
 						feature.add("properties", properties);
 						
 						features.add(feature);
+						
+						if((features.getAsJsonArray()).size() >= 1000){
+							featureCollection.add("features", features);
+							pSocketServer.sendToSocket(ptmRequest.webSocket, ptmRequest.requestID, featureCollection.toString(), false);
+							featureCollection = new JsonObject();
+							try {
+								Thread.sleep(10);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 					}
 					
 					featureCollection.add("features", features);
 					System.out.println("Feature collection + "+featureCollection.toString());
-					pSocketServer.sendToSocket(ptmRequest.webSocket, ptmRequest.requestID, featureCollection.toString());
+					pSocketServer.sendToSocket(ptmRequest.webSocket, ptmRequest.requestID, featureCollection.toString(), true);
 					
 					/*************/
 

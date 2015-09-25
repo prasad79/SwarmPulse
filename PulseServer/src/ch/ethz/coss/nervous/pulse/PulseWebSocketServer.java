@@ -145,7 +145,7 @@ public class PulseWebSocketServer extends WebSocketServer {
 	 * @throws InterruptedException
 	 *             When socket related I/O errors occur.
 	 */
-	public void sendToSocket(WebSocket conn, long requestID, String text) {
+	public void sendToSocket(WebSocket conn, long requestID, String text, boolean isComplete) {
 		System.out.println("inside sendToSocket " );
 System.out.println("prhServer.hTimeMachineConnectionList size "+prhServer.hTimeMachineConnectionList.size());
 		if (prhServer.hTimeMachineConnectionList.containsKey(conn)) {
@@ -155,6 +155,7 @@ System.out.println("prhServer.hTimeMachineConnectionList size "+prhServer.hTimeM
 			if(ptmRequest.requestID == requestID)
 				conn.send(text);
 			
+			if(isComplete)
 			prhServer.hTimeMachineConnectionList.remove(conn);
 		}
 

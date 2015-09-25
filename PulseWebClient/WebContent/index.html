@@ -20,17 +20,18 @@
 
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
- 
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 </head>
 
 <body bgcolor="#000000">
 	<div id="map" style="background: #333d3f"></div>
-	<div id="datePicker"  ">
-    <input type="text" class="date start" style="background: #333d3f" />
-    <input type="text" class="time start" style="background: #333d3f"/> to
-    <input type="text" class="time end" style="background: #333d3f"/>
-    <input type="text" class="date end" style="background: #333d3f"/>
+	<div id="datePicker"">
+		<input type="text" class="date start" style="background: #333d3f" />
+		<input type="text" class="time start" style="background: #333d3f" />
+		  -  to  - <input type="text" class="time end" style="background: #333d3f" />
+		<input type="text" class="date end" style="background: #333d3f" />
 	</div>
 	<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
 	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -45,24 +46,31 @@
 	<script type="text/javascript" src="easy-button.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script type="text/javascript" src="datepair.js"></script>
-<script type="text/javascript" src="jquery.timepicker.min.js"></script>
-  <script src="dist/datepair.min.js"></script>
-    <script src="dist/jquery.datepair.min.js"></script>
-<script>
-    // initialize input widgets first
-    $('#datepairExample .time').timepicker({
-        'showDuration': true,
-        'timeFormat': 'g:ia'
-    });
+	<script type="text/javascript" src="jquery.timepicker.min.js"></script>
+	<script src="dist/datepair.min.js"></script>
+	<script src="dist/jquery.datepair.min.js"></script>
+	<script>
+		// initialize input widgets first
+		$('#datePicker .time').timepicker({
+			'showDuration' : true,
+			'timeFormat' : 'g:ia'
+		});
 
-    $('#datepairExample .date').datepicker({
-        'format': 'yyyy-m-d',
-        'autoclose': true
-    });
+		$('#datePicker .date').datepicker({
+			'format' : 'yyyy-m-d',
+			'autoclose' : true
+		});
 
-    // initialize datepair
-    $('#datepairExample').datepair();
-</script>
+		// initialize datepair
+		$('#datePicker').datepair();
+		
+		var datePickerDiv = document.getElementById('datePicker');
+        var datePickerDatepair = new Datepair(datePickerDiv, {
+            'defaultDateDelta': 1,
+            'defaultTimeDelta': 60
+        });
+
+	</script>
 </body>
 
 

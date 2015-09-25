@@ -47,6 +47,8 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 				connected &= !socket.isClosed();
 
 				Visual reading = null;
+				JsonObject featureCollection = new JsonObject();
+				JsonArray features = new JsonArray();
 				JsonObject feature = null;
 				try {
 
@@ -86,7 +88,8 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 						System.out.println("Reading instance not known");
 					}
 					feature.add("properties", properties);
-
+					features.add(feature);
+					featureCollection.add("features", features);
 					/***** SQL insert ********/
 					// Insert data
 					PreparedStatement datastmt = sqlse
@@ -183,9 +186,9 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 							+ e.toString());
 				}
 				// output the result
-				System.out.println("featureCollection=" + feature.toString());
+				System.out.println("featureCollection=" + featureCollection.toString());
 
-				String message = feature.toString();
+				String message = featureCollection.toString();
 				pSocketServer.sendToAll(message);
 
 			}

@@ -427,7 +427,7 @@ $(document)
 											});
 								},
 								disableClusteringAtZoom : 10,
-								maxClusterRadius : 10,
+								maxClusterRadius : 50,
 								showCoverageOnHover : true
 							});
 
@@ -671,7 +671,6 @@ $(document)
 								}
 							 
 						 } else {
-							 
 							 parseFeature(features);
 							 
 							
