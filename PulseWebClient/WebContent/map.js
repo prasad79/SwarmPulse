@@ -730,7 +730,7 @@ $(document)
 										"class" : 'button',
 										click : function() {
 											// Cancel code here
-											 window.navigate("https://play.google.com/store");
+											location.assign("https://play.google.com/store");
 											 $(this).dialog('close');
 
 										}
