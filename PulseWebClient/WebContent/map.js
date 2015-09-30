@@ -185,7 +185,7 @@ $(document)
 							icon : 'fa-mobile fa-lg',
 							title : 'Download Mobile App',
 							onClick : function(control) {
-								control.state("connecting");
+//								control.state("connecting");
 								// window.open("./Pulse.apk");
 								showDialog();
 							}
@@ -194,8 +194,8 @@ $(document)
 					});
 
 					downloadAppButton.addTo(map);
-					/** ****************************** */
-					/** ***********Server Connected Status Button**************** */
+					/*********************************/
+					/*************Server Connected Status Button**************** */
 					var conButton = L.easyButton({
 						states : [ {
 							stateName : 'disconnected',
@@ -235,8 +235,11 @@ $(document)
 								control.state("timeMachine");
 //								changeSocketToTimeMachine();
 								var d = new Date();
-								var n = d.getTime()
-								sendTimeMachineRequest(current_layer, n - 5000000000, n);
+								var st = getStartTime(); //d.getTime();
+								var et = st + 300;
+								
+								sendTimeMachineRequest(current_layer, st, et);
+								
 //								map.addControl(sliderControl);
 								removeAllMarkers();
 								lightMarkers.addLayer(markersCluster);
@@ -284,7 +287,7 @@ $(document)
 					/*************************************************//** ***************** */
 
 				
-					/** ********** */
+					/************ */
 
 					mapNoLabels.addTo(map);
 					// legendLight.addTo(map);
@@ -457,7 +460,6 @@ $(document)
 
 					var markerArray = [];
 					function addMarker(msg, geojsonMarkerOptions) {
-
 						counter++;
 						var d = new Date();
 						if (msg.properties.readingType == 0
@@ -556,7 +558,6 @@ $(document)
 					}
 
 					function getOuterColor(type, d) {
-
 						if (type == 0) {
 							return d > 200 ? '#1A6A34' : d > 100 ? '#8CBD31'
 									: d > 70 ? '#FEDE00' : d > 50 ? '#FFDB4E'
@@ -607,10 +608,10 @@ $(document)
 							var d = new Date();
 							if (d.getTime() - marker.options.startTime >= 30000) {
 
-								// markersCluster.removeLayer(marker);
+								markersCluster.removeLayer(marker);
 
-								// markerArray.splice(i, 1);
-								// counter--;
+								markerArray.splice(i, 1);
+								counter--;
 							}
 						}
 					}
@@ -666,7 +667,6 @@ $(document)
 						 if (Array.isArray(features)) {
 							 for(var i = 0; i < features.length; i++) {
 								    var feature = features[i];
-
 								    parseFeature(feature);
 								}
 							 
@@ -709,6 +709,10 @@ $(document)
 					function sendTimeMachineRequest(readingType, startTime, endTime){
 						websocket.send('type=1,'+readingType+','+startTime+','+endTime);
 					}
+					
+					function getStartTime(){
+						return 
+					}
 
 					function showDialog() {
 						$('#dialog').dialog(
@@ -726,16 +730,28 @@ $(document)
 										"class" : 'button',
 										click : function() {
 											// Cancel code here
+											 window.navigate("https://play.google.com/store");
+											 $(this).dialog('close');
+
 										}
 									}, {
 										text : "iOS",
 										"class" : 'button',
 										click : function() {
 											// Save code here
+											 $(this).dialog('close');
+
+										}
+									} , {
+										text : "Cancel",
+										"class" : 'button',
+										click : function() {
+											// Save code here
+											 $(this).dialog('close');
+
 										}
 									} ],
-									dialogClass: 'no-close success-dialog',
-									position: 'center'
+									dialogClass: ' success-dialog'
 								});
 
 						// $("#downloadAppDialog").dialog({

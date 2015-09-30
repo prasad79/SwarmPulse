@@ -33,6 +33,8 @@
 		  -  to  - <input type="text" class="time end" style="background: #333d3f" />
 		<input type="text" class="date end" style="background: #333d3f" />
 	</div>
+	 <div id="dialog" style="display: none;">Select your mobile OS:</div>
+	
 	<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
 	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script type="text/javascript" src="socket.io-1.3.5.js"></script>
@@ -49,28 +51,7 @@
 	<script type="text/javascript" src="jquery.timepicker.min.js"></script>
 	<script src="dist/datepair.min.js"></script>
 	<script src="dist/jquery.datepair.min.js"></script>
-	<script>
-		// initialize input widgets first
-		$('#datePicker .time').timepicker({
-			'showDuration' : true,
-			'timeFormat' : 'g:ia'
-		});
-
-		$('#datePicker .date').datepicker({
-			'format' : 'yyyy-m-d',
-			'autoclose' : true
-		});
-
-		// initialize datepair
-		$('#datePicker').datepair();
 		
-		var datePickerDiv = document.getElementById('datePicker');
-        var datePickerDatepair = new Datepair(datePickerDiv, {
-            'defaultDateDelta': 1,
-            'defaultTimeDelta': 60
-        });
-
-	</script>
 </body>
 
 
