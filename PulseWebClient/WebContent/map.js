@@ -234,11 +234,11 @@ $(document)
 							onClick : function(control) {
 								control.state("timeMachine");
 //								changeSocketToTimeMachine();
-								var d = new Date();
-								var st = getStartTime(); //d.getTime();
-								var et = st + 300;
-								
-								sendTimeMachineRequest(current_layer, st, et);
+//								var d = new Date();
+//								var st = getStartTime(); //d.getTime();
+//								var et = st + 300;
+//								
+//								sendTimeMachineRequest(current_layer, st, et);
 								
 //								map.addControl(sliderControl);
 								removeAllMarkers();
@@ -710,10 +710,104 @@ $(document)
 						websocket.send('type=1,'+readingType+','+startTime+','+endTime);
 					}
 					
+					window.prepareTimeMachineReq = function(){
+						console.log("inside prepareTimeMachineReq");
+						
+						 var txtDate =document.getElementById('txtDate').value;
+						 var txtTime =document.getElementById('txtTime').value;
+						        if((txtDate.length>0) && (txtTime.length==0)) { 
+//						            $ ('Please do set a Time.');
+						        	showAlert("Please do set a Time.");
+						            return false;
+						        } else if((txtDate.length == 0) && (txtTime.length>0)) { 
+//						            $('#validateDate').text('Please do set a Dates.');
+						        	showAlert("Please do set a Date");
+						            return false;
+						        } else if((txtDate.length == 0) && (txtTime.length == 0)) { 
+//						            $('#validateDate').text('Please do set a Dates.');
+						        	showAlert("Please do set Date and Time.");
+						            return false;
+						        } else {
+						        	console.log("Date = "+txtDate);
+						        	console.log("Time = "+txtTime);
+						        	var dateAsObject =  $('#txtDate').datepicker("getDate"); 
+						        	var timeAsObject =  $('#txtTime').timepicker('getTime', new Date(0));
+						        	var millisec = dateAsObject.getTime() + timeAsObject.getTime()
+						        	var date = new Date(millisec);
+						        	console.log("dateAsObject = "+dateAsObject.getTime());
+						        	console.log("timeAsObject = "+timeAsObject.getTime());
+						        	console.log("date = "+date.getTime());
+//						        	Date d = new Date(txtDate);
+//						        	Date t = new Date(txtTime);
+						        	sendTimeMachineRequest(current_layer, date.getTime(), date.getTime() + (1800000));
+						        		
+						        }
+						        
+						        	
+						        	
+						        	
+//						        	if ((fromDate.length>0) && (new Date(fromDate)>new Date())) {
+//						            $('#validateDate').text('*from date should be less than current date');
+//						            excessListForm.fromDate.value="";
+//						            return false;
+//						        }else if ((toDate.length>0) && (new Date(toDate)>new Date())) {
+//						            $('#validateDate').text('*to Date should be less than current date');
+//						            excessListForm.toDate.value="";
+//						            return false;
+//						        }else {
+//						            var queryUrl = "/excessManagement.web/inbox.htm?excessFilteredData=true&fromLast=" + fromLast+"&fromDate="+fromDate+"&toDate="+toDate;
+//						            excessListForm.action =  queryUrl;
+//						            excessListForm.submit();
+//						        }
+						    
+
+
+					}
+					
+					
 					function getStartTime(){
 						return 
 					}
 
+					function showAlert(alertMsg) {
+						$("#alert").text(alertMsg);
+						$('#alert').dialog(
+								// ...which upon when it's opened...
+								{
+									open : function(event, ui) {
+										$(".ui-dialog-titlebar-close",
+												ui.dialog | ui).hide();
+									},
+									modal : true,
+									resizable : false,
+									closeOnEscape : true,
+									buttons : [ {
+										text : "Cancel",
+										"class" : 'button',
+										click : function() {
+											// Save code here
+											 $(this).dialog('close');
+
+										}
+									} ],
+									dialogClass: ' success-dialog'
+								});
+
+						// $("#downloadAppDialog").dialog({
+						// buttons: {
+						// 'Android': function() {
+						// //do something
+						// $(this).dialog('close');
+						// },
+						// 'iOS': function() {
+						// $(this).dialog('close');
+						// }
+						// }
+						// });
+						//						
+						// $( "#downloadAppDialog" ).dialog( "open" );
+					}
+					
 					function showDialog() {
 						$('#dialog').dialog(
 								// ...which upon when it's opened...
