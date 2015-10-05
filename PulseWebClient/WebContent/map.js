@@ -8,7 +8,7 @@ $(document)
 						zoomControl : false
 					}).setView([ 47.379977, 8.545751 ], 2);
 					var current_layer = -1;
-					var last_layer = -1;
+					var last_layer = 0;
 
 					var lightMarkers = new L.LayerGroup();
 					var noiseMarkers = new L.LayerGroup();
@@ -290,17 +290,18 @@ $(document)
 
 					mapNoLabels.addTo(map);
 //					legendLight.addTo(map);
+					
 
 					map.on('overlayadd', function(a) {
 						console.log("a.name "+a.name);
 						console.log("current_layer "+current_layer);
 						if (a.name == "Light" && current_layer != 0) {
-							current_layer = 0;
+							
 							resetToLightReadings();
 							last_layer = 0;
 						} else if (a.name == "Noise" && current_layer != 1) {
 
-							current_layer = 1;
+							
 							resetToNoiseReadings();
 							last_layer = 1;
 						} else if (a.name == "Messages" && current_layer != 2) {
@@ -318,6 +319,7 @@ $(document)
 						if (last_layer == 1)
 							legendSound.removeFrom(map);
 						
+						current_layer = 0;
 						lightMarkers.addLayer(markersCluster);
 						map.addLayer(lightMarkers);
 					
@@ -325,25 +327,28 @@ $(document)
 
 					function resetToNoiseReadings() {
 						removeAllMarkers();
-						noiseMarkers.addLayer(markersCluster);
-						map.addLayer(noiseMarkers);
 						if (current_layer != 1)
 							legendSound.addTo(map);
 						
 						if (last_layer == 0)
 							legendLight.removeFrom(map);
+						
 						current_layer = 1;
+
+						noiseMarkers.addLayer(markersCluster);
+						map.addLayer(noiseMarkers);
 					}
 
 					function resetToMessagesOverlay() {
 						removeAllMarkers();
-						msgMarkers.addLayer(markersCluster);
-						map.addLayer(msgMarkers);
+						
 						if (last_layer == 1)
 							legendSound.removeFrom(map);
 						else if (last_layer == 0)
 							legendLight.removeFrom(map);
 						current_layer = 2;
+						msgMarkers.addLayer(markersCluster);
+						map.addLayer(msgMarkers);
 
 					}
 
