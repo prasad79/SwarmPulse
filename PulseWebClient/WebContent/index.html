@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="style.css" />
 <link rel="stylesheet" href="leaflet.groupedlayercontrol.min.css" />
 <link rel="stylesheet" href="easy-button.css" />
-<link rel="stylesheet" href="jquery.timepicker.css" />
+<link rel="stylesheet" href="dist/jquery.timepicker.css" />
 
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
@@ -26,16 +26,17 @@
 </head>
 
 <body bgcolor="#000000">
-	<div id="map" style="background: #333d3f"></div>
-	<div id="datePicker">
+	<div id="map" style="background: #333d3f;"></div>
+
+		<div id="datePicker" style="background: #000000; z-index: 900 !important">
 		<input id="txtDate" type="text" style="background: #333d3f" /> 
 		<input id="txtTime" type="text" style="background: #333d3f" />
-		<input id="txtToTime" type="text" style="background: #333d3f" />
 		<button type="submit" name="button1" onclick="window.prepareTimeMachineReq()" style="background-color:#000000; color:#fff;">
 		Submit
 		</button>
-		
+
 	</div>
+	
 	<div id="dialog" style="display: none;">Select your mobile OS:</div>
 	<div id="alert" style="display: none;"></div>
 
@@ -51,14 +52,13 @@
 	<script type="text/javascript" src="leaflet.groupedlayercontrol.min.js"></script>
 	<script type="text/javascript" src="easy-button.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<script type="text/javascript" src="datepair.js"></script>
-	<script type="text/javascript" src="jquery.timepicker.min.js"></script>
-	<script src="dist/datepair.min.js"></script>
-	<script src="dist/jquery.datepair.min.js"></script>
+<script type="text/javascript" src="dist/jquery.datepair.min.js"></script>
+	<script type="text/javascript" src="dist/jquery.timepicker.min.js"></script>
+
 	<script type="text/javascript">
 	$(function () {
 		$("#txtDate").datepicker();
-	})
+	});
 	</script>
 	<script type="text/javascript">
 	$(function () {
@@ -70,9 +70,6 @@
   	  $('#txtToTime').text($(this).val());
 	});
 	</script>
-	
-
-	
 	
  
 </body>

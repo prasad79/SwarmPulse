@@ -9,7 +9,6 @@ $(document)
 					}).setView([ 47.379977, 8.545751 ], 2);
 					var current_layer = -1;
 					var last_layer = 0;
-
 					var lightMarkers = new L.LayerGroup();
 					var noiseMarkers = new L.LayerGroup();
 					var msgMarkers = new L.LayerGroup();
@@ -99,8 +98,6 @@ $(document)
 					var oms = new OverlappingMarkerSpiderfier(map);
 					var popup = new L.Popup();
 					oms.addListener('click', function(marker) {
-						// popup.setContent(marker.desc);
-						// popup.setLatLng(marker.getLatLng());
 						map.openPopup(popup);
 					});
 					oms.addListener('spiderfy', function(markers) {
@@ -187,7 +184,7 @@ $(document)
 							onClick : function(control) {
 //								control.state("connecting");
 								// window.open("./Pulse.apk");
-								shfowDialog();
+								showDialog();
 							}
 						} ],
 						position : "topright"
@@ -293,8 +290,8 @@ $(document)
 					
 
 					map.on('overlayadd', function(a) {
-						console.log("a.name "+a.name);
-						console.log("current_layer "+current_layer);
+//						console.log("a.name "+a.name);
+//						console.log("current_layer "+current_layer);
 						if (a.name == "Light" && current_layer != 0) {
 							
 							resetToLightReadings();
@@ -608,8 +605,8 @@ $(document)
 					L.control.liveupdate({
 						update_map : function() {
 							updateMarkerArray();
-							box.show('Counter :' + counter);
-							console.log('Counter :' + counter);
+//							box.show('Counter :' + counter);
+//							console.log('Counter :' + counter);
 						},
 						position : 'bottomright'
 					}).addTo(map).startUpdating();
@@ -822,7 +819,6 @@ $(document)
 					
 					function showDialog() {
 						$('#dialog').dialog(
-								// ...which upon when it's opened...
 								{
 									open : function(event, ui) {
 										$(".ui-dialog-titlebar-close",
@@ -918,4 +914,5 @@ $(document)
 					}
 					
 					resetToLightReadings();
+					$('#datePicker').hide(0);
 				});

@@ -507,3 +507,4 @@ opacity
     background: #ffffff;
 }
 
+.ui-dialog { z-index: 1000 !important ;}
