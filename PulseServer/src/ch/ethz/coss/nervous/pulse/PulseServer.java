@@ -17,7 +17,7 @@ public class PulseServer {
 
 	public static void main(String[] args) throws InterruptedException,
 			IOException {
-		WebSocketImpl.DEBUG = true;
+		WebSocketImpl.DEBUG = false;
 
 		// Load configuration from custom path or current directory
 		if (args.length > 0) {

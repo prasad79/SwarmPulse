@@ -65,10 +65,10 @@ public class PulseWebSocketServer extends WebSocketServer {
 		System.out.println("/************************************/");
 
 		if (message.contains("type=")) {
-			System.out.println("Type = "+(message.substring(message.indexOf("=") + 1, message.indexOf("=") + 2)));
 			int type = Integer
 					.parseInt(message.substring(message.indexOf("=") + 1,message.indexOf("=") + 2));
 			
+			System.out.println("Type = "+type);
 			
 			switch (type) {
 			case 0:
@@ -78,16 +78,24 @@ public class PulseWebSocketServer extends WebSocketServer {
 				
 				break;
 			case 1:
-				String request = message.substring(message.indexOf(",") + 1);
-				if(request.length() > 0){
+				System.out.println("Switched conn to Time Machine.");
+				System.out.println("hTimeMachineConnectionList size = "+prhServer.hTimeMachineConnectionList.size());
+				
+				String request = message.substring(message.indexOf("=")+1);
+				System.out.println("Request -- "+request);
+				if(request.length() > 1){
 					PulseTimeMachineRequest pulseTimeMachineRequest = new PulseTimeMachineRequest(request, conn);
 					prhServer.addToRequestList(pulseTimeMachineRequest);
+					prhServer.hTimeMachineConnectionList.put(conn, pulseTimeMachineRequest);
 					Thread reqServerThread = new Thread(prhServer);
 					reqServerThread.start();
+			
+				}else if(request.length() == 1) {
+					prhServer.hTimeMachineConnectionList.put(conn, new PulseTimeMachineRequest(true));
+					
+				}
 				
-	
-				}else 
-					prhServer.hTimeMachineConnectionList.put(conn, null);
+				System.out.println("hTimeMachineConnectionList size after adding = "+prhServer.hTimeMachineConnectionList.size());
 				
 				System.out.println("TYPE=1");
 				break;
@@ -119,7 +127,9 @@ public class PulseWebSocketServer extends WebSocketServer {
 	 *             When socket related I/O errors occur.
 	 */
 	public void sendToAll(String text) {
-//		System.out.println("sendToAll Text - " + text);
+		System.out.println("sendToAll Text - " + text);
+		System.out.println("prhServer.hTimeMachineConnectionList size "+prhServer.hTimeMachineConnectionList.size());
+			
 		Collection<WebSocket> con = connections();
 		synchronized (con) {
 			for (WebSocket c : con) {
@@ -147,9 +157,8 @@ public class PulseWebSocketServer extends WebSocketServer {
 	 */
 	public void sendToSocket(WebSocket conn, long requestID, String text, boolean isComplete) {
 		System.out.println("inside sendToSocket " );
-System.out.println("prhServer.hTimeMachineConnectionList size "+prhServer.hTimeMachineConnectionList.size());
+        System.out.println("prhServer.hTimeMachineConnectionList size "+prhServer.hTimeMachineConnectionList.size());
 		if (prhServer.hTimeMachineConnectionList.containsKey(conn)) {
-//			System.out.println(" sendToSocket Text - " + text);
 
 			PulseTimeMachineRequest ptmRequest = prhServer.hTimeMachineConnectionList.get(conn);
 			if(ptmRequest.requestID == requestID)

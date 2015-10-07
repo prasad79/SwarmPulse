@@ -59,7 +59,7 @@ $(document)
 					// feature properties passed
 					info.update = function(props) {
 						this._div.style.fontSize = "80%"
-						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\' > <p width=\'20%\' align: \'left\'  style=\'color: #FFA500; display:inline-block; vertical-align: -7px;\'> <i>powered by NervousNet</p><br>';
+						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\' > <p width=\'20%\' align: \'left\'  style=\'color: #FFA500; display:inline-block; vertical-align: -7px;\'> <i>mapping the world together</p><br>';
 
 					};
 
@@ -230,7 +230,7 @@ $(document)
 							title : 'Real Time',
 							onClick : function(control) {
 								control.state("timeMachine");
-//								changeSocketToTimeMachine();
+								changeSocketToTimeMachine();
 //								var d = new Date();
 //								var st = getStartTime(); //d.getTime();
 //								var et = st + 300;
@@ -615,7 +615,7 @@ $(document)
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
 							var d = new Date();
-							if (d.getTime() - marker.options.startTime >= 3000) {
+							if (d.getTime() - marker.options.startTime >= 30000) {
 
 								markersCluster.removeLayer(marker);
 

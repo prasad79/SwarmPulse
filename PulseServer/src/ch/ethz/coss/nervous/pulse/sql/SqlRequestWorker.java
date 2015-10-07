@@ -47,6 +47,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 					ResultSet rs = datastmt.executeQuery();
 					featureCollection = new JsonObject();
 					features = new JsonArray();
+					System.out.println("SQL query result size = "+rs.getFetchSize());
 					while (rs.next()) {
 					
 						String lat = rs.getString("lat");
@@ -83,7 +84,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 						
 						features.add(feature);
 						
-						if((features.getAsJsonArray()).size() >= 1000){
+						if((features.getAsJsonArray()).size() >= 60000){
 							featureCollection.add("features", features);
 							pSocketServer.sendToSocket(ptmRequest.webSocket, ptmRequest.requestID, featureCollection.toString(), false);
 							featureCollection = new JsonObject();

@@ -9,7 +9,12 @@ public class PulseTimeMachineRequest {
 	public long startTime = 0;
 	public long endTime = 0;
 	public WebSocket webSocket = null;
-
+	public boolean isNull;
+	
+	public PulseTimeMachineRequest(boolean isNull) {
+		this.isNull = isNull;
+	}
+			
 	public PulseTimeMachineRequest(long requestID, int readingType, long startTime,
 			long endTime, WebSocket webSocket) {
 		this.requestID = ID_COUNTER++;
@@ -24,9 +29,9 @@ public class PulseTimeMachineRequest {
 		System.out.println("String request = "+request);
 		String [] tokens = request.split(",");
 		
-		this.readingType = Integer.parseInt(tokens[0]);
-		this.startTime = Long.parseLong(tokens[1]);
-		this.endTime = Long.parseLong(tokens[2]);
+		this.readingType = Integer.parseInt(tokens[1]);
+		this.startTime = Long.parseLong(tokens[2]);
+		this.endTime = Long.parseLong(tokens[3]);
 		this.webSocket = webSocket;
 		
 		print();

@@ -58,9 +58,12 @@ public class PulseRequestHandlingServer implements Runnable {
 			while (iterator.hasNext()) {
 				try {
 					PulseTimeMachineRequest ptmRequest = (PulseTimeMachineRequest)iterator.next();
-					hTimeMachineConnectionList.put(ptmRequest.webSocket, ptmRequest);
-					this.threadPool.execute(factory.createWorker(
-							pWebSocketServer, ptmRequest));
+				    if(!ptmRequest.isNull) {
+//				    	hTimeMachineConnectionList.put(ptmRequest.webSocket, ptmRequest);
+						this.threadPool.execute(factory.createWorker(
+								pWebSocketServer, ptmRequest));
+				    }
+					
 					
 				} catch (Exception e) {
 					e.printStackTrace();
