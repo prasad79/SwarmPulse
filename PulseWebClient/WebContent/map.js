@@ -59,7 +59,7 @@ $(document)
 					// feature properties passed
 					info.update = function(props) {
 						this._div.style.fontSize = "80%"
-						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\' > <p width=\'20%\' align: \'left\'  style=\'color: #FFA500; display:inline-block; vertical-align: -7px;\'> <i>mapping the world together</p><br>';
+						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\' > <p width=\'20%\' align: \'left\'  style=\'color: #FFA500; font-family: verdana; display:inline-block; vertical-align: -7px;\'> <i>mapping the world together....</p><br>';
 
 					};
 
@@ -556,7 +556,7 @@ $(document)
 							markerArray.push(msgMarker);
 							markersCluster.addLayer(msgMarker);
 							oms.addMarker(msgMarker);
-							// msgMarker.openPopup();
+							//msgMarker.openPopup();
 						}
 					}
 					;
@@ -600,7 +600,7 @@ $(document)
 					// })
 					//					
 					// map.addControl(new tickerBox());
-					var box = L.control.messagebox().addTo(map);
+//					var box = L.control.messagebox().addTo(map);
 
 					L.control.liveupdate({
 						update_map : function() {
@@ -608,14 +608,15 @@ $(document)
 //							box.show('Counter :' + counter);
 //							console.log('Counter :' + counter);
 						},
-						position : 'bottomright'
+						position : 'bottomright',
+						interval : 30000
 					}).addTo(map).startUpdating();
 
 					function updateMarkerArray() {
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
 							var d = new Date();
-							if (d.getTime() - marker.options.startTime >= 30000) {
+							if (d.getTime() - marker.options.startTime >= 60000) {
 
 								markersCluster.removeLayer(marker);
 
