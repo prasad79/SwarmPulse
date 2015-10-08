@@ -3,12 +3,15 @@ $(document)
 				function() {
 					var websocket;
 					var counter = 0;
+					var current_state = 0; //0 - Real-Time, 1 - Time-Machine
+					var current_layer = -1;
+					var last_layer = 0;
+					
+					
 					var data = [];
 					var map = L.map('map', {
 						zoomControl : false
 					}).setView([ 47.379977, 8.545751 ], 2);
-					var current_layer = -1;
-					var last_layer = 0;
 					var lightMarkers = new L.LayerGroup();
 					var noiseMarkers = new L.LayerGroup();
 					var msgMarkers = new L.LayerGroup();
@@ -227,22 +230,12 @@ $(document)
 						states : [ {
 							stateName : 'realTime',
 							icon : 'fa-clock-o fa-lg red',
-							title : 'Real Time',
+							title : 'Real-Time',
 							onClick : function(control) {
 								control.state("timeMachine");
 								changeSocketToTimeMachine();
-//								var d = new Date();
-//								var st = getStartTime(); //d.getTime();
-//								var et = st + 300;
-//								
-//								sendTimeMachineRequest(current_layer, st, et);
 								
-//								map.addControl(sliderControl);
-								removeAllMarkers();
-								lightMarkers.addLayer(markersCluster);
-								map.addLayer(lightMarkers);
-//								document.getElementById('footer').appendChild(controlDiv);
-//								sliderControl.startSlider();
+								resetBeforeSendingTimeMachineRequest();
 								
 								$('#datePicker').show(0);
 								
@@ -250,7 +243,7 @@ $(document)
 						}, {
 							stateName : 'timeMachine',
 							icon : 'fa-history fa-lg',
-							title : 'Time Machine',
+							title : 'Time-Machine',
 							onClick : function(control) {
 								control.state("realTime");
 //								doConnect();
@@ -308,6 +301,10 @@ $(document)
 							last_layer = 2;
 						}
 					});
+					
+//					function resetForTimeMachine(){
+//						if(curr)
+//					}
 
 					function resetToLightReadings() {
 						removeAllMarkers();
@@ -604,7 +601,8 @@ $(document)
 
 					L.control.liveupdate({
 						update_map : function() {
-							updateMarkerArray();
+							if(current_state == 0)
+								updateMarkerArray();
 //							box.show('Counter :' + counter);
 //							console.log('Counter :' + counter);
 						},
@@ -710,14 +708,33 @@ $(document)
 					
 					
 					function changeSocketToTimeMachine(){
+						current_state = 1;
 						websocket.send('type=1');
 					}
 					function changeSocketToRealTime(){
+						current_state = 0;
 						websocket.send('type=0');
 					}
 					
 					function sendTimeMachineRequest(readingType, startTime, endTime){
+						resetBeforeSendingTimeMachineRequest();
 						websocket.send('type=1,'+readingType+','+startTime+','+endTime);
+					}
+					
+					function resetBeforeSendingTimeMachineRequest() {
+						removeAllMarkers();
+						if(current_layer == 0){
+
+							lightMarkers.addLayer(markersCluster);
+							map.addLayer(lightMarkers)	
+						} else if(current_layer == 1){
+
+							noiseMarkers.addLayer(markersCluster);
+							map.addLayer(noiseMarkers)	
+						} else if(current_layer == 2){
+							msgMarkers.addLayer(markersCluster);
+							map.addLayer(noiseMarkers);
+						}
 					}
 					
 					window.prepareTimeMachineReq = function(){
@@ -749,7 +766,7 @@ $(document)
 						        	console.log("date = "+date.getTime());
 //						        	Date d = new Date(txtDate);
 //						        	Date t = new Date(txtTime);
-						        	sendTimeMachineRequest(current_layer, date.getTime(), date.getTime() + (300000));
+						        	sendTimeMachineRequest(current_layer, date.getTime(), date.getTime() + (600000));
 						        		
 						        }
 						        
