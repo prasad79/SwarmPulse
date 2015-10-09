@@ -36,16 +36,7 @@ $(document)
 										maxZoom : 22
 									});
 
-					// var mapNoLabels = L
-					// .tileLayer(
-					// 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png',
-					// {
-					// attribution : '&copy; <a
-					// href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
-					// contributors, &copy; <a
-					// href="http://cartodb.com/attributions">CartoDB</a>',
-					// maxZoom : 22
-					// });
+	
 
 					/** ****Pulse Logo****** */
 					var info = L.control({
@@ -62,7 +53,7 @@ $(document)
 					// feature properties passed
 					info.update = function(props) {
 						this._div.style.fontSize = "80%"
-						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\' > <p width=\'20%\' align: \'left\'  style=\'color: #FFA500; font-family: verdana; display:inline-block; vertical-align: -7px;\'> <i>mapping the world together....</p><br>';
+						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\'> <p width=\'20%\' align: \'left\'  style=\'color: #FFA500; font-family: verdana; display:inline-block; vertical-align: -7px;\'><i>mapping the world together</p><br>';
 
 					};
 
@@ -265,21 +256,11 @@ $(document)
 					
 					/** *************************** */
 					
-					
-					/**************Slider Control*********************/
-//					var DatePickerControl = L.control.sliderControl({layer: lightMarkers, 
-//			            timeAttribute: "epoch",
-//			            isEpoch: true,
-//			            range: true});
-//					
-//					var controlDiv = DatePickerControl.onAdd(map);		
-					/*************************************************//** ***************** */
 
 				
 					/************ */
 
 					mapNoLabels.addTo(map);
-//					legendLight.addTo(map);
 					
 
 					map.on('overlayadd', function(a) {
@@ -301,10 +282,6 @@ $(document)
 							last_layer = 2;
 						}
 					});
-					
-//					function resetForTimeMachine(){
-//						if(curr)
-//					}
 
 					function resetToLightReadings() {
 						removeAllMarkers();
@@ -489,15 +466,6 @@ $(document)
 								lightMarker.closePopup();
 							});
 
-							// markersCluster
-							// .bindPopup(
-							// '<p style="color:black" ><strong> MARKER
-							// CLUSTER</strong> db',
-							// {
-							// closeButton : false,
-							// offset : L.point(0, -5)
-							// });
-
 							markerArray.push(lightMarker);
 							// lightMarker.openPopup();
 							markersCluster.addLayer(lightMarker);
@@ -546,9 +514,9 @@ $(document)
 							msgMarker.on('mouseover', function() {
 								msgMarker.openPopup();
 							});
-							msgMarker.on('mouseout', function() {
-								msgMarker.closePopup();
-							});
+//							msgMarker.on('mouseout', function() {
+//								msgMarker.closePopup();
+//							});
 
 							markerArray.push(msgMarker);
 							markersCluster.addLayer(msgMarker);
@@ -584,21 +552,6 @@ $(document)
 
 					/** ****Update****** */
 
-					// var tickerBox = L.Control.extend({
-					// options: {
-					// position: 'bottomleft'
-					// },
-					//
-					// onAdd: function (map) {
-					// var div = L.DomUtil.create('div', 'ticker');
-					//
-					// return div;
-					// }
-					// })
-					//					
-					// map.addControl(new tickerBox());
-//					var box = L.control.messagebox().addTo(map);
-
 					L.control.liveupdate({
 						update_map : function() {
 							if(current_state == 0)
@@ -625,7 +578,6 @@ $(document)
 					}
 
 					/** *******Websocket************* */
-
 					function doConnect() {
 						if (window.MozWebSocket) {
 							console
@@ -723,12 +675,11 @@ $(document)
 					
 					function resetBeforeSendingTimeMachineRequest() {
 						removeAllMarkers();
+						
 						if(current_layer == 0){
-
 							lightMarkers.addLayer(markersCluster);
 							map.addLayer(lightMarkers)	
 						} else if(current_layer == 1){
-
 							noiseMarkers.addLayer(markersCluster);
 							map.addLayer(noiseMarkers)	
 						} else if(current_layer == 2){
@@ -738,21 +689,18 @@ $(document)
 					}
 					
 					window.prepareTimeMachineReq = function(){
-						console.log("inside prepareTimeMachineReq");
+//						console.log("inside prepareTimeMachineReq");
 						
 						 var txtDate =document.getElementById('txtDate').value;
 						 var txtTime =document.getElementById('txtTime').value;
 						        if((txtDate.length>0) && (txtTime.length==0)) { 
-//						            $ ('Please do set a Time.');
 						        	showAlert("Please do set a Time.");
 						            return false;
 						        } else if((txtDate.length == 0) && (txtTime.length>0)) { 
-//						            $('#validateDate').text('Please do set a Dates.');
 						        	showAlert("Please do set a Date");
 						            return false;
 						        } else if((txtDate.length == 0) && (txtTime.length == 0)) { 
-//						            $('#validateDate').text('Please do set a Dates.');
-						        	showAlert("Please do set Date and Time.");
+						        	showAlert("Please do set the Date and Time.");
 						            return false;
 						        } else {
 						        	console.log("Date = "+txtDate);
@@ -764,31 +712,10 @@ $(document)
 						        	console.log("dateAsObject = "+dateAsObject.getTime());
 						        	console.log("timeAsObject = "+timeAsObject.getTime());
 						        	console.log("date = "+date.getTime());
-//						        	Date d = new Date(txtDate);
-//						        	Date t = new Date(txtTime);
 						        	sendTimeMachineRequest(current_layer, date.getTime(), date.getTime() + (600000));
 						        		
 						        }
-						        
-						        	
-						        	
-						        	
-//						        	if ((fromDate.length>0) && (new Date(fromDate)>new Date())) {
-//						            $('#validateDate').text('*from date should be less than current date');
-//						            excessListForm.fromDate.value="";
-//						            return false;
-//						        }else if ((toDate.length>0) && (new Date(toDate)>new Date())) {
-//						            $('#validateDate').text('*to Date should be less than current date');
-//						            excessListForm.toDate.value="";
-//						            return false;
-//						        }else {
-//						            var queryUrl = "/excessManagement.web/inbox.htm?excessFilteredData=true&fromLast=" + fromLast+"&fromDate="+fromDate+"&toDate="+toDate;
-//						            excessListForm.action =  queryUrl;
-//						            excessListForm.submit();
-//						        }
-						    
-
-
+					
 					}
 					
 					
@@ -820,19 +747,6 @@ $(document)
 									dialogClass: ' success-dialog'
 								});
 
-						// $("#downloadAppDialog").dialog({
-						// buttons: {
-						// 'Android': function() {
-						// //do something
-						// $(this).dialog('close');
-						// },
-						// 'iOS': function() {
-						// $(this).dialog('close');
-						// }
-						// }
-						// });
-						//						
-						// $( "#downloadAppDialog" ).dialog( "open" );
 					}
 					
 					function showDialog() {
@@ -874,19 +788,6 @@ $(document)
 									dialogClass: ' success-dialog'
 								});
 
-						// $("#downloadAppDialog").dialog({
-						// buttons: {
-						// 'Android': function() {
-						// //do something
-						// $(this).dialog('close');
-						// },
-						// 'iOS': function() {
-						// $(this).dialog('close');
-						// }
-						// }
-						// });
-						//						
-						// $( "#downloadAppDialog" ).dialog( "open" );
 					}
 					
 					function parseFeature(feature){

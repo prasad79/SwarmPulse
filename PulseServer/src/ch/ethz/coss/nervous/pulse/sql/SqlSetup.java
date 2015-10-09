@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.ethz.coss.nervous.pulse.Configuration;
+import ch.ethz.coss.nervous.pulse.PulseConstants;
 import ch.ethz.coss.nervous.pulse.utils.Log;
 
 public class SqlSetup {
@@ -48,12 +49,16 @@ public class SqlSetup {
 	}
 
 	public PreparedStatement getSensorInsertStatement(Connection con,
-			long sensorId) throws SQLException {
-		List<Integer> types = elementsHash.get(sensorId);
+			int readingType) throws SQLException {
+		System.out.println("inside getSensorInsertStatement -  "+readingType);
+		System.out.println("elementsHash -  "+elementsHash.size());
+		
+		
+		List<Integer> types = elementsHash.get((long)readingType);
 		if (types != null) {
 			StringBuilder sb = new StringBuilder();
-			sb.append("INSERT INTO `ELEMENT_" + Long.toHexString(sensorId)
-					+ "` VALUES (DEFAULT,?,");
+			sb.append("INSERT INTO `ELEMENT_" + PulseConstants.getLabel(readingType)
+					+ "` VALUES (DEFAULT,?,?,");
 			for (int i = 0; i < types.size() - 1; i++) {
 				sb.append("?,");
 			}
@@ -61,10 +66,14 @@ public class SqlSetup {
 				sb.append("?");
 			}
 			sb.append(");");
+			System.out.println("inside after getSensorInsertStatement");
 			return con.prepareStatement(sb.toString());
 		} else {
+			System.out.println("inside getSensorInsertStatement returning null");
 			return null;
 		}
+		
+		
 	}
 	
 	
@@ -76,7 +85,7 @@ public class SqlSetup {
 	
 	public PreparedStatement getSensorValuesFetchStatement(Connection con, int readingType, long startTime, long endTime) throws SQLException {
 			StringBuilder sb = new StringBuilder();
-			sb.append("SELECT * FROM `ELEMENT_" + readingType 
+			sb.append("SELECT * FROM `ELEMENT_" + PulseConstants.getLabel(readingType) 
 					+ "` WHERE RecordTime BETWEEN "+startTime+" AND "+endTime+";");
 			
 			System.out.println(" ---- ---- "+sb.toString());
@@ -99,10 +108,10 @@ public class SqlSetup {
 						+ element.getElementID());
 
 			sb.append("CREATE TABLE IF NOT EXISTS `" + config.getSqlDatabase()
-					+ "`.`ELEMENT_" + Long.toHexString(element.getElementID())
+					+ "`.`ELEMENT_" + PulseConstants.getLabel(element.getElementID().intValue())
 					+ "` (\n");
 			sb.append("`RecordID` INT NOT NULL UNIQUE AUTO_INCREMENT,\n");
-			// sb.append("`UUID` BINARY(16) NOT NULL,\n");
+			sb.append("`UUID` VARCHAR(38) NOT NULL,\n");
 			sb.append("`RecordTime` BIGINT UNSIGNED NOT NULL,\n");
 			for (PulseElementAttribute attribute : element.getAttributes()) {
 				types.add(attribute.getType());
