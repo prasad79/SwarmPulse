@@ -1,19 +1,28 @@
 package ch.ethz.coss.nervous.pulse;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import ch.ethz.coss.nervous.pulse.model.Visual;
 import ch.ethz.coss.nervous.pulse.sensor.NoiseSensor;
+import java.util.UUID;
 
 public class Application extends android.app.Application {
-
+	public static final String PREFS_NAME = "PulsePrefs";
 	public static SynchWriter synchWriter;
 	public static SensorService sensorService;
 	static SensorManager sensorManager;
-
+	public static UUID uuid = UUID.randomUUID();
+	private File dir;
+	
 	public Application() {
 	}
 
@@ -21,7 +30,26 @@ public class Application extends android.app.Application {
 	public void onCreate() {
 
 		super.onCreate();
-
+		
+		
+		 // Restore preferences
+	       SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+	       long msb = settings.getLong("uuid_msb", 0);
+	       long lsb = settings.getLong("uuid_msb", 0);
+	       
+	       if(msb != 0 && lsb != 0){
+	    		uuid = new UUID(msb, lsb);
+	    		System.out.println("MSB and LSB present");
+	       }else {
+	    	   System.out.println("MSB and LSB not present");
+	    	   uuid = UUID.randomUUID();
+	    	   SharedPreferences.Editor editor = settings.edit();
+	    	   editor.putLong("uuid_msb", uuid.getMostSignificantBits());
+	    	   editor.putLong("uuid_lsb", uuid.getLeastSignificantBits());
+	    	   editor.commit();
+	       }
+	
+		
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread thread, Throwable e) {
@@ -83,5 +111,86 @@ public class Application extends android.app.Application {
 	public static void pushReadingToServer(Visual reading) {
 		synchWriter.send(reading);
 	}
+	
+	
+	private synchronized void storeVMConfig() {
+		FileOutputStream fos = null;
+		DataOutputStream dos = null;
+		System.out.println("11");
+		try {
+			File file = new File(dir, "PULSE/config");
+			if (!file.exists()) {
+				System.out.println("22");
+				file.createNewFile();
+			}
+			fos = new FileOutputStream(file);
+			System.out.println("33");
+			dos = new DataOutputStream(fos);
+			System.out.println("44");
+			dos.writeLong(uuid.getMostSignificantBits());
+			System.out.println("55");
+			dos.writeLong(uuid.getLeastSignificantBits());
+			dos.flush();
+			dos.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			// Cleanup
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException ex) {
+				}
+			}
+			if (dos != null) {
+				try {
+					dos.close();
+				} catch (IOException ex) {
+				}
+			}
+		}
+	}
+	
+	private synchronized boolean loadVMConfig() {
+		boolean success = true;
+		FileInputStream fis = null;
+		DataInputStream dis = null;
+		try {
+			System.out.println("1");
+			File file = new File(dir, "PULSE/config");
+			System.out.println("2");
+			if (!file.exists()) {
+				System.out.println("3");
+				return false;
+			}
+			System.out.println("4");
+			fis = new FileInputStream(file);
+			System.out.println("5");
+			dis = new DataInputStream(fis);
+			System.out.println("6");
+			uuid = new UUID(dis.readLong(), dis.readLong());
+			System.out.println("7");
+			dis.close();
+		} catch (IOException e) {
+			success = false;
+		} finally {
+			// Cleanup
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException ex) {
+				}
+			}
+			if (dis != null) {
+				try {
+					dis.close();
+				} catch (IOException ex) {
+				}
+			}
+		}
+		return success;
+	}
+	
+
 
 }

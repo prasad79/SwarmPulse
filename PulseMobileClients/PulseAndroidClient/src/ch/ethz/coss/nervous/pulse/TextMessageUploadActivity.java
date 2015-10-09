@@ -35,7 +35,7 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 					public void onClick(View v) {
 						String message = (msgTV.getText()).toString();
 						if (message.length() >= 2) {
-							TextVisual txtMsg = new TextVisual(message, System
+							TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message, System
 									.currentTimeMillis(), new VisualLocation(
 									GPSLocation.getInstance(
 											TextMessageUploadActivity.this)

@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pulse - mapping the world together....</title>
+<title>Pulse - mapping the world together</title>
 <link rel="stylesheet" href="leaflet.css" />
 <link href='http://fonts.googleapis.com/css?family=Dosis:300'
 	rel='stylesheet' type='text/css' />
@@ -23,19 +23,22 @@
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
+	<link type="text/css" href="jquery.simple-dtpicker.css" rel="stylesheet" />
 </head>
 
 <body bgcolor="#000000">
 	<div id="map" style="background: #333d3f;"></div>
-		<div id="datePicker" style="background: #000000; z-index: 900 !important">
+	<div id="datePicker" style="background: #000000; z-index: 900 !important">
 		<input id="txtDate" type="text" style="background: #333d3f" /> 
 		<input id="txtTime" type="text" style="background: #333d3f" />
 		<button type="submit" name="button1" onclick="window.prepareTimeMachineReq()" style="background-color:#000000; color:#fff;">
 		Fetch
 		</button>
+		<input type="text" id="date2" value="2012/01/01 10:00" style="background: #333d3fs">
 
-	</div>
 	
+	</div>
+
 	<div id="dialog" style="display: none;">Select your mobile OS:</div>
 	<div id="alert" style="display: none;"></div>
 
@@ -51,26 +54,29 @@
 	<script type="text/javascript" src="leaflet.groupedlayercontrol.min.js"></script>
 	<script type="text/javascript" src="easy-button.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="dist/jquery.datepair.min.js"></script>
-	<script type="text/javascript" src="dist/jquery.timepicker.min.js"></script>
+	<script type="text/javascript" src="dist/jquery.datepair.min.js"></script>
+	<script type="text/javascript" src="jquery.timepicker.min.js"></script>
 
+	
+	
+	<script type="text/javascript" src="jquery.simple-dtpicker.js"></script>
 	<script type="text/javascript">
-	$(function () {
-		$("#txtDate").datepicker();
-	});
-	</script>
-	<script type="text/javascript">
-	$(function () {
-	$('#txtTime').timepicker();
-	});
-	</script>
-	<script type="text/javascript">
-	$('#txtTime').on('changeTime', function() {
-  	  $('#txtToTime').text($(this).val());
-	});
+		
+		$(document).on('click', "#date2", 
+			    function(){ 
+			        $.getScript("jquery.simple-dtpicker.js", function() { 
+			            setTimeout( function() { 
+			                $("#date2").appendDtpicker(
+			                    {"dateFormat": "YYYY-MM-DD h:m",
+			                    "minuteInterval": 1,
+			                    "closeOnSelected": true,
+			                    "calendarMouseScroll": false
+			                }); 
+			            }, 100);
+			        });
+			});
 	</script>
 	
- 
 </body>
 
 

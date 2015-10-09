@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import ch.ethz.coss.nervous.pulse.PulseConstants;
 import ch.ethz.coss.nervous.pulse.PulseWebSocketServer;
 import ch.ethz.coss.nervous.pulse.model.LightReading;
 import ch.ethz.coss.nervous.pulse.model.NoiseReading;
@@ -92,34 +93,32 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					featureCollection.add("features", features);
 					/***** SQL insert ********/
 					// Insert data
+					System.out.println("before uploading SQL - reading uuid = "+reading.uuid);
 					PreparedStatement datastmt = sqlse
-							.getSensorInsertStatement(connection,
-									reading.type == 0 ? 4
-											: (reading.type == 1 ? 8 : 10));
+							.getSensorInsertStatement(connection,reading.type);
 					if (datastmt != null) {
 						System.out.println("datastmt - " + datastmt.toString());
 						List<Integer> types = sqlse
-								.getArgumentExpectation(reading.type == 0 ? 4
-										: (reading.type == 1 ? 8 : 10));
-
+								.getArgumentExpectation((long)reading.type);
+						datastmt.setString(1, reading.uuid);
 						if (reading.type == 0) {
-							datastmt.setLong(1, reading.timestamp);
-							datastmt.setDouble(2,
+							datastmt.setLong(2, reading.timestamp);
+							datastmt.setDouble(3,
 									((LightReading) reading).lightVal);
-							datastmt.setDouble(3, reading.location.latnLong[0]);
-							datastmt.setDouble(4, reading.location.latnLong[1]);
+							datastmt.setDouble(4, reading.location.latnLong[0]);
+							datastmt.setDouble(5, reading.location.latnLong[1]);
 						} else if (reading.type == 1) {
-							datastmt.setLong(1, reading.timestamp);
-							datastmt.setDouble(2,
+							datastmt.setLong(2, reading.timestamp);
+							datastmt.setDouble(3,
 									((NoiseReading) reading).soundVal);
-							datastmt.setDouble(3, reading.location.latnLong[0]);
-							datastmt.setDouble(4, reading.location.latnLong[1]);
+							datastmt.setDouble(4, reading.location.latnLong[0]);
+							datastmt.setDouble(5, reading.location.latnLong[1]);
 						} else if (reading.type == 2) {
-							datastmt.setLong(1, reading.timestamp);
-							datastmt.setString(2,
+							datastmt.setLong(2, reading.timestamp);
+							datastmt.setString(3,
 									((TextVisual) reading).textMsg);
-							datastmt.setDouble(3, reading.location.latnLong[0]);
-							datastmt.setDouble(4, reading.location.latnLong[1]);
+							datastmt.setDouble(4, reading.location.latnLong[0]);
+							datastmt.setDouble(5, reading.location.latnLong[1]);
 						}
 						System.out.println("datastmt after populating - "
 								+ datastmt.toString());

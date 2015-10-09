@@ -60,7 +60,7 @@ public class SensorService extends Service implements SensorEventListener,
 		this.event = event;
 		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-			Visual reading = new AccReading(event.values[0], event.values[1],
+			Visual reading = new AccReading(Application.uuid.toString(),event.values[0], event.values[1],
 					event.values[2], System.currentTimeMillis(),
 					new VisualLocation(GPSLocation.getInstance(context)
 							.getLocation()));
@@ -79,7 +79,7 @@ public class SensorService extends Service implements SensorEventListener,
 //			for (int i = 0; i < 50; i++){
 //				new Thread() {
 //					public void run() {
-						Visual reading = new LightReading(event.values[0],
+						Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
 								System.currentTimeMillis(), new VisualLocation(
 										GPSLocation.getInstance(context)
 												.getLocation()));
@@ -122,7 +122,7 @@ public class SensorService extends Service implements SensorEventListener,
 	@Override
 	public void noiseSensorDataReady(final long recordTime, float rms,
 			final float spl, float[] bands) {
-					noiseReading = new NoiseReading(spl, recordTime,
+					noiseReading = new NoiseReading(Application.uuid.toString(),spl, recordTime,
 							new VisualLocation(GPSLocation.getInstance(context)
 									.getLocation()));
 					Log.d(DEBUG_TAG,
@@ -146,7 +146,7 @@ public class SensorService extends Service implements SensorEventListener,
 
 			if (event != null) {
 				if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-					Visual reading = new AccReading(event.values[0],
+					Visual reading = new AccReading(Application.uuid.toString(),event.values[0],
 							event.values[1], event.values[2],
 							System.currentTimeMillis(), new VisualLocation(
 									GPSLocation.getInstance(context)
@@ -154,7 +154,7 @@ public class SensorService extends Service implements SensorEventListener,
 					// out.send(reading);
 					Log.d(DEBUG_TAG, reading.toString());
 				} else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-					LightReading reading = new LightReading(event.values[0],
+					LightReading reading = new LightReading(Application.uuid.toString(),event.values[0],
 							System.currentTimeMillis(), new VisualLocation(
 									GPSLocation.getInstance(context)
 											.getLocation()));
