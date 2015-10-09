@@ -39,9 +39,9 @@ public class Application extends android.app.Application {
 	       
 	       if(msb != 0 && lsb != 0){
 	    		uuid = new UUID(msb, lsb);
-	    		System.out.println("MSB and LSB present");
+	    		//system.out.println("MSB and LSB present");
 	       }else {
-	    	   System.out.println("MSB and LSB not present");
+	    	   //system.out.println("MSB and LSB not present");
 	    	   uuid = UUID.randomUUID();
 	    	   SharedPreferences.Editor editor = settings.edit();
 	    	   editor.putLong("uuid_msb", uuid.getMostSignificantBits());
@@ -87,7 +87,7 @@ public class Application extends android.app.Application {
 					SensorManager.SENSOR_DELAY_GAME);
 		} else {
 			NoiseSensor sensorNoise = new NoiseSensor();
-			System.out.println("Sensor Noise activated");
+			//system.out.println("Sensor Noise activated");
 			sensorNoise.clearListeners();
 			sensorNoise.addListener(Application.sensorService);
 			Application.sensorService.initTimer();
@@ -116,19 +116,19 @@ public class Application extends android.app.Application {
 	private synchronized void storeVMConfig() {
 		FileOutputStream fos = null;
 		DataOutputStream dos = null;
-		System.out.println("11");
+		//system.out.println("11");
 		try {
 			File file = new File(dir, "PULSE/config");
 			if (!file.exists()) {
-				System.out.println("22");
+				//system.out.println("22");
 				file.createNewFile();
 			}
 			fos = new FileOutputStream(file);
-			System.out.println("33");
+			//system.out.println("33");
 			dos = new DataOutputStream(fos);
-			System.out.println("44");
+			//system.out.println("44");
 			dos.writeLong(uuid.getMostSignificantBits());
-			System.out.println("55");
+			//system.out.println("55");
 			dos.writeLong(uuid.getLeastSignificantBits());
 			dos.flush();
 			dos.close();
@@ -156,20 +156,20 @@ public class Application extends android.app.Application {
 		FileInputStream fis = null;
 		DataInputStream dis = null;
 		try {
-			System.out.println("1");
+			//system.out.println("1");
 			File file = new File(dir, "PULSE/config");
-			System.out.println("2");
+			//system.out.println("2");
 			if (!file.exists()) {
-				System.out.println("3");
+				//system.out.println("3");
 				return false;
 			}
-			System.out.println("4");
+			//system.out.println("4");
 			fis = new FileInputStream(file);
-			System.out.println("5");
+			//system.out.println("5");
 			dis = new DataInputStream(fis);
-			System.out.println("6");
+			//system.out.println("6");
 			uuid = new UUID(dis.readLong(), dis.readLong());
-			System.out.println("7");
+			//system.out.println("7");
 			dis.close();
 		} catch (IOException e) {
 			success = false;
