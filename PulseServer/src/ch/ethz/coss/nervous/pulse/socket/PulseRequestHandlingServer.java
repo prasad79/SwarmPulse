@@ -23,8 +23,8 @@ public class PulseRequestHandlingServer implements Runnable {
 	private ExecutorService threadPool;
 	private SqlFetchWorkerFactory factory;
 	
-	public Hashtable<WebSocket, PulseTimeMachineRequest> hTimeMachineConnectionList = new Hashtable<WebSocket, PulseTimeMachineRequest>();
-	private ArrayList<PulseTimeMachineRequest> timeMachineRequestArrayList = new ArrayList<PulseTimeMachineRequest>();
+	public  Hashtable<WebSocket, PulseTimeMachineRequest> hTimeMachineConnectionList = new Hashtable<WebSocket, PulseTimeMachineRequest>();
+	private  ArrayList<PulseTimeMachineRequest> timeMachineRequestArrayList = new ArrayList<PulseTimeMachineRequest>();
 	   
 
 	public PulseRequestHandlingServer(int numThreads,
@@ -59,7 +59,7 @@ public class PulseRequestHandlingServer implements Runnable {
 				try {
 					PulseTimeMachineRequest ptmRequest = (PulseTimeMachineRequest)iterator.next();
 				    if(!ptmRequest.isNull) {
-//				    	hTimeMachineConnectionList.put(ptmRequest.webSocket, ptmRequest);
+				    	hTimeMachineConnectionList.put(ptmRequest.webSocket, ptmRequest);
 						this.threadPool.execute(factory.createWorker(
 								pWebSocketServer, ptmRequest));
 				    }
