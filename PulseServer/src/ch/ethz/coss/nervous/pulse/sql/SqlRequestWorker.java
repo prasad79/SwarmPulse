@@ -42,8 +42,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 					// Insert data
 					PreparedStatement datastmt = sqlse
 							.getSensorValuesFetchStatement(connection,
-									ptmRequest.readingType == 0 ? 4
-											: (ptmRequest.readingType == 1 ? 8 : 10), ptmRequest.startTime, ptmRequest.endTime);
+									ptmRequest.readingType, ptmRequest.startTime, ptmRequest.endTime);
 					ResultSet rs = datastmt.executeQuery();
 					featureCollection = new JsonObject();
 					features = new JsonArray();
@@ -94,6 +93,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							break;
 						}
 					}
 					
