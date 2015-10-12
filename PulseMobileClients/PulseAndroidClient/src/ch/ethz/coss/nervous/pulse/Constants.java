@@ -2,11 +2,7 @@ package ch.ethz.coss.nervous.pulse;
 
 public class Constants {
 
-	protected static String defaultServer = "xx.xx.xx.xx"; // localhost
-	protected static String defaultPort = "8080";
-	protected static String defaultWritingInterval = "100";
-	protected static String defaultTeam = "0";
-	protected static String defaultSensor = "0";
+	protected static boolean DUMMY_DATA_COLLECT = true;
 
 	protected static final int SENSOR_TYPE_ACCELEROMETER = 0;
 	protected static final int SENSOR_TYPE_LIGHT = 1;

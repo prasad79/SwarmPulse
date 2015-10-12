@@ -69,6 +69,13 @@ public class PulseRequestHandlingServer implements Runnable {
 					e.printStackTrace();
 					Log.getInstance().append(Log.FLAG_ERROR,
 							"Threadpool execution failure");
+				//TODO: check for 
+//					java.util.ConcurrentModificationException
+//					at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:859)
+//					at java.util.ArrayList$Itr.next(ArrayList.java:831)
+//					at ch.ethz.coss.nervous.pulse.socket.PulseRequestHandlingServer.run(PulseRequestHandlingServer.java:60)
+//					at java.lang.Thread.run(Thread.java:745)
+					break;
 				}
 			}
 			

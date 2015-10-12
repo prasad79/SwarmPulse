@@ -71,6 +71,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					coord.add(new JsonPrimitive(reading.location.latnLong[1]));
 					point.add("coordinates", coord);
 					feature.add("geometry", point);
+					
 					JsonObject properties = new JsonObject();
 					if (reading.type == 0) {
 						System.out.println("Reading instance of light");
@@ -88,6 +89,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					} else {
 						System.out.println("Reading instance not known");
 					}
+					properties.addProperty("recordTime", reading.timestamp);
 					feature.add("properties", properties);
 					features.add(feature);
 					featureCollection.add("features", features);
