@@ -80,7 +80,7 @@ public class SensorService extends Service implements SensorEventListener,
 			if(Constants.DUMMY_DATA_COLLECT){
 				new Thread() {
 					public void run() {
-						for (int i = 0; i < 50; i++){
+						for (int i = 0; i < 2; i++){
 						Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
 								System.currentTimeMillis(), new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 						intent.putExtra("LightReading", reading);
@@ -129,9 +129,9 @@ public class SensorService extends Service implements SensorEventListener,
 		if(Constants.DUMMY_DATA_COLLECT){
 			new Thread() {
 				public void run() {
-					for (int i = 0; i < 50; i++){
+					for (int i = 0; i < 5; i++){
 					
-					noiseReading = new NoiseReading(Application.uuid.toString(),spl, recordTime,
+					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime,
 							new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 					Application.pushReadingToServer(noiseReading);
 					intent.putExtra("NoiseReading", noiseReading);
@@ -141,7 +141,7 @@ public class SensorService extends Service implements SensorEventListener,
 
 			}.start();
 		} else {
-					noiseReading = new NoiseReading(Application.uuid.toString(),spl, recordTime,
+					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime,
 							new VisualLocation(GPSLocation.getInstance(context)
 									.getLocation()));
 					Log.d(DEBUG_TAG,
