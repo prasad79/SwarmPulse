@@ -101,7 +101,6 @@ public class MainActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Application.registerListener(0); // FOR SOUND
 
 						// Start and intent for the logged out activity
 						startActivity(new Intent(MainActivity.this,

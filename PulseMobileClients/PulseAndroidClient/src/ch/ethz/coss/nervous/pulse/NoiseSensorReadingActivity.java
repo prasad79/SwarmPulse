@@ -69,7 +69,7 @@ public class NoiseSensorReadingActivity extends SensorReadingActivity {
 
 		TextView txtLightValue = (TextView) findViewById(R.id.noiseValueTF);
 		if (reading != null)
-			txtLightValue.setText("" + reading.soundVal);
+			txtLightValue.setText("" + reading.soundVal + " dB");
 		else
 			txtLightValue.setText("Error in reading the Noise sensor readings");
 	}

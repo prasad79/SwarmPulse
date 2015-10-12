@@ -51,22 +51,23 @@ public final class R {
         public static final int ic_visual=0x7f02000e;
     }
     public static final class id {
-        public static final int action_settings=0x7f0c000f;
+        public static final int action_settings=0x7f0c0010;
         public static final int detail=0x7f0c0000;
-        public static final int icon_about=0x7f0c000b;
-        public static final int icon_light=0x7f0c0006;
-        public static final int icon_settings=0x7f0c000a;
-        public static final int icon_sound=0x7f0c0007;
-        public static final int icon_text=0x7f0c0008;
-        public static final int icon_visual=0x7f0c0009;
-        public static final int lightValueTF=0x7f0c0004;
-        public static final int messageLabelTF=0x7f0c000c;
-        public static final int messageTF=0x7f0c000d;
-        public static final int noiseValueTF=0x7f0c000e;
-        public static final int rateButton=0x7f0c0002;
-        public static final int submit=0x7f0c0005;
-        public static final int termsButton=0x7f0c0003;
-        public static final int version_name=0x7f0c0001;
+        public static final int empty=0x7f0c0002;
+        public static final int icon_about=0x7f0c000c;
+        public static final int icon_light=0x7f0c0007;
+        public static final int icon_settings=0x7f0c000b;
+        public static final int icon_sound=0x7f0c0008;
+        public static final int icon_text=0x7f0c0009;
+        public static final int icon_visual=0x7f0c000a;
+        public static final int lightValueTF=0x7f0c0005;
+        public static final int messageLabelTF=0x7f0c000d;
+        public static final int messageTF=0x7f0c000e;
+        public static final int noiseValueTF=0x7f0c000f;
+        public static final int rateButton=0x7f0c0003;
+        public static final int submit=0x7f0c0006;
+        public static final int termsButton=0x7f0c0004;
+        public static final int version=0x7f0c0001;
     }
     public static final class layout {
         public static final int activity_about=0x7f030000;

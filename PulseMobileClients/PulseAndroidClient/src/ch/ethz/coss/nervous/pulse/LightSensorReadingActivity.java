@@ -70,8 +70,8 @@ public class LightSensorReadingActivity extends SensorReadingActivity {
 
 		TextView txtLightValue = (TextView) findViewById(R.id.lightValueTF);
 		if (reading != null)
-			txtLightValue.setText("" + reading.lightVal);
-		else
+			txtLightValue.setText("" + reading.lightVal+" lux");
+		else 
 			txtLightValue.setText("Error in reading the light sensor readings");
 	}
 
