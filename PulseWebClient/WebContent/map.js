@@ -551,29 +551,31 @@ $(document)
 					;
 
 					/** ****Update****** */
+					var box = L.control.messagebox().addTo(map);
 
 					L.control.liveupdate({
 						update_map : function() {
 							if(current_state == 0)
 								updateMarkerArray();
-//							box.show('Counter :' + counter);
-//							console.log('Counter :' + counter);
+							box.show('Counter :' + counter);
+							console.log('Counter :' + counter);
 						},
 						position : 'bottomright',
 						interval : 30000
 					}).addTo(map).startUpdating();
 
 					function updateMarkerArray() {
+						var currentTime = new Date().getTime();
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
-							var d = new Date();
-							if (d.getTime() - marker.options.startTime >= 60000) {
+							if (currentTime - marker.options.startTime >= 60000) {
 
 								markersCluster.removeLayer(marker);
 
 								markerArray.splice(i, 1);
 								counter--;
-							}
+							}else 
+								break;
 						}
 					}
 
@@ -802,7 +804,7 @@ $(document)
 									fillOpacity : 1,
 									type : feature.properties.readingType,
 									value : feature.properties.level,
-									startTime : new Date().getTime()
+									startTime : feature.properties.recordTime
 								};
 							else if (feature.properties.readingType == 1)
 								geojsonMarkerOptions = {
@@ -814,7 +816,7 @@ $(document)
 									fillOpacity : 1,
 									type : feature.properties.readingType,
 									value : feature.properties.level,
-									startTime : new Date().getTime()
+									startTime : feature.properties.recordTime
 								};
 							else if (feature.properties.readingType == 2)
 								geojsonMarkerOptions = {
@@ -826,7 +828,7 @@ $(document)
 									fillOpacity : 1,
 									type : feature.properties.readingType,
 									value : feature.properties.message,
-									startTime : new Date().getTime()
+									startTime : feature.properties.recordTime
 								};
 
 							addMarker(feature, geojsonMarkerOptions);

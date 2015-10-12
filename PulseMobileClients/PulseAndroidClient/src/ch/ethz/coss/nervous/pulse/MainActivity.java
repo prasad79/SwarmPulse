@@ -145,17 +145,6 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			Intent intent = new Intent(this, PrefActivity.class);
-			startActivity(intent);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 	public void onPause() {
 		Log.d(DEBUG_TAG, "onPause");
 		super.onPause();

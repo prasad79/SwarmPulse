@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import android.os.AsyncTask;
 
 public class SynchWriter {
-
+	
+	
 	ArrayList<Object> data = new ArrayList<Object>();
 	OutputTask outTask = new OutputTask();
 	String ipAddress;

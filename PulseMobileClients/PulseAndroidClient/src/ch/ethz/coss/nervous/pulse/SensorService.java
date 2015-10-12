@@ -19,6 +19,7 @@ import ch.ethz.coss.nervous.pulse.model.Visual;
 import ch.ethz.coss.nervous.pulse.model.VisualLocation;
 import ch.ethz.coss.nervous.pulse.sensor.NoiseSensor;
 import ch.ethz.coss.nervous.pulse.sensor.NoiseSensor.NoiseListener;
+import ch.ethz.coss.nervous.pulse.utils.Utils;
 
 public class SensorService extends Service implements SensorEventListener,
 		NoiseListener {
@@ -75,30 +76,32 @@ public class SensorService extends Service implements SensorEventListener,
 			Log.d(DEBUG_TAG, reading.toString());
 
 		} else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-
-//			for (int i = 0; i < 50; i++){
-//				new Thread() {
-//					public void run() {
+			
+			if(Constants.DUMMY_DATA_COLLECT){
+				new Thread() {
+					public void run() {
+						for (int i = 0; i < 50; i++){
 						Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
-								System.currentTimeMillis(), new VisualLocation(
-										GPSLocation.getInstance(context)
-												.getLocation()));
+								System.currentTimeMillis(), new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 						intent.putExtra("LightReading", reading);
 
-//						Application.pushReadingToServer(reading);
+						Application.pushReadingToServer(reading);
 						context.sendBroadcast(intent);
-						Log.d(DEBUG_TAG, reading.toString());
-//					}
-//
-//				}.start();
-//
-//			try {
-//				Thread.sleep(200);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			}
+						}
+					}
+
+				}.start();
+			} else {
+				Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
+						System.currentTimeMillis(), new VisualLocation(
+								GPSLocation.getInstance(context)
+										.getLocation()));
+				intent.putExtra("LightReading", reading);
+				context.sendBroadcast(intent);
+				Log.d(DEBUG_TAG, reading.toString());
+			}
+
+
 		} else {
 			this.event = null;
 			System.out.println("OnSensorChanged called. But unknown Sensor "
@@ -122,6 +125,22 @@ public class SensorService extends Service implements SensorEventListener,
 	@Override
 	public void noiseSensorDataReady(final long recordTime, float rms,
 			final float spl, float[] bands) {
+		
+		if(Constants.DUMMY_DATA_COLLECT){
+			new Thread() {
+				public void run() {
+					for (int i = 0; i < 50; i++){
+					
+					noiseReading = new NoiseReading(Application.uuid.toString(),spl, recordTime,
+							new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
+					Application.pushReadingToServer(noiseReading);
+					intent.putExtra("NoiseReading", noiseReading);
+					context.sendBroadcast(intent);
+					}
+				}
+
+			}.start();
+		} else {
 					noiseReading = new NoiseReading(Application.uuid.toString(),spl, recordTime,
 							new VisualLocation(GPSLocation.getInstance(context)
 									.getLocation()));
@@ -131,7 +150,7 @@ public class SensorService extends Service implements SensorEventListener,
 					intent.putExtra("NoiseReading", noiseReading);
 					context.sendBroadcast(intent);
 					Log.d(DEBUG_TAG, "Noise data collected");
-
+		}
 	}
 
 	class SensorValueUpdaterTask extends TimerTask {
