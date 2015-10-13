@@ -161,12 +161,14 @@ public class PulseWebSocketServer extends WebSocketServer {
 		if (prhServer.hTimeMachineConnectionList.containsKey(conn)) {
 
 			PulseTimeMachineRequest ptmRequest = prhServer.hTimeMachineConnectionList.get(conn);
-			if(ptmRequest.requestID == requestID){
+			if(ptmRequest.requestID == requestID && !ptmRequest.isNull){
 				conn.send(text);
 			}
 			
-			if(isComplete)
-			prhServer.hTimeMachineConnectionList.remove(conn);
+			if(isComplete){
+				prhServer.hTimeMachineConnectionList.put(conn, new PulseTimeMachineRequest(true));
+			}
+				
 		}
 
 		if (prhServer.hTimeMachineConnectionList.size() == 0)

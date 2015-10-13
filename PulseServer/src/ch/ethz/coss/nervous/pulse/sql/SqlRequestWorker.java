@@ -3,11 +3,9 @@ package ch.ethz.coss.nervous.pulse.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import ch.ethz.coss.nervous.pulse.PulseTimeMachineRequest;
 import ch.ethz.coss.nervous.pulse.PulseWebSocketServer;
-import ch.ethz.coss.nervous.pulse.socket.ConcurrentSocketWorker;
 import ch.ethz.coss.nervous.pulse.socket.SqlFetchWorker;
 import ch.ethz.coss.nervous.pulse.utils.Log;
 
@@ -87,6 +85,8 @@ public class SqlRequestWorker extends SqlFetchWorker {
 							featureCollection.add("features", features);
 							pSocketServer.sendToSocket(ptmRequest.webSocket, ptmRequest.requestID, featureCollection.toString(), false);
 							featureCollection = new JsonObject();
+							featureCollection = new JsonObject();
+							features = new JsonArray();
 							try {
 								Thread.sleep(10);
 							} catch (Exception e) {
