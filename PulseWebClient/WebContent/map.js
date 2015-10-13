@@ -6,8 +6,7 @@ $(document)
 					var current_state = 0; //0 - Real-Time, 1 - Time-Machine
 					var current_layer = -1;
 					var last_layer = 0;
-					
-					
+							
 					var data = [];
 					var map = L.map('map', {
 						zoomControl : false
@@ -87,6 +86,9 @@ $(document)
 
 					map.addControl(layerControl);
 					/** ***************Layer Control********************* */
+					
+		
+					
 
 					/** *************OverlappingMarkerSpiderfier-Leaflet******************* */
 					var oms = new OverlappingMarkerSpiderfier(map);
@@ -565,22 +567,25 @@ $(document)
 					}).addTo(map).startUpdating();
 
 					function updateMarkerArray() {
+					
 						var currentTime = new Date().getTime();
+						showSpinner();
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
 							if (currentTime - marker.options.startTime >= 60000) {
-
 								markersCluster.removeLayer(marker);
-
 								markerArray.splice(i, 1);
 								counter--;
 							}else 
 								break;
 						}
+						hideSpinner();
+						
 					}
 
 					/** *******Websocket************* */
 					function doConnect() {
+						showSpinner();
 						if (window.MozWebSocket) {
 							console
 									.log("This browser supports WebSocket using the MozWebSocket constructor");
@@ -588,6 +593,7 @@ $(document)
 						} else if (!window.WebSocket) {
 							console
 									.log("This browser does not have support for WebSocket");
+							hideSpinner();
 							return;
 						}
 
@@ -604,6 +610,7 @@ $(document)
 						websocket.onerror = function(evt) {
 							onError(evt)
 						};
+						hideSpinner();
 					}
 
 					function doDisconnect() {
@@ -623,6 +630,8 @@ $(document)
 					}
 
 					function onMessage(evt) {
+						
+						hideSpinner();
 //						console.log(evt.data);
 						var msg = JSON.parse(evt.data);
 						var features = msg.features;
@@ -671,6 +680,7 @@ $(document)
 					}
 					
 					function sendTimeMachineRequest(readingType, startTime, endTime){
+						showSpinner();
 						resetBeforeSendingTimeMachineRequest();
 						websocket.send('type=1,'+readingType+','+startTime+','+endTime);
 					}
@@ -834,6 +844,38 @@ $(document)
 							addMarker(feature, geojsonMarkerOptions);
 					}
 					
+					function showSpinner() {
+						/**********************SPINNER***************************/					
+						map.spin(true, {lines: 11 // The number of lines to draw
+							, length: 37 // The length of each line
+							, width: 10 // The line thickness
+							, radius: 22 // The radius of the inner circle
+							, scale: 0.5 // Scales overall size of the spinner
+							, corners: 1 // Corner roundness (0..1)
+							, color: '#FFF' // #rgb or #rrggbb or array of colors
+							, opacity: 0.25 // Opacity of the lines
+							, rotate: 0 // The rotation offset
+							, direction: 1 // 1: clockwise, -1: counterclockwise
+							, speed: 1 // Rounds per second
+							, trail: 60 // Afterglow percentage
+							, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+							, zIndex: 2e9 // The z-index (defaults to 2000000000)
+							, className: 'spinner' // The CSS class to assign to the spinner
+							, top: '50%' // Top position relative to parent
+							, left: '50%' // Left position relative to parent
+							, shadow: false // Whether to render a shadow
+							, hwaccel: false // Whether to use hardware acceleration
+							, position: 'absolute' });
+						
+//						setTimeout(function(){ map.spin(false); }, 3000);
+						/**********************SPINNER***************************/
+					}
+					
+					function hideSpinner(){
+						map.spin(false);
+					}
+					
 					resetToLightReadings();
 					$('#datePicker').hide(0);
+					
 				});
