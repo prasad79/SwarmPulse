@@ -20,3 +20,5 @@ PulseServer/pulse_config.xml.back
 PulseServer/pulse_configbackup.xml
 
 PulseServer/log.txt
+
+PulseServer/.DS_Store
