@@ -90,18 +90,6 @@ $(document)
 		
 					
 
-					/** *************OverlappingMarkerSpiderfier-Leaflet******************* */
-					var oms = new OverlappingMarkerSpiderfier(map);
-					var popup = new L.Popup();
-					oms.addListener('click', function(marker) {
-						map.openPopup(popup);
-					});
-					oms.addListener('spiderfy', function(markers) {
-						map.closePopup();
-					})
-
-					/***************OverlappingMarkerSpiderfier-Leaflet**********************/
-
 					/************************************************************************/
 
 					/*******Legend for Color levels for noise***** */
@@ -293,7 +281,7 @@ $(document)
 							legendSound.removeFrom(map);
 						
 						current_layer = 0;
-						lightMarkers.addLayer(markersCluster);
+						lightMarkers.addLayer(pruneCluster);
 						map.addLayer(lightMarkers);
 					
 					}
@@ -308,7 +296,7 @@ $(document)
 						
 						current_layer = 1;
 
-						noiseMarkers.addLayer(markersCluster);
+						noiseMarkers.addLayer(pruneCluster);
 						map.addLayer(noiseMarkers);
 					}
 
@@ -320,7 +308,7 @@ $(document)
 						else if (last_layer == 0)
 							legendLight.removeFrom(map);
 						current_layer = 2;
-						msgMarkers.addLayer(markersCluster);
+						msgMarkers.addLayer(pruneCluster	);
 						map.addLayer(msgMarkers);
 
 					}
@@ -329,7 +317,7 @@ $(document)
 
 						markerArray = [];
 
-						markersCluster.clearLayers();
+						pruneCluster.RemoveMarkers();
 						lightMarkers.clearLayers();
 						noiseMarkers.clearLayers();
 						msgMarkers.clearLayers();
@@ -368,56 +356,59 @@ $(document)
 							return '#3A6A34';
 						}
 					}
+					
+					var pruneCluster =  new PruneClusterForLeaflet();
+						
 
-					var markersCluster = new L.MarkerClusterGroup(
-							{
-								iconCreateFunction : function(cluster) {
-
-									var markers = cluster.getAllChildMarkers();
-									var markersCount = markers.length;
-									var width = 0;
-									var height = 0;
-
-									if (markersCount < 10) {
-										width = 15;
-										height = 15;
-									} else if (markersCount < 1000) {
-										width = 20;
-										height = 20;
-									} else if (markersCount < 10000) {
-										width = 25;
-										height = 25;
-									} else {
-										width = 30;
-										height = 30;
-									}
-
-									var bgColor = getMarkerClusterColor(cluster
-											.getAllChildMarkers());
-
-									return new L.DivIcon(
-											{
-												html : '<div style = "width:'
-														+ width
-														+ 'px; height:'
-														+ height
-														+ 'px; border-radius:50%; font-size:10px; color:#000; line-height: '
-														+ height
-														+ 'px; text-align:center; background:'
-														+ bgColor
-														+ '">'
-														+ cluster
-																.getChildCount()
-														+ '</div>',
-
-												className : 'cluster',
-												iconSize : L.point(0, 0)
-											});
-								},
-								disableClusteringAtZoom : 10,
-								maxClusterRadius : 50,
-								showCoverageOnHover : true
-							});
+//					var markersCluster = new L.MarkerClusterGroup(
+//							{
+//								iconCreateFunction : function(cluster) {
+//
+//									var markers = cluster.getAllChildMarkers();
+//									var markersCount = markers.length;
+//									var width = 0;
+//									var height = 0;
+//
+//									if (markersCount < 10) {
+//										width = 15;
+//										height = 15;
+//									} else if (markersCount < 1000) {
+//										width = 20;
+//										height = 20;
+//									} else if (markersCount < 10000) {
+//										width = 25;
+//										height = 25;
+//									} else {
+//										width = 30;
+//										height = 30;
+//									}
+//
+//									var bgColor = getMarkerClusterColor(cluster
+//											.getAllChildMarkers());
+//
+//									return new L.DivIcon(
+//											{
+//												html : '<div style = "width:'
+//														+ width
+//														+ 'px; height:'
+//														+ height
+//														+ 'px; border-radius:50%; font-size:10px; color:#000; line-height: '
+//														+ height
+//														+ 'px; text-align:center; background:'
+//														+ bgColor
+//														+ '">'
+//														+ cluster
+//																.getChildCount()
+//														+ '</div>',
+//
+//												className : 'cluster',
+//												iconSize : L.point(0, 0)
+//											});
+//								},
+//								disableClusteringAtZoom : 10,
+//								maxClusterRadius : 50,
+//								showCoverageOnHover : true
+//							});
 
 					function getMarkerClusterColor(markers) {
 						var sum;
@@ -441,93 +432,105 @@ $(document)
 					}
 					;
 
-					lightMarkers.addLayer(markersCluster);
+					lightMarkers.addLayer(pruneCluster);
 
 					var markerArray = [];
 					function addMarker(msg, geojsonMarkerOptions) {
 						counter++;
-						var d = new Date();
 						if (msg.properties.readingType == 0
 								&& current_layer == 0) {
-							var lightMarker = L.circleMarker(
-									msg.geometry.coordinates,
-									geojsonMarkerOptions);
-
-							lightMarker.bindPopup(
-									'<p style="color:black" align="center"><strong>'
+//							var lightMarker = L.circleMarker(
+//									msg.geometry.coordinates,
+//									geojsonMarkerOptions);
+							console.log("Longitude -- "+msg.geometry.coordinates[1]);
+							var lightMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
+							lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
 											+ msg.properties.level
-											+ '</strong> lux', {
-										closeButton : false,
-										offset : L.point(0, -5)
-									});
+											+ '</strong> lux';
+							lightMarker.data.name = msg.properties.recordTime;
 
-							lightMarker.on('mouseover', function() {
-								lightMarker.openPopup();
-							});
-							lightMarker.on('mouseout', function() {
-								lightMarker.closePopup();
-							});
+//							lightMarker.on('mouseover', function() {
+//								lightMarker.openPopup();
+//							});
+//							lightMarker.on('mouseout', function() {
+//								lightMarker.closePopup();
+//							});
 
 							markerArray.push(lightMarker);
 							// lightMarker.openPopup();
-							markersCluster.addLayer(lightMarker);
-							oms.addMarker(lightMarker);
+							pruneCluster.RegisterMarker(lightMarker);
+						
 
 						} else if (msg.properties.readingType == 1
 								&& current_layer == 1) {
-							var noiseMarker = L.circleMarker(
-									msg.geometry.coordinates,
-									geojsonMarkerOptions);
-							noiseMarker.bindPopup(
-									'<p style="color:black"  ><strong>'
-											+ msg.properties.level
-											+ '</strong> db', {
-										closeButton : false,
-										offset : L.point(0, -5)
-									});
-
-							noiseMarker.on('mouseover', function() {
-								noiseMarker.openPopup();
-							});
-							noiseMarker.on('mouseout', function() {
-								noiseMarker.closePopup();
-							});
+							var noiseMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
+							noiseMarker.data.popup ='<p style="color:black"  ><strong>'
+								+ msg.properties.level
+								+ '</strong> db';
+							noiseMarker.data.name = msg.properties.recordTime;
+							
+//							noiseMarker.bindPopup(
+//									'<p style="color:black"  ><strong>'
+//											+ msg.properties.level
+//											+ '</strong> db', {
+//										closeButton : false,
+//										offset : L.point(0, -5)
+//									});
+//
+//							noiseMarker.on('mouseover', function() {
+//								noiseMarker.openPopup();
+//							});
+//							noiseMarker.on('mouseout', function() {
+//								noiseMarker.closePopup();
+//							});
 
 							markerArray.push(noiseMarker);
-							markersCluster.addLayer(noiseMarker);
-							oms.addMarker(noiseMarker);
+							pruneCluster.RegisterMarker(noiseMarker);
 							// noiseMarker.openPopup();
 
 						} else if (msg.properties.readingType == 2
 								&& current_layer == 2) {
-							var msgMarker = L.circleMarker(
-									msg.geometry.coordinates,
-									geojsonMarkerOptions);
+							
+							var msgMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
+							msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
+								+ replaceURLWithHTMLLinks(msg.properties.message)
+								+ '</strong>';
+							msgMarker.data.name = msg.properties.recordTime;
+//							var msgMarker = L.circleMarker(
+//									msg.geometry.coordinates,
+//									geojsonMarkerOptions);
 
-							msgMarker
-									.bindPopup(
-											'<p style="color:black" align="center"><strong>'
-													+ replaceURLWithHTMLLinks(msg.properties.message)
-													+ '</strong>', {
-												closeButton : false,
-												offset : L.point(0, -5)
-											});
-
-							msgMarker.on('mouseover', function() {
-								msgMarker.openPopup();
-							});
+//							msgMarker
+//									.bindPopup(
+//											'<p style="color:black" align="center"><strong>'
+//													+ replaceURLWithHTMLLinks(msg.properties.message)
+//													+ '</strong>', {
+//												closeButton : false,
+//												offset : L.point(0, -5)
+//											});
+//
+//							msgMarker.on('mouseover', function() {
+//								msgMarker.openPopup();
+//							});
 //							msgMarker.on('mouseout', function() {
 //								msgMarker.closePopup();
 //							});
 
 							markerArray.push(msgMarker);
-							markersCluster.addLayer(msgMarker);
-							oms.addMarker(msgMarker);
+							pruneCluster.RegisterMarker(msgMarker);
 							//msgMarker.openPopup();
 						}
 					}
 					;
 
+					
+					function createIcon(data, category) {
+					    return L.Icon({
+					       
+					    });
+					}
+					
+					
 					function replaceURLWithHTMLLinks(text) {
 						var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
 						return text.replace(exp, "<a href='$1'>$1</a>");
@@ -563,7 +566,7 @@ $(document)
 							console.log('Counter :' + counter);
 						},
 						position : 'bottomright',
-						interval : 30000
+						interval : 10000
 					}).addTo(map).startUpdating();
 
 					function updateMarkerArray() {
@@ -572,8 +575,13 @@ $(document)
 						showSpinner();
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
-							if (currentTime - marker.options.startTime >= 60000) {
-								markersCluster.removeLayer(marker);
+//							if (currentTime - marker.options.startTime >= 60000 * 5) {
+							if(currentTime - marker.data.name >= 10000){
+//								markersCluster.removeLayer(marker);
+								var myArray = [];
+								myArray.push(marker);
+								pruneCluster.RemoveMarkers(myArray);
+								pruneCluster.ProcessView();
 								markerArray.splice(i, 1);
 								counter--;
 							}else 
@@ -640,10 +648,10 @@ $(document)
 								    var feature = features[i];
 								    parseFeature(feature);
 								}
-							 
+								pruneCluster.ProcessView();
 						 } else {
-							 parseFeature(features);
-							 
+							    parseFeature(features);
+								pruneCluster.ProcessView();
 							
 						 }
 						
@@ -689,13 +697,13 @@ $(document)
 						removeAllMarkers();
 						
 						if(current_layer == 0){
-							lightMarkers.addLayer(markersCluster);
+							lightMarkers.addLayer(pruneCluster);
 							map.addLayer(lightMarkers)	
 						} else if(current_layer == 1){
-							noiseMarkers.addLayer(markersCluster);
+							noiseMarkers.addLayer(pruneCluster);
 							map.addLayer(noiseMarkers)	
 						} else if(current_layer == 2){
-							msgMarkers.addLayer(markersCluster);
+							msgMarkers.addLayer(pruneCluster);
 							map.addLayer(noiseMarkers);
 						}
 					}
@@ -715,16 +723,11 @@ $(document)
 						        	showAlert("Please do set the Date and Time.");
 						            return false;
 						        } else {
-						        	console.log("Date = "+txtDate);
-						        	console.log("Time = "+txtTime);
 						        	var dateAsObject =  $('#txtDate').datepicker("getDate"); 
 						        	var timeAsObject =  $('#txtTime').timepicker('getTime', new Date(0));
 						        	var millisec = dateAsObject.getTime() + timeAsObject.getTime()
 						        	var date = new Date(millisec);
-						        	console.log("dateAsObject = "+dateAsObject.getTime());
-						        	console.log("timeAsObject = "+timeAsObject.getTime());
-						        	console.log("date = "+date.getTime());
-						        	sendTimeMachineRequest(current_layer, date.getTime(), date.getTime() + (600000));
+						        	sendTimeMachineRequest(current_layer, date.getTime(), date.getTime() + (60000 * 30));
 						        		
 						        }
 					
