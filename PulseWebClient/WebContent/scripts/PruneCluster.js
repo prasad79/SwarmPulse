@@ -653,6 +653,7 @@ var PruneClusterForLeaflet = (L.Layer ? L.Layer : L.Class).extend({
                         lngMargin = (icluster.bounds.maxLng - icluster.bounds.minLng) * marginRatio;
                     for (j = 0, ll = clusterCreationList.length; j < ll; ++j) {
                         var jcluster = clusterCreationList[j], jdata = jcluster.data;
+                        console.log("jclusterdata  "+jclusterdata);
                         var pb = jcluster.averagePosition;
                         var oldMinLng = pa.lng - lngMargin, newMaxLng = pb.lng + lngMargin;
                         oldMaxLng = pa.lng + lngMargin;
