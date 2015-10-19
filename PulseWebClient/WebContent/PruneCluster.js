@@ -466,6 +466,9 @@ var PruneClusterForLeaflet = (L.Layer ? L.Layer : L.Class).extend({
         var c = 'prunecluster prunecluster-';
         var iconSize = 38;
         var maxPopulation = this.Cluster.GetPopulation();
+        console.log("population = "+cluster.population);
+        console.log("Weight = "+cluster.totalWeight);
+        console.log("Average Weight = "+(cluster.totalWeight/cluster.population));
         if (cluster.population < Math.max(10, maxPopulation * 0.01)) {
             c += 'small';
         }
@@ -477,6 +480,8 @@ var PruneClusterForLeaflet = (L.Layer ? L.Layer : L.Class).extend({
             c += 'large';
             iconSize = 44;
         }
+        
+        
         return new L.DivIcon({
             html: "<div><span>" + cluster.population + "</span></div>",
             className: c,
@@ -705,6 +710,7 @@ var PruneClusterForLeaflet = (L.Layer ? L.Layer : L.Class).extend({
         for (i = 0, l = clusterCreationList.length; i < l; ++i) {
             icluster = clusterCreationList[i],
                 idata = icluster.data;
+            console.log(icluster.population);
             var iposition = idata._leafletPosition;
             var creationMarker;
             if (icluster.population === 1) {

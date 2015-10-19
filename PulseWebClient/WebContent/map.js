@@ -85,7 +85,7 @@ $(document)
 							groupedOverlays, options);
 
 					map.addControl(layerControl);
-					/** ***************Layer Control********************* */
+					/*****************Layer Control********************* */
 					
 		
 					
@@ -98,7 +98,6 @@ $(document)
 					});
 
 					legendSound.onAdd = function(map) {
-
 						var div = L.DomUtil.create('div', 'label');
 						grades = [ 0, 10, 30, 50, 70, 100, 120, 140 ],
 								labels = [ "  0-10  ", "10-30", "30-50",
@@ -113,14 +112,12 @@ $(document)
 						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Sound Level (db)</p>  <br>';
 
 						for (var i = 0; i < grades.length; i++) {
-
 							div.innerHTML += '<img align = "left"  width=\'10px\' height=\'10px\' style="background-color:'
 									+ getNoiseColor(grades[i] + 1)
 									+ '"> <p align: \'left\' style=\'color: #FFA500; display:inline-block; \'>'
 									+ labels[i] + ' </p><br>';
 
 						}
-
 						return div;
 					};
 					/** ********** */
@@ -328,6 +325,43 @@ $(document)
 					}
 
 				/**************************************/
+					
+					function getIcon(category, weight) {
+						
+						console.log("getICon Category - "+category);
+						
+							return "images/marker_"+category+"_"+weight+".png";
+						
+					}
+
+					function getLightId(d) {
+						return d > 100000 ? 7 : d > 10000 ? 6
+								: d > 1000 ? 5 : d > 100 ? 4
+										: d > 10 ? 3
+												: d > 5 ? 2
+														: d > 0 ? 1
+																: 0;
+					}
+					
+					function getNoiseId(d) {
+						return d > 140 ? 7 : d > 120 ? 6
+								: d > 100 ? 5 : d > 70 ? 4
+										: d > 50 ? 3
+												: d > 30 ? 2
+														: d > 10 ? 1
+																: 0;
+					}
+
+					function getLightId(d) {
+						return d > 100000 ? 7 : d > 10000 ? 6
+								: d > 1000 ? 5 : d > 100 ? 4
+										: d > 10 ? 3
+												: d > 5 ? 2
+														: d > 0 ? 1
+																: 0;
+					}
+					
+					
 					function getNoiseColor(d) {
 						return d > 140 ? '#800026' : d > 120 ? '#BD0026'
 								: d > 100 ? '#E31A1C' : d > 70 ? '#FC4E2A'
@@ -356,7 +390,7 @@ $(document)
 							return '#3A6A34';
 						}
 					}
-					
+					/**********************************/
 					var pruneCluster =  new PruneClusterForLeaflet();
 						
 
@@ -435,19 +469,27 @@ $(document)
 					lightMarkers.addLayer(pruneCluster);
 
 					var markerArray = [];
-					function addMarker(msg, geojsonMarkerOptions) {
+					function addMarker(msg) {
 						counter++;
 						if (msg.properties.readingType == 0
 								&& current_layer == 0) {
-//							var lightMarker = L.circleMarker(
-//									msg.geometry.coordinates,
-//									geojsonMarkerOptions);
-							console.log("Longitude -- "+msg.geometry.coordinates[1]);
+							
 							var lightMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
 							lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
 											+ msg.properties.level
 											+ '</strong> lux';
 							lightMarker.data.name = msg.properties.recordTime;
+							//lightMarker.data.id = msg.properties.readingType;
+							lightMarker.data.weight = getLightId(msg.properties.level); //Weight is the level of Light or Noise
+							lightMarker.data.category = msg.properties.readingType; //Category is readingType
+							lightMarker.weight = getLightId(msg.properties.level);
+//							lightMarker.bindPopup(
+//									'<p style="color:black" align="center"><strong>'
+//											+ msg.properties.level
+//											+ '</strong> lux', {
+//										closeButton : false,
+//										offset : L.point(0, -5)
+//									});
 
 //							lightMarker.on('mouseover', function() {
 //								lightMarker.openPopup();
@@ -455,11 +497,10 @@ $(document)
 //							lightMarker.on('mouseout', function() {
 //								lightMarker.closePopup();
 //							});
-
 							markerArray.push(lightMarker);
-							// lightMarker.openPopup();
 							pruneCluster.RegisterMarker(lightMarker);
-						
+							
+							
 
 						} else if (msg.properties.readingType == 1
 								&& current_layer == 1) {
@@ -468,25 +509,12 @@ $(document)
 								+ msg.properties.level
 								+ '</strong> db';
 							noiseMarker.data.name = msg.properties.recordTime;
-							
-//							noiseMarker.bindPopup(
-//									'<p style="color:black"  ><strong>'
-//											+ msg.properties.level
-//											+ '</strong> db', {
-//										closeButton : false,
-//										offset : L.point(0, -5)
-//									});
-//
-//							noiseMarker.on('mouseover', function() {
-//								noiseMarker.openPopup();
-//							});
-//							noiseMarker.on('mouseout', function() {
-//								noiseMarker.closePopup();
-//							});
-
+//							noiseMarker.data.id = getNoiseId(msg.properties.level);
+							noiseMarker.data.weight = getNoiseId(msg.properties.level); //Weight is the level of Light or Noise
+							noiseMarker.data.category = msg.properties.readingType; //Category is readingType
+							noiseMarker.weight = getNoiseId(msg.properties.level);
 							markerArray.push(noiseMarker);
 							pruneCluster.RegisterMarker(noiseMarker);
-							// noiseMarker.openPopup();
 
 						} else if (msg.properties.readingType == 2
 								&& current_layer == 2) {
@@ -496,29 +524,11 @@ $(document)
 								+ replaceURLWithHTMLLinks(msg.properties.message)
 								+ '</strong>';
 							msgMarker.data.name = msg.properties.recordTime;
-//							var msgMarker = L.circleMarker(
-//									msg.geometry.coordinates,
-//									geojsonMarkerOptions);
-
-//							msgMarker
-//									.bindPopup(
-//											'<p style="color:black" align="center"><strong>'
-//													+ replaceURLWithHTMLLinks(msg.properties.message)
-//													+ '</strong>', {
-//												closeButton : false,
-//												offset : L.point(0, -5)
-//											});
-//
-//							msgMarker.on('mouseover', function() {
-//								msgMarker.openPopup();
-//							});
-//							msgMarker.on('mouseout', function() {
-//								msgMarker.closePopup();
-//							});
-
+							msgMarker.data.weight = 0; //Weight is the level of Light or Noise
+							msgMarker.data.category = msg.properties.readingType; //Category is readingType
+							
 							markerArray.push(msgMarker);
 							pruneCluster.RegisterMarker(msgMarker);
-							//msgMarker.openPopup();
 						}
 					}
 					;
@@ -576,7 +586,7 @@ $(document)
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
 //							if (currentTime - marker.options.startTime >= 60000 * 5) {
-							if(currentTime - marker.data.name >= 10000){
+							if(currentTime - marker.data.name >= 60000 * 5){ //5 minutes
 //								markersCluster.removeLayer(marker);
 								var myArray = [];
 								myArray.push(marker);
@@ -647,8 +657,9 @@ $(document)
 							 for(var i = 0; i < features.length; i++) {
 								    var feature = features[i];
 								    parseFeature(feature);
+								   
 								}
-								pruneCluster.ProcessView();
+							 pruneCluster.ProcessView();
 						 } else {
 							    parseFeature(features);
 								pruneCluster.ProcessView();
@@ -806,45 +817,7 @@ $(document)
 					}
 					
 					function parseFeature(feature){
-						 var geojsonMarkerOptions;
-							if (feature.properties.readingType == 0)
-								geojsonMarkerOptions = {
-									radius : 4,
-									fillColor : getLightColor(feature.properties.level),
-									color : "#FFFFFF",// getLightColor(msg.properties.level),
-									weight : 1,
-									opacity : 0.7,
-									fillOpacity : 1,
-									type : feature.properties.readingType,
-									value : feature.properties.level,
-									startTime : feature.properties.recordTime
-								};
-							else if (feature.properties.readingType == 1)
-								geojsonMarkerOptions = {
-									radius : 4,
-									fillColor : getNoiseColor(feature.properties.level),
-									color : "#FFFFFF",// getNoiseColor(msg.properties.level),
-									weight : 1,
-									opacity : 0.7,
-									fillOpacity : 1,
-									type : feature.properties.readingType,
-									value : feature.properties.level,
-									startTime : feature.properties.recordTime
-								};
-							else if (feature.properties.readingType == 2)
-								geojsonMarkerOptions = {
-									radius : 4,
-									fillColor : '#FFFFFF',
-									color : '#FFFFFF',
-									weight : 1,
-									opacity : 0.7,
-									fillOpacity : 1,
-									type : feature.properties.readingType,
-									value : feature.properties.message,
-									startTime : feature.properties.recordTime
-								};
-
-							addMarker(feature, geojsonMarkerOptions);
+								addMarker(feature);
 					}
 					
 					function showSpinner() {
@@ -878,6 +851,155 @@ $(document)
 						map.spin(false);
 					}
 					
+					
+//					var hazardIcon = L.icon({
+//					    iconUrl: "test.png",
+//					    iconSize: [16, 16],
+//					    iconAnchor: [8, 8],
+//					    popupAnchor: [0, 0]
+//					});
+					
+					
+					/************************************************/
+				
+					
+					
+					
+					pruneCluster.BuildLeafletClusterIcon= function (cluster) {
+						 var c = 'prunecluster prunecluster-';
+					        var iconSize = 38;
+					        var maxPopulation = this.Cluster.GetPopulation();
+					        console.log("population = "+cluster.population);
+					        console.log("Weight = "+cluster.totalWeight);
+					        console.log("Average Weight = "+(cluster.totalWeight/cluster.population).toFixed());
+					        if (cluster.population < Math.max(10, maxPopulation * 0.01)) {
+					            c += 'small';
+					        }
+					        else if (cluster.population < Math.max(100, maxPopulation * 0.05)) {
+					            c += 'medium';
+					            iconSize = 40;
+					        }
+					        else {
+					            c += 'large';
+					            iconSize = 44;
+					        }
+					        
+					        if(current_layer == 0)
+					        	c += "-0-";
+							else  if(current_layer == 1)
+								c += "-1-"
+							else
+								c += "-2-"
+	
+					        c += ((cluster.totalWeight/cluster.population).toFixed());
+					        console.log("CLassname = "+c);
+					        return new L.DivIcon({
+					            html: "<div><span>" + cluster.population + "</span></div>",
+					            className: c,
+					            iconSize: L.point(iconSize, iconSize)
+					        });
+					    }
+					
+					
+					pruneCluster.PrepareLeafletMarker = function (marker, data, category) {
+						console.log("pruneCluster.PrepareLeafletMarker - weight = "+data.weight);
+						console.log("pruneCluster.PrepareLeafletMarker - category = "+data.category);
+						marker.setIcon(L.icon({
+							    iconUrl: getIcon(data.category, data.weight),
+							    iconAnchor: [20,40]})); 
+						
+						
+						  if (data.icon) {
+					            if (typeof data.icon === 'function') {
+					                marker.setIcon(data.icon(data, category));
+					            }
+					            else {
+//					                marker.setIcon(data.icon);
+					            	marker.setIcon(L.icon({
+									    iconUrl: getIcon(category, data.weight),
+									    iconAnchor: [20,40]})); 
+					            }
+					        }
+						  
+						  
+						marker.on('click', function(e){
+						    //do click event logic here
+//						    	leafletMarker.openPopup();
+						    	generatePopup(e, data.popup);
+						    	
+						    });
+				        if (data.popup) {
+				            var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
+				            if (marker.getPopup()) {
+				                marker.setPopupContent(content, data.popupOptions);
+				            }
+				            else {
+				                marker.bindPopup(content, data.popupOptions);
+				            }
+				        }
+				    };
+					
+//					pruneCluster.PrepareLeafletMarker = function(leafletMarker, data) {
+//						
+//					    leafletMarker.setIcon(L.icon({
+//						    iconUrl: getIcon(data.id),
+//						    iconAnchor: [20,40]})); // See http://leafletjs.com/reference.html#icon
+//					    
+//					    leafletMarker.on('mouseover', function(){
+//						    //do click event logic here
+////					    	alert("HELP");
+//						    });
+//					    leafletMarker.on('mouseout', function(){
+//						    //do click event logic here
+////					    	alert("HELP2");
+//						    });
+////					    //listeners can be applied to markers in this function
+//					    leafletMarker.on('click', function(e){
+//					    //do click event logic here
+////					    	leafletMarker.openPopup();
+////					    	generatePopup(e, data.popup);
+//					    	
+//					    });
+//					    
+//					    // A popup can already be attached to the marker
+//					    // bindPopup can override it, but it's faster to update the content instead
+//					    if (leafletMarker.getPopup()) {
+//					        leafletMarker.setPopupContent(data.name);
+//					    } else {
+//					        leafletMarker.bindPopup(data.name);
+//					    }
+//					};
+					
+					var generatePopup = function (e, popupContent) {
+
+						console.log(popupContent);
+						  var clickedPopup = e.target.getPopup();
+						  var newPopup = new L.popup({
+						    offset: new L.Point(0, -20),
+						    closeButton: false,
+						    autoPan: false,
+						    closeOnClick: true
+						  });
+						  // If a popup has not already been bound to the marker, create one
+						  // and bind it.
+						  if (!clickedPopup) {
+						    newPopup.setContent(popupContent)
+						      .setLatLng(e.latlng)
+						      .openOn(e.target._map);
+						    e.target.bindPopup(newPopup);
+						  }
+						  // We need to destroy and recreate the popup each time the marker is
+						  // clicked to refresh its position
+						  else if (!clickedPopup._isOpen) {
+						    var content = clickedPopup.getContent();
+						    e.target.unbindPopup(clickedPopup);
+						    newPopup.setContent(content)
+						      .setLatLng(e.latlng)
+						      .openOn(e.target._map);
+						    e.target.bindPopup(newPopup);
+						  }
+						};
+					/*************************************************/
 					resetToLightReadings();
 					$('#datePicker').hide(0);
 					
