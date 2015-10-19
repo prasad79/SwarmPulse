@@ -93,13 +93,6 @@
                 android:orientation="horizontal"
                 android:text="@string/rate_app_label" />
 
-            <Button
-                android:id="@+id/termsButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:text="@string/terms" />
         </LinearLayout>
     </ScrollView>
 
