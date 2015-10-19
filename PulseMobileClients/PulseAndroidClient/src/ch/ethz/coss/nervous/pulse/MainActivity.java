@@ -77,14 +77,7 @@ public class MainActivity extends Activity {
 //			}
 //		});
 
-		ImageButton settingsButton = ((ImageButton) findViewById(R.id.icon_settings));
-		settingsButton.setAlpha(.4f);
-		settingsButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
+	
 
 		((ImageButton) findViewById(R.id.icon_visual))
 				.setOnClickListener(new OnClickListener() {

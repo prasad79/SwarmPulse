@@ -328,7 +328,6 @@ $(document)
 					
 					function getIcon(category, weight) {
 						
-						console.log("getICon Category - "+category);
 						
 							return "images/marker_"+category+"_"+weight+".png";
 						
@@ -572,8 +571,7 @@ $(document)
 						update_map : function() {
 							if(current_state == 0)
 								updateMarkerArray();
-							box.show('Counter :' + counter);
-							console.log('Counter :' + counter);
+//							box.show('Counter :' + counter);
 						},
 						position : 'bottomright',
 						interval : 10000
@@ -644,7 +642,6 @@ $(document)
 
 					function onClose(evt) {
 						conButton.state('disconnected');
-						console.log('Client notified socket has closed', evt);
 					}
 
 					function onMessage(evt) {
@@ -790,7 +787,7 @@ $(document)
 										"class" : 'button',
 										click : function() {
 											// Cancel code here
-											location.assign("https://play.google.com/apps/testing/ch.ethz.coss.nervous.pulse");
+											location.assign("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse");
 											 $(this).dialog('close');
 
 										}
@@ -869,10 +866,7 @@ $(document)
 						 var c = 'prunecluster prunecluster-';
 					        var iconSize = 38;
 					        var maxPopulation = this.Cluster.GetPopulation();
-					        console.log("population = "+cluster.population);
-					        console.log("Weight = "+cluster.totalWeight);
-					        console.log("Average Weight = "+(cluster.totalWeight/cluster.population).toFixed());
-					        if (cluster.population < Math.max(10, maxPopulation * 0.01)) {
+					         if (cluster.population < Math.max(10, maxPopulation * 0.01)) {
 					            c += 'small';
 					        }
 					        else if (cluster.population < Math.max(100, maxPopulation * 0.05)) {
@@ -884,15 +878,16 @@ $(document)
 					            iconSize = 44;
 					        }
 					        
-					        if(current_layer == 0)
+					        if(current_layer == 0){
 					        	c += "-0-";
-							else  if(current_layer == 1)
+					        	c += ((cluster.totalWeight/cluster.population).toFixed());
+					        } else  if(current_layer == 1){
 								c += "-1-"
-							else
-								c += "-2-"
+								c += ((cluster.totalWeight/cluster.population).toFixed());
+							} 
+								
 	
-					        c += ((cluster.totalWeight/cluster.population).toFixed());
-					        console.log("CLassname = "+c);
+					     
 					        return new L.DivIcon({
 					            html: "<div><span>" + cluster.population + "</span></div>",
 					            className: c,
@@ -902,8 +897,6 @@ $(document)
 					
 					
 					pruneCluster.PrepareLeafletMarker = function (marker, data, category) {
-						console.log("pruneCluster.PrepareLeafletMarker - weight = "+data.weight);
-						console.log("pruneCluster.PrepareLeafletMarker - category = "+data.category);
 						marker.setIcon(L.icon({
 							    iconUrl: getIcon(data.category, data.weight),
 							    iconAnchor: [20,40]})); 
@@ -972,7 +965,6 @@ $(document)
 					
 					var generatePopup = function (e, popupContent) {
 
-						console.log(popupContent);
 						  var clickedPopup = e.target.getPopup();
 						  var newPopup = new L.popup({
 						    offset: new L.Point(0, -20),
