@@ -519,11 +519,25 @@ $(document)
 								&& current_layer == 2) {
 							
 							var msgMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
-							msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
-								+ replaceURLWithHTMLLinks(msg.properties.message)
-								+ '</strong>';
+							
+							if(containsURLWithHTMLLinks(msg.properties.message)){
+								msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
+									+ replaceURLWithHTMLLinks(msg.properties.message)
+									+ '</strong>';
+								msgMarker.data.weight = 1; //Weight is the level of Light or Noise
+								
+							}else {
+
+								msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
+									+ (msg.properties.message)
+									+ '</strong>';
+								msgMarker.data.weight = 0; //Weight is the level of Light or Noise
+								
+							}
+								
+								
+							
 							msgMarker.data.name = msg.properties.recordTime;
-							msgMarker.data.weight = 0; //Weight is the level of Light or Noise
 							msgMarker.data.category = msg.properties.readingType; //Category is readingType
 							
 							markerArray.push(msgMarker);
@@ -542,7 +556,14 @@ $(document)
 					
 					function replaceURLWithHTMLLinks(text) {
 						var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+						
 						return text.replace(exp, "<a href='$1'>$1</a>");
+					}
+					
+					function containsURLWithHTMLLinks(text) {
+						var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+						
+						return text.search(exp) >= 0;
 					}
 
 					function getOuterColor(type, d) {
@@ -902,18 +923,23 @@ $(document)
 							    iconAnchor: [20,40]})); 
 						
 						
-						  if (data.icon) {
-					            if (typeof data.icon === 'function') {
-					                marker.setIcon(data.icon(data, category));
-					            }
-					            else {
-//					                marker.setIcon(data.icon);
-					            	marker.setIcon(L.icon({
-									    iconUrl: getIcon(category, data.weight),
-									    iconAnchor: [20,40]})); 
-					            }
-					        }
-						  
+//						  if (data.icon) {
+//					            if (typeof data.icon === 'function') {
+//					                marker.setIcon(data.icon(data, category));
+//					            }
+//					            else {
+////					                marker.setIcon(data.icon);
+//					            	marker.setIcon(L.icon({
+//									    iconUrl: getIcon(category, data.weight),
+//									    iconAnchor: [20,40]})); 
+//					            }
+//					        }
+						  marker.on('mouseover', function(e){
+							    //do click event logic here
+//							    	leafletMarker.openPopup();
+							    	generatePopup(e, data.popup);
+							    	
+							    });
 						  
 						marker.on('click', function(e){
 						    //do click event logic here
@@ -921,15 +947,15 @@ $(document)
 						    	generatePopup(e, data.popup);
 						    	
 						    });
-				        if (data.popup) {
-				            var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
-				            if (marker.getPopup()) {
-				                marker.setPopupContent(content, data.popupOptions);
-				            }
-				            else {
-				                marker.bindPopup(content, data.popupOptions);
-				            }
-				        }
+//				        if (data.popup) {
+//				            var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
+//				            if (marker.getPopup()) {
+//				                marker.setPopupContent(content, data.popupOptions);
+//				            }
+//				            else {
+//				                marker.bindPopup(content, data.popupOptions);
+//				            }
+//				        }
 				    };
 					
 //					pruneCluster.PrepareLeafletMarker = function(leafletMarker, data) {

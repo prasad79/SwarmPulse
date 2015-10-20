@@ -636,6 +636,7 @@ opacity
 	width: 28px;
 	height: 28px;
 	text-align: center;
+	text-color: #FFFFFF;
 	margin-left: 5px;
 	margin-top: 5px;
 	border-radius: 50%;
@@ -1033,6 +1034,8 @@ opacity
 }
 
 .prunecluster-medium {
+	width: 30px;
+	height: 30px;
 	background-color: #f1d357;
 	background-color: rgba(241, 211, 87, 0.6);
 }
