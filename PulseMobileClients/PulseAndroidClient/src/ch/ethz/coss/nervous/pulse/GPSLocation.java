@@ -96,28 +96,28 @@ public class GPSLocation {
 			latitude =  location.getLatitude();
 			longitude = location.getLongitude();
 			
-			System.out.println("onLocationChanged called - lat = "+latitude+", long = "+longitude);
+			//System.out.println("onLocationChanged called - lat = "+latitude+", long = "+longitude);
 		}
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			// TODO Auto-generated method stub
 
-			System.out.println("onStatusChanged called - lat = "+latitude+", long = "+longitude);
+			//System.out.println("onStatusChanged called - lat = "+latitude+", long = "+longitude);
 
 		}
 
 		@Override
 		public void onProviderEnabled(String provider) {
 			// TODO Auto-generated method stub
-			System.out.println("onProviderEnabled called - lat = "+latitude+", long = "+longitude);
+			//System.out.println("onProviderEnabled called - lat = "+latitude+", long = "+longitude);
 
 		}
 
 		@Override
 		public void onProviderDisabled(String provider) {
 			// TODO Auto-generated method stub
-			System.out.println("onProviderDisabled called - lat = "+latitude+", long = "+longitude);
+			//System.out.println("onProviderDisabled called - lat = "+latitude+", long = "+longitude);
 
 		}
 	};

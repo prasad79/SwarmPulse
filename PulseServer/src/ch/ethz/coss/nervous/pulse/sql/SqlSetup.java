@@ -50,8 +50,8 @@ public class SqlSetup {
 
 	public PreparedStatement getSensorInsertStatement(Connection con,
 			int readingType) throws SQLException {
-		System.out.println("inside getSensorInsertStatement -  "+readingType);
-		System.out.println("elementsHash -  "+elementsHash.size());
+		//System.out.println("inside getSensorInsertStatement -  "+readingType);
+		//System.out.println("elementsHash -  "+elementsHash.size());
 		
 		
 		List<Integer> types = elementsHash.get((long)readingType);
@@ -66,10 +66,10 @@ public class SqlSetup {
 				sb.append("?");
 			}
 			sb.append(");");
-			System.out.println("inside after getSensorInsertStatement");
+			//System.out.println("inside after getSensorInsertStatement");
 			return con.prepareStatement(sb.toString());
 		} else {
-			System.out.println("inside getSensorInsertStatement returning null");
+			//System.out.println("inside getSensorInsertStatement returning null");
 			return null;
 		}
 		
@@ -88,7 +88,7 @@ public class SqlSetup {
 			sb.append("SELECT * FROM `ELEMENT_" + PulseConstants.getLabel(readingType) 
 					+ "` WHERE RecordTime BETWEEN "+startTime+" AND "+endTime+";");
 			
-			System.out.println(" ---- ---- "+sb.toString());
+			//System.out.println(" ---- ---- "+sb.toString());
 			return con.prepareStatement(sb.toString());
 		
 	}
@@ -96,16 +96,12 @@ public class SqlSetup {
 	private void setupPulseTables() {
 		for (PulseElementConfiguration element : config.getSensors()) {
 
-			System.out.println("SetUpPulseTables config.getSensor() size = "
-					+ config.getSensors().size());
+			//System.out.println("SetUpPulseTables config.getSensor() size = "
+//					+ config.getSensors().size());
 			List<Integer> types = new ArrayList<Integer>(element
 					.getAttributes().size());
 			StringBuilder sb = new StringBuilder();
-			if (element == null)
-				System.out.println("Element is null");
-			else
-				System.out.println("Element is not null "
-						+ element.getElementID());
+
 
 			sb.append("CREATE TABLE IF NOT EXISTS `" + config.getSqlDatabase()
 					+ "`.`ELEMENT_" + PulseConstants.getLabel(element.getElementID().intValue())
@@ -150,7 +146,7 @@ public class SqlSetup {
 			sb.append("PRIMARY KEY (`RecordID`));");
 			try {
 				String command = sb.toString();
-				System.out.println("SQL STATEMENT : " + command);
+				//System.out.println("SQL STATEMENT : " + command);
 				Statement stmt = con.createStatement();
 				stmt.execute(command);
 				stmt.close();

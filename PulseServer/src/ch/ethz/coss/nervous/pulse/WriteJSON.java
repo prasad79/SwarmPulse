@@ -105,7 +105,7 @@ public class WriteJSON {
 				feature.add("geometry", point);
 				JsonObject properties = new JsonObject();
 				if (reading.type == 0) {
-					System.out.println("Reading instance of light");
+					//System.out.println("Reading instance of light");
 					properties.addProperty("readingType", "" + 0);
 					properties.addProperty("lightLevel", ""
 							+ ((LightReading) reading).lightVal);
@@ -118,17 +118,17 @@ public class WriteJSON {
 					properties.addProperty("message", ""
 							+ ((TextVisual) reading).textMsg);
 				} else {
-					System.out.println("Reading instance not known");
+					//System.out.println("Reading instance not known");
 				}
 
 				feature.add("properties", properties);
 
 				// }
 			} catch (JsonParseException e) {
-				System.out.println("can't save json object: " + e.toString());
+				//System.out.println("can't save json object: " + e.toString());
 			}
 			// output the result
-			System.out.println("featureCollection=" + feature.toString());
+			//System.out.println("featureCollection=" + feature.toString());
 
 			String message = feature.toString();
 

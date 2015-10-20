@@ -56,7 +56,7 @@ public class SensorService extends Service implements SensorEventListener,
 
 	@Override
 	public synchronized void onSensorChanged(final SensorEvent event) {
-		// System.out.println("OnSensorChanged called");
+		// //System.out.println("OnSensorChanged called");
 
 		this.event = event;
 		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -68,7 +68,7 @@ public class SensorService extends Service implements SensorEventListener,
 			Log.d(DEBUG_TAG, reading.toString());
 
 			if (intent == null)
-				System.out.println("Intent is null");
+				//System.out.println("Intent is null");
 
 			intent.putExtra("AccReading", reading);
 			context.sendBroadcast(intent);
@@ -104,8 +104,8 @@ public class SensorService extends Service implements SensorEventListener,
 
 		} else {
 			this.event = null;
-			System.out.println("OnSensorChanged called. But unknown Sensor "
-					+ event.sensor.getName());
+			//System.out.println("OnSensorChanged called. But unknown Sensor "
+//					+ event.sensor.getName());
 		}
 
 	}
@@ -191,7 +191,7 @@ public class SensorService extends Service implements SensorEventListener,
 					Log.d(DEBUG_TAG, noiseReading.toString());
 
 					NoiseSensor sensorNoise = new NoiseSensor();
-					System.out.println("Sensor Noise activated");
+					//System.out.println("Sensor Noise activated");
 					sensorNoise.clearListeners();
 					sensorNoise.addListener(SensorService.this);
 					// Noise sensor doesn't really make sense with less than

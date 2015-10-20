@@ -34,8 +34,8 @@ public class PulseElementConfiguration {
 	}
 
 	public void setElementName(String elementName) {
-		System.out.println("PulseElementConfiguration ElementName = "
-				+ elementName);
+		//System.out.println("PulseElementConfiguration ElementName = "
+//				+ elementName);
 		this.elementName = elementName;
 	}
 

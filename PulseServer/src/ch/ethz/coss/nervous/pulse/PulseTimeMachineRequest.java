@@ -26,7 +26,7 @@ public class PulseTimeMachineRequest {
 	
 	public PulseTimeMachineRequest(String request, WebSocket webSocket) {
 		requestID++;
-		System.out.println("String request = "+request);
+		//System.out.println("String request = "+request);
 		String [] tokens = request.split(",");
 		
 		this.readingType = Integer.parseInt(tokens[1]);
@@ -39,12 +39,12 @@ public class PulseTimeMachineRequest {
 	
 	
 	public void print(){
-		System.out.println("/*************PulseTimeMachineRequest*******************/");
-		System.out.println("Request ID - "+requestID);
-		System.out.println("ReadingType - "+readingType);
-		System.out.println("StartTime - "+startTime);
-		System.out.println("EndTime - "+endTime);
-		System.out.println("/*******************************************************/");
+		//System.out.println("/*************PulseTimeMachineRequest*******************/");
+		//System.out.println("Request ID - "+requestID);
+		//System.out.println("ReadingType - "+readingType);
+		//System.out.println("StartTime - "+startTime);
+		//System.out.println("EndTime - "+endTime);
+		//System.out.println("/*******************************************************/");
 	}
 
 }

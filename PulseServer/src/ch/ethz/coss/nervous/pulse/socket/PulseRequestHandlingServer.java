@@ -43,7 +43,7 @@ public class PulseRequestHandlingServer implements Runnable {
 	public void addToRequestList(PulseTimeMachineRequest ptmr){
 		timeMachineRequestArrayList.add(ptmr);
 		
-		System.out.println("added ptmr : \n");
+		//System.out.println("added ptmr : \n");
 		ptmr.print();
 	}
 	

@@ -1,16 +1,15 @@
 package ch.ethz.coss.nervous.pulse.sql;
 
 import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import ch.ethz.coss.nervous.pulse.PulseConstants;
 import ch.ethz.coss.nervous.pulse.PulseWebSocketServer;
 import ch.ethz.coss.nervous.pulse.model.LightReading;
 import ch.ethz.coss.nervous.pulse.model.NoiseReading;
@@ -18,6 +17,7 @@ import ch.ethz.coss.nervous.pulse.model.TextVisual;
 import ch.ethz.coss.nervous.pulse.model.Visual;
 import ch.ethz.coss.nervous.pulse.socket.ConcurrentSocketWorker;
 import ch.ethz.coss.nervous.pulse.utils.Log;
+import flexjson.JSONDeserializer;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -39,21 +39,23 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 	@Override
 	public void run() {
 		// InputStream is;
-		ObjectInputStream in = null;
+		DataInputStream in = null;
 		try {
-			in = new ObjectInputStream(new BufferedInputStream(
+			//System.out.println("inside try loop");
+			in = new DataInputStream(new BufferedInputStream(
 					socket.getInputStream()));
 			boolean connected = true;
 			while (connected) {
 				connected &= !socket.isClosed();
-
+				//System.out.println("before reading JSON STRING = ");
 				Visual reading = null;
 				JsonObject featureCollection = new JsonObject();
 				JsonArray features = new JsonArray();
 				JsonObject feature = null;
 				try {
-
-					reading = (Visual) in.readObject();
+					String json =  in.readUTF();
+					//System.out.println("JSON STRING = "+json);
+					reading = new JSONDeserializer<Visual>().deserialize(json, Visual.class);       
 					feature = new JsonObject();
 
 					feature.addProperty("type", "Feature");
@@ -74,7 +76,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					
 					JsonObject properties = new JsonObject();
 					if (reading.type == 0) {
-						System.out.println("Reading instance of light");
+						//System.out.println("Reading instance of light");
 						properties.addProperty("readingType", "" + 0);
 						properties.addProperty("level", ""
 								+ ((LightReading) reading).lightVal);
@@ -87,7 +89,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 						properties.addProperty("message", ""
 								+ ((TextVisual) reading).textMsg);
 					} else {
-						System.out.println("Reading instance not known");
+						//System.out.println("Reading instance not known");
 					}
 					properties.addProperty("recordTime", reading.timestamp);
 					feature.add("properties", properties);
@@ -95,11 +97,11 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					featureCollection.add("features", features);
 					/***** SQL insert ********/
 					// Insert data
-					System.out.println("before uploading SQL - reading uuid = "+reading.uuid);
+					//System.out.println("before uploading SQL - reading uuid = "+reading.uuid);
 					PreparedStatement datastmt = sqlse
 							.getSensorInsertStatement(connection,reading.type);
 					if (datastmt != null) {
-						System.out.println("datastmt - " + datastmt.toString());
+						//System.out.println("datastmt - " + datastmt.toString());
 						List<Integer> types = sqlse
 								.getArgumentExpectation((long)reading.type);
 						datastmt.setString(1, reading.uuid);
@@ -122,8 +124,8 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 							datastmt.setDouble(4, reading.location.latnLong[0]);
 							datastmt.setDouble(5, reading.location.latnLong[1]);
 						}
-						System.out.println("datastmt after populating - "
-								+ datastmt.toString());
+						//System.out.println("datastmt after populating - "
+//								+ datastmt.toString());
 
 						datastmt.addBatch();
 						// for (SensorData sd : sensorValues) {
@@ -187,7 +189,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 							+ e.toString());
 				}
 				// output the result
-				System.out.println("featureCollection=" + featureCollection.toString());
+				//System.out.println("featureCollection=" + featureCollection.toString());
 
 				String message = featureCollection.toString();
 				pSocketServer.sendToAll(message);

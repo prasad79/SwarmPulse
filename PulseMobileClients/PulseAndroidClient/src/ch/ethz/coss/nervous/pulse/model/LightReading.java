@@ -7,6 +7,10 @@ public class LightReading extends Visual implements Serializable {
 
 	public double lightVal;
 
+	public LightReading(){
+		
+	}
+	
 	public LightReading(String uuid, double lightVal, long timestamp, VisualLocation loc) {
 		type = 0;
 		this.uuid = uuid;
@@ -21,4 +25,6 @@ public class LightReading extends Visual implements Serializable {
 		return "LightReading = (" + "," + timestamp + ") -> " + "(" + lightVal
 				+ ")  @ " + Arrays.toString(location.latnLong);
 	}
+
+
 }

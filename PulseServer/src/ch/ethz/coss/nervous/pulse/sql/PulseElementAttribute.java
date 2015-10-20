@@ -11,7 +11,7 @@ class PulseElementAttribute {
 	}
 
 	public void setName(String name) {
-		System.out.println("PulseElementAttribute  name -- " + name);
+		//System.out.println("PulseElementAttribute  name -- " + name);
 		this.name = name;
 	}
 
