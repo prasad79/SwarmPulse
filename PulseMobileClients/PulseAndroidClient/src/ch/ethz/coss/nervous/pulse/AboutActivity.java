@@ -40,8 +40,6 @@ public class AboutActivity extends Activity{
 		
 		txtVersion.setText("v"+version+" ("+verCode+")");
 		
-		System.out.println("v"+version+" ("+verCode+")");
-		
 		((Button) findViewById(R.id.rateButton))
 		.setOnClickListener(new OnClickListener() {
 			@Override

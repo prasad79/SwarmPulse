@@ -7,6 +7,11 @@ public class NoiseReading extends Visual implements Serializable {
 
 	public double soundVal;
 
+	
+	public NoiseReading(){
+		
+	}
+
 	public NoiseReading(String uuid, double soundVal, long timestamp, VisualLocation loc) {
 		type = 1;
 		this.uuid = uuid;

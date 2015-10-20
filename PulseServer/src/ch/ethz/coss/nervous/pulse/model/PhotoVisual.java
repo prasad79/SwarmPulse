@@ -4,6 +4,10 @@ public class PhotoVisual extends Visual {
 
 	public String textMsg = null;
 
+	
+	public PhotoVisual() {
+	}
+	
 	public PhotoVisual(String txtMsg) {
 		this.textMsg = txtMsg;
 	}

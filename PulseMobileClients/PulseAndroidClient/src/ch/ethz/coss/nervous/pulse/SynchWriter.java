@@ -1,6 +1,7 @@
 package ch.ethz.coss.nervous.pulse;
 
 import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -9,6 +10,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import android.os.AsyncTask;
+import ch.ethz.coss.nervous.pulse.model.Visual;
+import flexjson.JSONSerializer;
 
 public class SynchWriter {
 	
@@ -17,7 +20,7 @@ public class SynchWriter {
 	OutputTask outTask = new OutputTask();
 	String ipAddress;
 	int port;
-	boolean printTrace = false;
+	boolean printTrace = true;
 
 	public SynchWriter(String ipAddress, int port, int writingInterval)
 			throws IOException {
@@ -35,24 +38,24 @@ public class SynchWriter {
 
 	class OutputTask extends AsyncTask {
 
-		ObjectOutputStream oos;
+		DataOutputStream oos;
 
-		private synchronized ObjectOutputStream getObjectOutputStream() {
+		private synchronized DataOutputStream getObjectOutputStream() {
 
 			if (oos == null) {
 				try {
-					System.out.println("Before Writing to server at "
-							+ ipAddress + ":" + port);
+					//System.out.println("Before Writing to server at "
+//							+ ipAddress + ":" + port);
 					@SuppressWarnings("resource")
 					Socket socket = new Socket();
 					socket.connect(new InetSocketAddress(ipAddress, port), 1000);
-					// System.out.println("Writing to server");
+					// //System.out.println("Writing to server");
 					OutputStream os = new BufferedOutputStream(
 							socket.getOutputStream());
-					oos = new ObjectOutputStream(os);
+					oos = new DataOutputStream(os);
 				} catch (Exception e) {
-					System.out.println("Exception thrown here "
-							+ e.getMessage());
+					//System.out.println("Exception thrown here "
+//							+ e.getMessage());
 					e.printStackTrace();
 					if (printTrace)
 						e.printStackTrace();
@@ -68,7 +71,7 @@ public class SynchWriter {
 					}
 				}
 			} else {
-				// System.out.println("oos is null");
+				// //System.out.println("oos is null");
 			}
 			return oos;
 		}
@@ -87,10 +90,10 @@ public class SynchWriter {
 		@SuppressWarnings("finally")
 		@Override
 		protected Boolean doInBackground(Object... params) {
-			ArrayList<Object> buffer = null;
+			ArrayList<Visual> buffer = null;
 
 			synchronized (data) {
-				buffer = (ArrayList<Object>) data.clone();
+				buffer = (ArrayList<Visual>) data.clone();
 				data.clear();
 			}
 
@@ -100,8 +103,11 @@ public class SynchWriter {
 				return false;
 
 			try {
-				for (Object o : buffer) {
-					oos.writeObject(o);
+				for (Visual o : buffer) {
+					String json = new JSONSerializer().deepSerialize(o);
+					
+					//System.out.println("JSON -- "+json);
+					oos.writeUTF(json);
 				}
 //				oos.flush();
 			} catch (Exception e) {

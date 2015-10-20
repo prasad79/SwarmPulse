@@ -44,7 +44,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 					ResultSet rs = datastmt.executeQuery();
 					featureCollection = new JsonObject();
 					features = new JsonArray();
-					System.out.println("SQL query result size = "+rs.getFetchSize());
+					//System.out.println("SQL query result size = "+rs.getFetchSize());
 					while (rs.next()) {
 					
 						String lat = rs.getString("lat");
@@ -63,7 +63,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 						JsonObject properties = new JsonObject();
 						if (ptmRequest.readingType == 0) {
 							String luxVal = rs.getString("Light");
-							System.out.println("Reading instance of light");
+							//System.out.println("Reading instance of light");
 							properties.addProperty("readingType", "" + 0);
 							properties.addProperty("level",luxVal);
 						} else if (ptmRequest.readingType == 1) {
@@ -75,7 +75,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 							properties.addProperty("readingType", "" + 2);
 							properties.addProperty("message", message);
 						} else {
-							System.out.println("Reading instance not known");
+							//System.out.println("Reading instance not known");
 						}
 						feature.add("properties", properties);
 						
@@ -98,7 +98,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 					}
 					
 					featureCollection.add("features", features);
-					System.out.println("Feature collection + "+featureCollection.toString());
+					//System.out.println("Feature collection + "+featureCollection.toString());
 					pSocketServer.sendToSocket(ptmRequest.webSocket, ptmRequest.requestID, featureCollection.toString(), true);
 					
 					/*************/
