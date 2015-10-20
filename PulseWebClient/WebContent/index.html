@@ -57,12 +57,25 @@
 
 	<script type="text/javascript">
 	$(function () {
-		$("#txtDate").datepicker();
+		$("#txtDate").datepicker({
+    beforeShow: function() {
+        setTimeout(function(){
+            $('.ui-datepicker').css('z-index', 99999);
+        }, 0);
+    }
+});
 	});
 	</script>
 	<script type="text/javascript">
 	$(function () {
-	$('#txtTime').timepicker();
+	$('#txtTime').timepicker({
+    //comment the beforeShow handler if you want to see the ugly overlay
+    beforeShow: function() {
+        setTimeout(function(){
+            $('.ui-timepicker').css('z-index', 99999);
+        }, 0);
+    }
+});
 	});
 	</script>
 	<script type="text/javascript">
