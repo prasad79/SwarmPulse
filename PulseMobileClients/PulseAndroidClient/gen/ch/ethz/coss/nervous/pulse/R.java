@@ -42,15 +42,13 @@ public final class R {
         public static final int circle_button_pressed=0x7f020003;
         public static final int circular_button=0x7f020004;
         public static final int ic_about=0x7f020005;
-        public static final int ic_accel=0x7f020006;
-        public static final int ic_graph=0x7f020007;
-        public static final int ic_launcher=0x7f020008;
-        public static final int ic_light=0x7f020009;
-        public static final int ic_noise=0x7f02000a;
-        public static final int ic_settings=0x7f02000b;
-        public static final int ic_test=0x7f02000c;
-        public static final int ic_text=0x7f02000d;
-        public static final int ic_visual=0x7f02000e;
+        public static final int ic_launcher=0x7f020006;
+        public static final int ic_light=0x7f020007;
+        public static final int ic_noise=0x7f020008;
+        public static final int ic_settings=0x7f020009;
+        public static final int ic_test=0x7f02000a;
+        public static final int ic_text=0x7f02000b;
+        public static final int ic_visual=0x7f02000c;
     }
     public static final class id {
         public static final int detail=0x7f0b0000;
