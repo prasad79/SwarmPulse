@@ -2,7 +2,9 @@ package ch.ethz.coss.nervous.pulse;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.hardware.Sensor;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 @SuppressLint({ "Wakelock" })
 public class MainActivity extends Activity {
@@ -40,11 +43,22 @@ public class MainActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Application.registerListener(Sensor.TYPE_LIGHT);
-						// Start and intent for the logged out activity
-						startActivity(new Intent(MainActivity.this,
-								LightSensorReadingActivity.class));
-
+						if(GPSLocation.GPS_AVAILABLE){
+							Application.registerListener(Sensor.TYPE_LIGHT);
+							// Start and intent for the logged out activity
+							startActivity(new Intent(MainActivity.this,
+									LightSensorReadingActivity.class));
+						}else{
+							GPSLocation.getInstance(MainActivity.this);
+							if(!GPSLocation.GPS_AVAILABLE){
+								showLocationAlert();
+							}else {
+								Application.registerListener(Sensor.TYPE_LIGHT);
+								startActivity(new Intent(MainActivity.this,
+										LightSensorReadingActivity.class));
+							}	
+						}
+					
 					}
 				});
 
@@ -52,10 +66,21 @@ public class MainActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						if(GPSLocation.GPS_AVAILABLE){
 						Application.registerListener(0); // FOR SOUND
 
 						startActivity(new Intent(MainActivity.this,
 								NoiseSensorReadingActivity.class));
+						}else{
+							GPSLocation.getInstance(MainActivity.this);
+							if(!GPSLocation.GPS_AVAILABLE){
+								showLocationAlert();
+							}else {
+								Application.registerListener(0);
+								startActivity(new Intent(MainActivity.this,
+										NoiseSensorReadingActivity.class));
+							}	
+						}
 
 					}
 				});
@@ -64,8 +89,18 @@ public class MainActivity extends Activity {
 		txtButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(MainActivity.this,
+				if(GPSLocation.GPS_AVAILABLE){
+					startActivity(new Intent(MainActivity.this,
 						TextMessageUploadActivity.class));
+				}else{
+					GPSLocation.getInstance(MainActivity.this);
+					if(!GPSLocation.GPS_AVAILABLE){
+						showLocationAlert();
+					}else {
+						startActivity(new Intent(MainActivity.this,
+								TextMessageUploadActivity.class));
+					}
+				}
 			}
 		});
 
@@ -157,5 +192,34 @@ public class MainActivity extends Activity {
 		Log.d(DEBUG_TAG, "onStart");
 		Application.unregisterSensorListeners();
 		super.onStart();
+	}
+	
+	
+	 private void showLocationAlert() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					MainActivity.this);
+			builder.setTitle("Location settings disabled"); // GPS not found
+			builder.setMessage("This application requires the usage of location features. Please change your location settings."); // Want
+																		// to
+																		// enable?
+			builder.setPositiveButton("Continue",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialogInterface,
+								int i) {
+							startActivity(new Intent(
+									android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+						}
+					});
+			builder.setNegativeButton("Exit", 
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialogInterface,
+						int i) {
+					System.exit(0);
+				}
+			});
+			builder.create().show();
+			Toast.makeText(MainActivity.this, "You location could not be determined. Please enable your Network Providers.", Toast.LENGTH_LONG).show();
+
+		
 	}
 }

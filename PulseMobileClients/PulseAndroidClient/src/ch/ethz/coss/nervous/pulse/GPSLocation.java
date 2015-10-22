@@ -2,7 +2,10 @@ package ch.ethz.coss.nervous.pulse;
 
 import java.util.Random;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,6 +16,9 @@ import android.widget.Toast;
 import ch.ethz.coss.nervous.pulse.utils.Utils;
 
 public class GPSLocation {
+	
+	public static boolean GPS_AVAILABLE = false;
+	public static boolean CONNECTION_AVAILABLE = false;
 
 	private static GPSLocation _instance = null;
 
@@ -34,11 +40,10 @@ public class GPSLocation {
 	// Declaring a Location Manager
 	protected LocationManager locationManager;
 	
-	
 	private boolean gps_enabled = false, network_enabled = false;
 
 	public static GPSLocation getInstance(Context context) {
-		if (_instance == null){
+		if (_instance == null || !GPS_AVAILABLE){
 
 			_instance = new GPSLocation(context);
 		}
@@ -46,7 +51,7 @@ public class GPSLocation {
 		return _instance;
 	}
 
-	private GPSLocation(Context context) {
+	private GPSLocation(final Context context) {
 		this.mContext = context;
 
 		locationManager = (LocationManager) mContext
@@ -55,28 +60,56 @@ public class GPSLocation {
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
 				10000, 100, mLocationListener);
 
-        try {
-            network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        // don't start listeners if no provider is enabled
-        if (!network_enabled) {
-            Toast.makeText(mContext, "You location could not be determined. Please enable your Network Providers.", Toast.LENGTH_LONG).show();
-
-
-        }
+      
+        
+    	if (!locationManager
+				.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+			showLocationAlert();
+			locationManager.removeUpdates(mLocationListener);
+			locationManager = null;
+			_instance = null;
+			return;
+		}else 
+			GPS_AVAILABLE = true;
+		
 
         //check network connectivity before refresh
-        boolean checkConnection = isNetworkAvailable();
-        if(!checkConnection){
-            Toast.makeText(mContext, "Check your Network Connectivity", Toast.LENGTH_LONG).show();
+    	CONNECTION_AVAILABLE = isNetworkAvailable();
+        if(!CONNECTION_AVAILABLE){
+            Toast.makeText(mContext, "Please check your Network Connectivity.", Toast.LENGTH_LONG).show();
         }
 	}
 
 	
-	 //Method to check network connectivity
+	 private void showLocationAlert() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					mContext);
+			builder.setTitle("Location settings disabled"); // GPS not found
+			builder.setMessage("This application requires the usage of location features. Please change your location settings."); // Want
+																		// to
+																		// enable?
+			builder.setPositiveButton("Continue",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialogInterface,
+								int i) {
+							mContext.startActivity(new Intent(
+									android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+						}
+					});
+			builder.setNegativeButton("Exit", 
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialogInterface,
+						int i) {
+					System.exit(0);
+				}
+			});
+			builder.create().show();
+			Toast.makeText(mContext, "You location could not be determined. Please enable your Network Providers.", Toast.LENGTH_LONG).show();
+
+		
+	}
+
+	//Method to check network connectivity
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager 
         = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
