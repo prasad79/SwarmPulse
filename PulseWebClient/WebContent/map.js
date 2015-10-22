@@ -18,7 +18,27 @@ $(document)
 					new L.Control.Zoom({
 						position : 'topright'
 					}).addTo(map);
-
+					
+					
+					var mapStandard = 
+					L.tileLayer(
+						    'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+						    attribution: '&copy; OpenStreetMap contributors, CC-BY-SA',
+						    maxZoom: 19
+						    });
+					
+					mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+					mapquestLink = '<a href="http://www.mapquest.com//">MapQuest</a>';
+					mapquestPic = '<img src="http://developer.mapquest.com/content/osm/mq_logo.png">';
+					
+					var mapSatellite = 
+						L.tileLayer(
+							    'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+							    attribution: '&copy; '+mapLink+'. Tiles courtesy of '+mapquestLink+mapquestPic,
+							    maxZoom: 22,
+							    subdomains: '1234',
+							    });
+					
 					var mapNoLabels = L
 							.tileLayer(
 									'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
@@ -62,8 +82,10 @@ $(document)
 
 					/*****************Layer Control********************* */
 					var baseMaps = {
-						"Hide Labels" : mapNoLabels,
-						"Show Labels" : mapWithLabels
+						"Standard Map": mapStandard,
+						"Satellite Map": mapSatellite,
+						"Dark no labels Map" : mapNoLabels,
+						"Dark with labels Map" : mapWithLabels
 					};
 
 					var groupedOverlays = {
@@ -247,7 +269,7 @@ $(document)
 				
 					/************ */
 
-					mapNoLabels.addTo(map);
+					mapStandard.addTo(map);
 					
 
 					map.on('overlayadd', function(a) {
