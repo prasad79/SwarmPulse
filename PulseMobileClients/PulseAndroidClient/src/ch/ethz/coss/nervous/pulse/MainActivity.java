@@ -37,8 +37,10 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		
 		Application.initSensorService(MainActivity.this);
 
+		
 		((ImageButton) findViewById(R.id.icon_light))
 				.setOnClickListener(new OnClickListener() {
 					@Override
@@ -147,7 +149,45 @@ public class MainActivity extends Activity {
 		wifiLock.acquire();
 
 		GPSLocation.getInstance(this);
+		
 
+		
+	    // Get intent, action and MIME type
+		   Intent intent = getIntent();
+		    String action = intent.getAction();
+		    String type = intent.getType();
+
+		    if (Intent.ACTION_SEND.equals(action) && type != null) {
+		        if ("text/plain".equals(type)) {
+		            handleSendText(intent); // Handle text being sent
+		        } 
+		    } 
+
+	}
+
+	private void handleSendText(Intent intent) {
+		String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+	    if (sharedText != null) {
+	    	Intent msgIntent = new Intent();
+	    	msgIntent.setClass(this, TextMessageUploadActivity.class);
+	    	msgIntent.putExtra("MESSAGE", sharedText);
+    		
+    		
+	    	if(GPSLocation.GPS_AVAILABLE){
+	    		
+	    		
+	    		
+				startActivity(msgIntent);
+			}else{
+				GPSLocation.getInstance(MainActivity.this);
+				if(!GPSLocation.GPS_AVAILABLE){
+					showLocationAlert();
+				}else {
+					startActivity(msgIntent);
+				}
+			}
+	    }
+		
 	}
 
 	private OnSharedPreferenceChangeListener listener;
