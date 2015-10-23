@@ -3,7 +3,7 @@ $(document)
 				function() {
 					var websocket;
 					var counter = 0;
-					var current_state = 0; //0 - Real-Time, 1 - Time-Machine
+					var current_state = 0; // 0 - Real-Time, 1 - Time-Machine
 					var current_layer = -1;
 					var last_layer = 0;
 							
@@ -78,9 +78,9 @@ $(document)
 
 					info.addTo(map);
 
-					/********************************* */
+					/** ******************************* */
 
-					/*****************Layer Control********************* */
+					/** ***************Layer Control********************* */
 					var baseMaps = {
 						"Standard Map": mapStandard,
 						"Satellite Map": mapSatellite,
@@ -107,14 +107,14 @@ $(document)
 							groupedOverlays, options);
 
 					map.addControl(layerControl);
-					/*****************Layer Control********************* */
+					/** ***************Layer Control********************* */
 					
 		
 					
 
-					/************************************************************************/
+					/** ********************************************************************* */
 
-					/*******Legend for Color levels for noise***** */
+					/** *****Legend for Color levels for noise***** */
 					var legendSound = L.control({
 						position : 'bottomleft'
 					});
@@ -185,7 +185,7 @@ $(document)
 							icon : 'fa-mobile fa-lg',
 							title : 'Download Mobile App',
 							onClick : function(control) {
-//								control.state("connecting");
+// control.state("connecting");
 								// window.open("./Pulse.apk");
 								showDialog();
 							}
@@ -194,8 +194,8 @@ $(document)
 					});
 
 					downloadAppButton.addTo(map);
-					/*********************************/
-					/*************Server Connected Status Button**************** */
+					/** ****************************** */
+					/** ***********Server Connected Status Button**************** */
 					var conButton = L.easyButton({
 						states : [ {
 							stateName : 'disconnected',
@@ -224,8 +224,11 @@ $(document)
 					conButton.addTo(map);
 					conButton.state('connecting');
 
-					/***************************** */
-					/*************Real Time or Time Machine Button**************** */
+					/** *************************** */
+					/**
+					 * ***********Real Time or Time Machine
+					 * Button****************
+					 */
 					var realTimeButton = L.easyButton({
 						states : [ {
 							stateName : 'realTime',
@@ -246,11 +249,25 @@ $(document)
 							title : 'Time-Machine',
 							onClick : function(control) {
 								control.state("realTime");
-//								doConnect();
-								resetToLightReadings();
+// doConnect();
+								
+								if(current_layer == 0){
+									resetToLightReadings();
+									last_layer = 0;
+								}else if (current_layer == 1) {
+
+									
+									resetToNoiseReadings();
+									last_layer = 1;
+								} else if (current_layer == 2) {
+
+//									current_layer = 2;
+									resetToMessagesOverlay();
+									last_layer = 2;
+								}
 								changeSocketToRealTime();
-//								sliderControl.removeFrom(controlDiv);
-//								document.getElementById('footer').removeChild(controlDiv);
+// sliderControl.removeFrom(controlDiv);
+// document.getElementById('footer').removeChild(controlDiv);
 
 								$('#datePicker').hide(0);
 							}
@@ -267,14 +284,14 @@ $(document)
 					
 
 				
-					/************ */
+					/** ********** */
 
 					mapStandard.addTo(map);
 					
 
 					map.on('overlayadd', function(a) {
-//						console.log("a.name "+a.name);
-//						console.log("current_layer "+current_layer);
+// console.log("a.name "+a.name);
+// console.log("current_layer "+current_layer);
 						if (a.name == "Light" && current_layer != 0) {
 							
 							resetToLightReadings();
@@ -286,7 +303,7 @@ $(document)
 							last_layer = 1;
 						} else if (a.name == "Messages" && current_layer != 2) {
 
-							current_layer = 2;
+//							current_layer = 2;
 							resetToMessagesOverlay();
 							last_layer = 2;
 						}
@@ -346,7 +363,7 @@ $(document)
 						counter = 0;
 					}
 
-				/**************************************/
+				/** *********************************** */
 					
 					function getIcon(category, weight) {
 						
@@ -411,59 +428,59 @@ $(document)
 							return '#3A6A34';
 						}
 					}
-					/**********************************/
+					/** ******************************* */
 					var pruneCluster =  new PruneClusterForLeaflet();
 						
 
-//					var markersCluster = new L.MarkerClusterGroup(
-//							{
-//								iconCreateFunction : function(cluster) {
+// var markersCluster = new L.MarkerClusterGroup(
+// {
+// iconCreateFunction : function(cluster) {
 //
-//									var markers = cluster.getAllChildMarkers();
-//									var markersCount = markers.length;
-//									var width = 0;
-//									var height = 0;
+// var markers = cluster.getAllChildMarkers();
+// var markersCount = markers.length;
+// var width = 0;
+// var height = 0;
 //
-//									if (markersCount < 10) {
-//										width = 15;
-//										height = 15;
-//									} else if (markersCount < 1000) {
-//										width = 20;
-//										height = 20;
-//									} else if (markersCount < 10000) {
-//										width = 25;
-//										height = 25;
-//									} else {
-//										width = 30;
-//										height = 30;
-//									}
+// if (markersCount < 10) {
+// width = 15;
+// height = 15;
+// } else if (markersCount < 1000) {
+// width = 20;
+// height = 20;
+// } else if (markersCount < 10000) {
+// width = 25;
+// height = 25;
+// } else {
+// width = 30;
+// height = 30;
+// }
 //
-//									var bgColor = getMarkerClusterColor(cluster
-//											.getAllChildMarkers());
+// var bgColor = getMarkerClusterColor(cluster
+// .getAllChildMarkers());
 //
-//									return new L.DivIcon(
-//											{
-//												html : '<div style = "width:'
-//														+ width
-//														+ 'px; height:'
-//														+ height
-//														+ 'px; border-radius:50%; font-size:10px; color:#000; line-height: '
-//														+ height
-//														+ 'px; text-align:center; background:'
-//														+ bgColor
-//														+ '">'
-//														+ cluster
-//																.getChildCount()
-//														+ '</div>',
+// return new L.DivIcon(
+// {
+// html : '<div style = "width:'
+// + width
+// + 'px; height:'
+// + height
+// + 'px; border-radius:50%; font-size:10px; color:#000; line-height: '
+// + height
+// + 'px; text-align:center; background:'
+// + bgColor
+// + '">'
+// + cluster
+// .getChildCount()
+// + '</div>',
 //
-//												className : 'cluster',
-//												iconSize : L.point(0, 0)
-//											});
-//								},
-//								disableClusteringAtZoom : 10,
-//								maxClusterRadius : 50,
-//								showCoverageOnHover : true
-//							});
+// className : 'cluster',
+// iconSize : L.point(0, 0)
+// });
+// },
+// disableClusteringAtZoom : 10,
+// maxClusterRadius : 50,
+// showCoverageOnHover : true
+// });
 
 					function getMarkerClusterColor(markers) {
 						var sum;
@@ -500,24 +517,33 @@ $(document)
 											+ msg.properties.level
 											+ '</strong> lux';
 							lightMarker.data.name = msg.properties.recordTime;
-							//lightMarker.data.id = msg.properties.readingType;
-							lightMarker.data.weight = getLightId(msg.properties.level); //Weight is the level of Light or Noise
-							lightMarker.data.category = msg.properties.readingType; //Category is readingType
+							// lightMarker.data.id = msg.properties.readingType;
+							lightMarker.data.weight = getLightId(msg.properties.level); // Weight
+																						// is
+																						// the
+																						// level
+																						// of
+																						// Light
+																						// or
+																						// Noise
+							lightMarker.data.category = msg.properties.readingType; // Category
+																					// is
+																					// readingType
 							lightMarker.weight = getLightId(msg.properties.level);
-//							lightMarker.bindPopup(
-//									'<p style="color:black" align="center"><strong>'
-//											+ msg.properties.level
-//											+ '</strong> lux', {
-//										closeButton : false,
-//										offset : L.point(0, -5)
-//									});
+// lightMarker.bindPopup(
+// '<p style="color:black" align="center"><strong>'
+// + msg.properties.level
+// + '</strong> lux', {
+// closeButton : false,
+// offset : L.point(0, -5)
+// });
 
-//							lightMarker.on('mouseover', function() {
-//								lightMarker.openPopup();
-//							});
-//							lightMarker.on('mouseout', function() {
-//								lightMarker.closePopup();
-//							});
+// lightMarker.on('mouseover', function() {
+// lightMarker.openPopup();
+// });
+// lightMarker.on('mouseout', function() {
+// lightMarker.closePopup();
+// });
 							markerArray.push(lightMarker);
 							pruneCluster.RegisterMarker(lightMarker);
 							
@@ -530,9 +556,18 @@ $(document)
 								+ msg.properties.level
 								+ '</strong> db';
 							noiseMarker.data.name = msg.properties.recordTime;
-//							noiseMarker.data.id = getNoiseId(msg.properties.level);
-							noiseMarker.data.weight = getNoiseId(msg.properties.level); //Weight is the level of Light or Noise
-							noiseMarker.data.category = msg.properties.readingType; //Category is readingType
+// noiseMarker.data.id = getNoiseId(msg.properties.level);
+							noiseMarker.data.weight = getNoiseId(msg.properties.level); // Weight
+																						// is
+																						// the
+																						// level
+																						// of
+																						// Light
+																						// or
+																						// Noise
+							noiseMarker.data.category = msg.properties.readingType; // Category
+																					// is
+																					// readingType
 							noiseMarker.weight = getNoiseId(msg.properties.level);
 							markerArray.push(noiseMarker);
 							pruneCluster.RegisterMarker(noiseMarker);
@@ -544,23 +579,29 @@ $(document)
 							
 							if(containsURLWithHTMLLinks(msg.properties.message)){
 								msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
-									+ replaceURLWithHTMLLinks(msg.properties.message)
+									+ replaceURLWithHTMLLinks(msg.properties.message) + "&output=embed"
 									+ '</strong>';
-								msgMarker.data.weight = 1; //Weight is the level of Light or Noise
+								msgMarker.data.weight = 1; // Weight is the
+															// level of Light or
+															// Noise
 								
 							}else {
 
 								msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
 									+ (msg.properties.message)
 									+ '</strong>';
-								msgMarker.data.weight = 0; //Weight is the level of Light or Noise
+								msgMarker.data.weight = 0; // Weight is the
+															// level of Light or
+															// Noise
 								
 							}
 								
 								
 							
 							msgMarker.data.name = msg.properties.recordTime;
-							msgMarker.data.category = msg.properties.readingType; //Category is readingType
+							msgMarker.data.category = msg.properties.readingType; // Category
+																					// is
+																					// readingType
 							
 							markerArray.push(msgMarker);
 							pruneCluster.RegisterMarker(msgMarker);
@@ -577,7 +618,9 @@ $(document)
 					
 					
 					function replaceURLWithHTMLLinks(text) {
+						
 						var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+						
 						
 						return text.replace(exp, "<a href='$1'>$1</a>");
 					}
@@ -614,7 +657,7 @@ $(document)
 						update_map : function() {
 							if(current_state == 0)
 								updateMarkerArray();
-//							box.show('Counter :' + counter);
+// box.show('Counter :' + counter);
 						},
 						position : 'bottomright',
 						interval : 10000
@@ -626,9 +669,10 @@ $(document)
 						showSpinner();
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
-//							if (currentTime - marker.options.startTime >= 60000 * 5) {
-							if(currentTime - marker.data.name >= 60000 * 5){ //5 minutes
-//								markersCluster.removeLayer(marker);
+// if (currentTime - marker.options.startTime >= 60000 * 5) {
+							if(currentTime - marker.data.name >= 60000 * 5){ // 5
+																				// minutes
+// markersCluster.removeLayer(marker);
 								var myArray = [];
 								myArray.push(marker);
 								pruneCluster.RemoveMarkers(myArray);
@@ -690,7 +734,7 @@ $(document)
 					function onMessage(evt) {
 						
 						hideSpinner();
-//						console.log(evt.data);
+// console.log(evt.data);
 						var msg = JSON.parse(evt.data);
 						var features = msg.features;
 						 if (Array.isArray(features)) {
@@ -706,8 +750,8 @@ $(document)
 							
 						 }
 						
-//						console.log("msg.properties.readingType "
-//								+ msg.properties.readingType);
+// console.log("msg.properties.readingType "
+// + msg.properties.readingType);
 						
 
 					}
@@ -755,12 +799,12 @@ $(document)
 							map.addLayer(noiseMarkers)	
 						} else if(current_layer == 2){
 							msgMarkers.addLayer(pruneCluster);
-							map.addLayer(noiseMarkers);
+							map.addLayer(msgMarkers);
 						}
 					}
 					
 					window.prepareTimeMachineReq = function(){
-//						console.log("inside prepareTimeMachineReq");
+// console.log("inside prepareTimeMachineReq");
 						
 						 var txtDate =document.getElementById('txtDate').value;
 						 var txtTime =document.getElementById('txtTime').value;
@@ -861,30 +905,38 @@ $(document)
 					}
 					
 					function showSpinner() {
-						/**********************SPINNER***************************/					
-						map.spin(true, {lines: 11 // The number of lines to draw
+						/** ********************SPINNER************************** */					
+						map.spin(true, {lines: 11 // The number of lines to
+													// draw
 							, length: 37 // The length of each line
 							, width: 10 // The line thickness
 							, radius: 22 // The radius of the inner circle
-							, scale: 0.5 // Scales overall size of the spinner
+							, scale: 0.5 // Scales overall size of the
+											// spinner
 							, corners: 1 // Corner roundness (0..1)
-							, color: '#FFF' // #rgb or #rrggbb or array of colors
+							, color: '#FFF' // #rgb or #rrggbb or array of
+											// colors
 							, opacity: 0.25 // Opacity of the lines
 							, rotate: 0 // The rotation offset
-							, direction: 1 // 1: clockwise, -1: counterclockwise
+							, direction: 1 // 1: clockwise, -1:
+											// counterclockwise
 							, speed: 1 // Rounds per second
 							, trail: 60 // Afterglow percentage
-							, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-							, zIndex: 2e9 // The z-index (defaults to 2000000000)
-							, className: 'spinner' // The CSS class to assign to the spinner
+							, fps: 20 // Frames per second when using
+										// setTimeout() as a fallback for CSS
+							, zIndex: 2e9 // The z-index (defaults to
+											// 2000000000)
+							, className: 'spinner' // The CSS class to assign
+													// to the spinner
 							, top: '50%' // Top position relative to parent
 							, left: '50%' // Left position relative to parent
 							, shadow: false // Whether to render a shadow
-							, hwaccel: false // Whether to use hardware acceleration
+							, hwaccel: false // Whether to use hardware
+												// acceleration
 							, position: 'absolute' });
 						
-//						setTimeout(function(){ map.spin(false); }, 3000);
-						/**********************SPINNER***************************/
+// setTimeout(function(){ map.spin(false); }, 3000);
+						/** ********************SPINNER************************** */
 					}
 					
 					function hideSpinner(){
@@ -892,15 +944,15 @@ $(document)
 					}
 					
 					
-//					var hazardIcon = L.icon({
-//					    iconUrl: "test.png",
-//					    iconSize: [16, 16],
-//					    iconAnchor: [8, 8],
-//					    popupAnchor: [0, 0]
-//					});
+// var hazardIcon = L.icon({
+// iconUrl: "test.png",
+// iconSize: [16, 16],
+// iconAnchor: [8, 8],
+// popupAnchor: [0, 0]
+// });
 					
 					
-					/************************************************/
+					/** ********************************************* */
 				
 					
 					
@@ -945,71 +997,72 @@ $(document)
 							    iconAnchor: [20,40]})); 
 						
 						
-//						  if (data.icon) {
-//					            if (typeof data.icon === 'function') {
-//					                marker.setIcon(data.icon(data, category));
-//					            }
-//					            else {
-////					                marker.setIcon(data.icon);
-//					            	marker.setIcon(L.icon({
-//									    iconUrl: getIcon(category, data.weight),
-//									    iconAnchor: [20,40]})); 
-//					            }
-//					        }
+// if (data.icon) {
+// if (typeof data.icon === 'function') {
+// marker.setIcon(data.icon(data, category));
+// }
+// else {
+// // marker.setIcon(data.icon);
+// marker.setIcon(L.icon({
+// iconUrl: getIcon(category, data.weight),
+// iconAnchor: [20,40]}));
+// }
+// }
 						  marker.on('mouseover', function(e){
-							    //do click event logic here
-//							    	leafletMarker.openPopup();
+							    // do click event logic here
+// leafletMarker.openPopup();
 							    	generatePopup(e, data.popup);
 							    	
 							    });
 						  
 						marker.on('click', function(e){
-						    //do click event logic here
-//						    	leafletMarker.openPopup();
+						    // do click event logic here
+// leafletMarker.openPopup();
 						    	generatePopup(e, data.popup);
 						    	
 						    });
-//				        if (data.popup) {
-//				            var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
-//				            if (marker.getPopup()) {
-//				                marker.setPopupContent(content, data.popupOptions);
-//				            }
-//				            else {
-//				                marker.bindPopup(content, data.popupOptions);
-//				            }
-//				        }
+// if (data.popup) {
+// var content = typeof data.popup === 'function' ? data.popup(data, category) :
+// data.popup;
+// if (marker.getPopup()) {
+// marker.setPopupContent(content, data.popupOptions);
+// }
+// else {
+// marker.bindPopup(content, data.popupOptions);
+// }
+// }
 				    };
 					
-//					pruneCluster.PrepareLeafletMarker = function(leafletMarker, data) {
+// pruneCluster.PrepareLeafletMarker = function(leafletMarker, data) {
 //						
-//					    leafletMarker.setIcon(L.icon({
-//						    iconUrl: getIcon(data.id),
-//						    iconAnchor: [20,40]})); // See http://leafletjs.com/reference.html#icon
+// leafletMarker.setIcon(L.icon({
+// iconUrl: getIcon(data.id),
+// iconAnchor: [20,40]})); // See http://leafletjs.com/reference.html#icon
 //					    
-//					    leafletMarker.on('mouseover', function(){
-//						    //do click event logic here
-////					    	alert("HELP");
-//						    });
-//					    leafletMarker.on('mouseout', function(){
-//						    //do click event logic here
-////					    	alert("HELP2");
-//						    });
-////					    //listeners can be applied to markers in this function
-//					    leafletMarker.on('click', function(e){
-//					    //do click event logic here
-////					    	leafletMarker.openPopup();
-////					    	generatePopup(e, data.popup);
+// leafletMarker.on('mouseover', function(){
+// //do click event logic here
+// // alert("HELP");
+// });
+// leafletMarker.on('mouseout', function(){
+// //do click event logic here
+// // alert("HELP2");
+// });
+// // //listeners can be applied to markers in this function
+// leafletMarker.on('click', function(e){
+// //do click event logic here
+// // leafletMarker.openPopup();
+// // generatePopup(e, data.popup);
 //					    	
-//					    });
+// });
 //					    
-//					    // A popup can already be attached to the marker
-//					    // bindPopup can override it, but it's faster to update the content instead
-//					    if (leafletMarker.getPopup()) {
-//					        leafletMarker.setPopupContent(data.name);
-//					    } else {
-//					        leafletMarker.bindPopup(data.name);
-//					    }
-//					};
+// // A popup can already be attached to the marker
+// // bindPopup can override it, but it's faster to update the content instead
+// if (leafletMarker.getPopup()) {
+// leafletMarker.setPopupContent(data.name);
+// } else {
+// leafletMarker.bindPopup(data.name);
+// }
+// };
 					
 					var generatePopup = function (e, popupContent) {
 
@@ -1020,7 +1073,8 @@ $(document)
 						    autoPan: false,
 						    closeOnClick: true
 						  });
-						  // If a popup has not already been bound to the marker, create one
+						  // If a popup has not already been bound to the
+							// marker, create one
 						  // and bind it.
 						  if (!clickedPopup) {
 						    newPopup.setContent(popupContent)
@@ -1028,7 +1082,8 @@ $(document)
 						      .openOn(e.target._map);
 						    e.target.bindPopup(newPopup);
 						  }
-						  // We need to destroy and recreate the popup each time the marker is
+						  // We need to destroy and recreate the popup each
+							// time the marker is
 						  // clicked to refresh its position
 						  else if (!clickedPopup._isOpen) {
 						    var content = clickedPopup.getContent();
@@ -1039,7 +1094,7 @@ $(document)
 						    e.target.bindPopup(newPopup);
 						  }
 						};
-					/*************************************************/
+					/** ********************************************** */
 					resetToLightReadings();
 					$('#datePicker').hide(0);
 					
