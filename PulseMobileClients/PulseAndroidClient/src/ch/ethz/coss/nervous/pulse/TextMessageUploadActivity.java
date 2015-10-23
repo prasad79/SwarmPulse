@@ -21,16 +21,26 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d(DEBUG_TAG, "onCreate");
-
+		
 		super.onCreate(savedInstanceState);
+		String message = null;
+		
+		Bundle extras = getIntent().getExtras();
+		  if (extras != null) {
+		   message = extras.getString("MESSAGE");
+		
+			   
+		   }  
+		   
+		   
 		setContentView(R.layout.activity_msg_upload);
-
+		final TextView msgTV = (TextView) findViewById(R.id.messageTF);
 		// Sign up button click handler
 		((Button) findViewById(R.id.submit))
 				.setOnClickListener(new OnClickListener() {
 
-					TextView msgTV = (TextView) findViewById(R.id.messageTF);
-
+					
+					
 					@Override
 					public void onClick(View v) {
 						String message = (msgTV.getText()).toString();
@@ -48,6 +58,11 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 
 					}
 				});
+		
+		if(message != null){
+			msgTV.setText(message);
+			
+		}
 
 	}
 

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="4dp"
-        android:text="Message Upload"
+        android:text="Share Message"
         android:textColor="@color/gray" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:text="Please enter your message and click upload:\n (min 2 chars)"
+        android:text="Please enter your message (or link) and click share:\n (min 2 chars)"
         android:textColor="@color/gray" />
 
     <EditText
@@ -30,7 +30,7 @@
         android:inputType="text"
         android:lines="5" 
         android:maxLines="7"
-        android:maxLength="70"
+        android:maxLength="140"
         android:textColor="@color/black" />
 
     <Button
@@ -39,6 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        android:text="Upload Message" />
+        android:text="Share Message" />
 
 </LinearLayout>
