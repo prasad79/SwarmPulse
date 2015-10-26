@@ -38,7 +38,9 @@ public class AboutActivity extends Activity{
 		String version = pInfo.versionName;
 		int verCode = pInfo.versionCode;
 		
-		txtVersion.setText("v"+version+" ("+verCode+")");
+		String versionText = "v"+version+" ("+verCode+")" + (Constants.DUMMY_DATA_COLLECT?" - dev ": "");
+		
+		txtVersion.setText(versionText);
 		
 		((Button) findViewById(R.id.rateButton))
 		.setOnClickListener(new OnClickListener() {
