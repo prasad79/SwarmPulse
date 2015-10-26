@@ -579,7 +579,7 @@ $(document)
 							
 							if(containsURLWithHTMLLinks(msg.properties.message)){
 								msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
-									+ replaceURLWithHTMLLinks(msg.properties.message) + "&output=embed"
+									+ replaceURLWithHTMLLinks(msg.properties.message) 
 									+ '</strong>';
 								msgMarker.data.weight = 1; // Weight is the
 															// level of Light or
@@ -622,7 +622,7 @@ $(document)
 						var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
 						
 						
-						return text.replace(exp, "<a href='$1'>$1</a>");
+						return text.replace(exp, "<a href='$1' target='_blank'>$1</a>");
 					}
 					
 					function containsURLWithHTMLLinks(text) {
