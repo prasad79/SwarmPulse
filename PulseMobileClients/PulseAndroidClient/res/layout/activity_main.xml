@@ -49,7 +49,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="5dp" >
+                android:padding="5dp"
+                android:weightSum="2"  >
 
                 <ImageButton
                     android:id="@+id/icon_light"
@@ -62,7 +63,8 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/circular_button"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_light" />
+                    android:src="@drawable/ic_light" 
+                     android:layout_weight="1"/>
 
                 <ImageButton
                     android:id="@+id/icon_sound"
@@ -75,7 +77,8 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/circular_button"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_noise" />
+                    android:src="@drawable/ic_noise" 
+                     android:layout_weight="1"/>
             </LinearLayout>
         </HorizontalScrollView>
 

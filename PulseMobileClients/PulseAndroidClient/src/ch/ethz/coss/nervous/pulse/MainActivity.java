@@ -29,6 +29,10 @@ public class MainActivity extends Activity {
 
 	WakeLock wakeLock;
 	WifiLock wifiLock;
+	
+	
+
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +157,7 @@ public class MainActivity extends Activity {
 
 		
 	    // Get intent, action and MIME type
-		   Intent intent = getIntent();
+		    Intent intent = getIntent();
 		    String action = intent.getAction();
 		    String type = intent.getType();
 
@@ -172,12 +176,9 @@ public class MainActivity extends Activity {
 	    	msgIntent.setClass(this, TextMessageUploadActivity.class);
 	    	msgIntent.putExtra("MESSAGE", sharedText);
     		
-    		
 	    	if(GPSLocation.GPS_AVAILABLE){
-	    		
-	    		
-	    		
-				startActivity(msgIntent);
+	    		System.out.println("Message "+sharedText+ " received.");
+	    		startActivity(msgIntent);
 			}else{
 				GPSLocation.getInstance(MainActivity.this);
 				if(!GPSLocation.GPS_AVAILABLE){
@@ -221,6 +222,18 @@ public class MainActivity extends Activity {
 		Log.d(DEBUG_TAG, "onResume");
 		Application.unregisterSensorListeners();
 		super.onResume();
+		
+		 // Get intent, action and MIME type
+	    Intent intent = getIntent();
+	    String action = intent.getAction();
+	    String type = intent.getType();
+
+		Log.d(DEBUG_TAG, action+" -- "+type);
+	    if (Intent.ACTION_SEND.equals(action) && type != null) {
+	        if ("text/plain".equals(type)) {
+	            handleSendText(intent); // Handle text being sent
+	        } 
+	    } 
 	}
 
 	public void onStop() {
@@ -232,6 +245,8 @@ public class MainActivity extends Activity {
 		Log.d(DEBUG_TAG, "onStart");
 		Application.unregisterSensorListeners();
 		super.onStart();
+		
+	
 	}
 	
 	
