@@ -9,8 +9,11 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 import ch.ethz.coss.nervous.pulse.model.Visual;
+import ch.ethz.coss.nervous.pulse.utils.Utils;
 import flexjson.JSONSerializer;
 
 public class SynchWriter {
@@ -21,6 +24,8 @@ public class SynchWriter {
 	String ipAddress;
 	int port;
 	boolean printTrace = true;
+	
+	
 
 	public SynchWriter(String ipAddress, int port, int writingInterval)
 			throws IOException {
@@ -28,7 +33,9 @@ public class SynchWriter {
 		this.ipAddress = ipAddress;
 	}
 
-	public void send(Object o) {
+	Context mContext = null;
+	public void send(Object o, Context context) {
+		mContext = context;
 		synchronized (data) {
 			data.add(o);
 		}
@@ -36,10 +43,10 @@ public class SynchWriter {
 		new OutputTask().execute();
 	}
 
-	class OutputTask extends AsyncTask {
+	class OutputTask extends AsyncTask<Object, Object, Object> {
 
 		DataOutputStream oos;
-
+		boolean exceptionFlag;
 		private synchronized DataOutputStream getObjectOutputStream() {
 
 			if (oos == null) {
@@ -54,8 +61,10 @@ public class SynchWriter {
 							socket.getOutputStream());
 					oos = new DataOutputStream(os);
 				} catch (Exception e) {
-					//System.out.println("Exception thrown here "
-//							+ e.getMessage());
+					System.out.println("Exception thrown here "
+							+ e.getMessage());
+					exceptionFlag = true;
+				
 					e.printStackTrace();
 					if (printTrace)
 						e.printStackTrace();
@@ -108,9 +117,13 @@ public class SynchWriter {
 					
 					//System.out.println("JSON -- "+json);
 					oos.writeUTF(json);
+					
 				}
+				
+
 //				oos.flush();
 			} catch (Exception e) {
+				exceptionFlag = true;
 				if (printTrace)
 					e.printStackTrace();
 				try {
@@ -134,6 +147,17 @@ public class SynchWriter {
 			}
 			return true;
 		}
+		
+		
+		 protected void onPostExecute(Object obj) {   
+				Utils.dismissProgress();
+				
+				if(exceptionFlag)
+					Toast.makeText(mContext, "There was a problem sharing the data. Please check your internte connection or try again later.", Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(mContext, "The data has been shared succesfully.", Toast.LENGTH_SHORT).show();
+					
+		    }
 	}
 
 	public void stop() {

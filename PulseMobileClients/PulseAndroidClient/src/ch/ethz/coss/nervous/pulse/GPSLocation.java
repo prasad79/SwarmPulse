@@ -22,7 +22,9 @@ public class GPSLocation {
 
 	private static GPSLocation _instance = null;
 
-	private final Context mContext;
+	private final Context mContext;	
+	private boolean loc_initialized;
+	
 
 	// flag for GPS status
 	public boolean isGPSEnabled = false;
@@ -39,8 +41,6 @@ public class GPSLocation {
 
 	// Declaring a Location Manager
 	protected LocationManager locationManager;
-	
-	private boolean gps_enabled = false, network_enabled = false;
 
 	public static GPSLocation getInstance(Context context) {
 		if (_instance == null || !GPS_AVAILABLE){
@@ -58,7 +58,7 @@ public class GPSLocation {
 				.getSystemService(mContext.LOCATION_SERVICE);
 
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-				10000, 100, mLocationListener);
+				10000, 1, mLocationListener);
 
       
         
@@ -122,6 +122,8 @@ public class GPSLocation {
             return false;
         }
     }
+    
+    
 	private final LocationListener mLocationListener = new LocationListener() {
 		@Override
 		public void onLocationChanged(final Location location) {
@@ -129,6 +131,15 @@ public class GPSLocation {
 			latitude =  location.getLatitude();
 			longitude = location.getLongitude();
 			
+			
+			if(!loc_initialized){
+				loc_initialized = true;
+				locationManager.removeUpdates(mLocationListener);
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+						10000, 100, mLocationListener);
+				
+			}
+		
 			//System.out.println("onLocationChanged called - lat = "+latitude+", long = "+longitude);
 		}
 
@@ -161,6 +172,9 @@ public class GPSLocation {
 	 * @return
 	 */
 	public double[] getLocation() {
+		
+		if(latitude == 0 && longitude == 0)
+			return null;
 
 		return Utils.addNoiseToLocation(latitude, longitude);
 			

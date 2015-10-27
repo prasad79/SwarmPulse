@@ -38,6 +38,8 @@
         <item name="android:spinnerStyle">@style/Widget.Spinner</item>
         <!-- Light.DarkActionBar specific -->
         <item name="android:actionBarWidgetTheme">@style/Theme.pulse_theme.Widget</item>
+             <item name="android:progressBarStyle">@style/ProgressBar.pulse_theme</item>
+   
     </style>
 
     <style name="Widget.Spinner" parent="android:Widget">
@@ -69,7 +71,11 @@
         <item name="android:background">@drawable/ab_transparent_pulse_theme</item>
         <item name="android:progressBarStyle">@style/ProgressBar.pulse_theme</item>
     </style>
-
+    
+    <style name="MyTheme" parent="@android:style/Theme.Dialog">
+  
+   	 <item name="android:textColorPrimary">#000000</item>
+	</style>
     <style name="Button.pulse_theme" parent="@android:style/Widget.Button">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
@@ -106,6 +112,7 @@
 
     <style name="ProgressBar.pulse_theme" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_pulse_theme</item>
+         <item name="android:textColor">@color/nnorange</item>
     </style>
 
     <style name="ActionButton.CloseMode.pulse_theme" parent="@android:style/Widget.Holo.ActionButton.CloseMode">

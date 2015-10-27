@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import ch.ethz.coss.nervous.pulse.model.NoiseReading;
+import ch.ethz.coss.nervous.pulse.utils.Utils;
 
 @SuppressLint({ "Wakelock", "InlinedApi" })
 public class NoiseSensorReadingActivity extends SensorReadingActivity {
@@ -32,8 +33,12 @@ public class NoiseSensorReadingActivity extends SensorReadingActivity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if (reading != null)
-							Application.pushReadingToServer(reading);
+						if (reading != null){
+							Utils.showProgress(NoiseSensorReadingActivity.this);
+							Application.pushReadingToServer(reading, NoiseSensorReadingActivity.this);
+						
+						}
+							
 					}
 				});
 
@@ -51,7 +56,12 @@ public class NoiseSensorReadingActivity extends SensorReadingActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		unregisterReceiver(broadcastReceiver);
+		try {
+			unregisterReceiver(broadcastReceiver);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		stopService(intent);
 	}
 

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="4dp"
-        android:text="Share Message"
+        android:text="Message"
         android:textColor="@color/gray" />
 
     <TextView

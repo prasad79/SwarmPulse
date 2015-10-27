@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:text="Sound VALUE COMES HERE"
+        android:text="Sound value will come up here."
         android:textColor="@color/black" />
 
     <Button
