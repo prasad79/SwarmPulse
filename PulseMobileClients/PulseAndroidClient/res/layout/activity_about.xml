@@ -76,7 +76,7 @@
                 android:autoLink="web"
                 android:gravity="center"
                 android:paddingTop="5dip"
-                android:text="http://www.swarmpulse.net" />
+                android:text="www.swarmpulse.net" />
 
             <TextView
                 android:layout_width="fill_parent"
@@ -84,7 +84,7 @@
                 android:autoLink="web"
                 android:gravity="center"
                 android:paddingTop="5dip"
-                android:text="www.nervous.ethz.ch" />
+                android:text="www.nervousnet.info" />
 
             <Button
                 android:id="@+id/rateButton"

@@ -1,6 +1,7 @@
 package ch.ethz.coss.nervous.pulse;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import ch.ethz.coss.nervous.pulse.model.LightReading;
+import ch.ethz.coss.nervous.pulse.utils.Utils;
 
 @SuppressLint({ "Wakelock", "InlinedApi" })
 public class LightSensorReadingActivity extends SensorReadingActivity {
@@ -32,8 +34,12 @@ public class LightSensorReadingActivity extends SensorReadingActivity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if (reading != null)
-							Application.pushReadingToServer(reading);
+						if (reading != null){
+							Utils.showProgress(LightSensorReadingActivity.this);
+							Application.pushReadingToServer(reading, LightSensorReadingActivity.this);
+							
+						}
+							
 					}
 				});
 
@@ -52,7 +58,13 @@ public class LightSensorReadingActivity extends SensorReadingActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		unregisterReceiver(broadcastReceiver);
+		
+		try {
+			unregisterReceiver(broadcastReceiver);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		stopService(intent);
 	}
 

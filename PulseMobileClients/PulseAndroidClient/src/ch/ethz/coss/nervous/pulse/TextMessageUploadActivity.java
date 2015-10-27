@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import ch.ethz.coss.nervous.pulse.model.TextVisual;
 import ch.ethz.coss.nervous.pulse.model.VisualLocation;
+import ch.ethz.coss.nervous.pulse.utils.Utils;
 
 @SuppressLint({ "Wakelock", "InlinedApi" })
 public class TextMessageUploadActivity extends SensorReadingActivity {
@@ -51,7 +52,9 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 											TextMessageUploadActivity.this)
 											.getLocation()));
 							if (txtMsg != null) {
-								Application.pushReadingToServer(txtMsg);
+								Utils.showProgress(TextMessageUploadActivity.this);
+								Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
+							
 								msgTV.setText("");
 							}
 						}

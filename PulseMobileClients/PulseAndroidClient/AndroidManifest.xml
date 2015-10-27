@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -28,7 +27,7 @@
         <activity
             android:name="ch.ethz.coss.nervous.pulse.MainActivity"
             android:label="@string/app_name" 
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:clearTaskOnLaunch ="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,19 +41,23 @@
         </activity>
         <activity
             android:name="ch.ethz.coss.nervous.pulse.SensorReadingActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:noHistory="true">
         </activity>
         <activity
             android:name="ch.ethz.coss.nervous.pulse.LightSensorReadingActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:noHistory="true">
         </activity>
         <activity
             android:name="ch.ethz.coss.nervous.pulse.NoiseSensorReadingActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:noHistory="true">
         </activity>
          <activity
             android:name="ch.ethz.coss.nervous.pulse.TextMessageUploadActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:noHistory="true" >
         </activity>
         <activity
             android:name="ch.ethz.coss.nervous.pulse.TestActivity"
@@ -62,11 +65,13 @@
         </activity>
          <activity
             android:name="ch.ethz.coss.nervous.pulse.SettingsActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:noHistory="true">
         </activity>
         <activity
             android:name="ch.ethz.coss.nervous.pulse.AboutActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:noHistory="true">
         </activity>
     </application>
 

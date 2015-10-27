@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class AboutActivity extends Activity{
+public class AboutActivity extends ParentActivity{
 
 	public static final String DEBUG_TAG = "NoiseSensorReadingActivityPulse";
 

@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:text="Light VALUE COMES HERE"
+        android:text="Please move your phone for the sensor to detect light."
         android:textColor="@color/black" />
 
     <Button

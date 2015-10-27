@@ -31,7 +31,6 @@ public class Application extends android.app.Application {
 
 		super.onCreate();
 		
-		
 		 // Restore preferences
 	       SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 	       long msb = settings.getLong("uuid_msb", 0);
@@ -108,8 +107,8 @@ public class Application extends android.app.Application {
 		System.exit(0);
 	}
 
-	public static void pushReadingToServer(Visual reading) {
-		synchWriter.send(reading);
+	public static void pushReadingToServer(Visual reading, Context context) {
+		synchWriter.send(reading, context);
 	}
 	
 	

@@ -11,7 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 @SuppressLint({ "Wakelock", "InlinedApi" })
-public abstract class SensorReadingActivity extends Activity {
+public abstract class SensorReadingActivity extends ParentActivity {
 
 	public static final String DEBUG_TAG = "SensorReadingActivityPulse";
 

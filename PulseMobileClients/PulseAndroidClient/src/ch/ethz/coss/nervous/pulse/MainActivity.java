@@ -23,7 +23,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 @SuppressLint({ "Wakelock" })
-public class MainActivity extends Activity {
+public class MainActivity extends ParentActivity {
 
 	public static final String DEBUG_TAG = "MainActivityPulse";
 
@@ -125,7 +125,7 @@ public class MainActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-								Uri.parse("http://pulse.inn.ac"));
+								Uri.parse("http://www.swarmpulse.net"));
 						startActivity(browserIntent);
 
 					}
@@ -154,42 +154,11 @@ public class MainActivity extends Activity {
 
 		GPSLocation.getInstance(this);
 		
-
-		
-	    // Get intent, action and MIME type
-		    Intent intent = getIntent();
-		    String action = intent.getAction();
-		    String type = intent.getType();
-
-		    if (Intent.ACTION_SEND.equals(action) && type != null) {
-		        if ("text/plain".equals(type)) {
-		            handleSendText(intent); // Handle text being sent
-		        } 
-		    } 
+		handleShareIntent();
 
 	}
 
-	private void handleSendText(Intent intent) {
-		String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-	    if (sharedText != null) {
-	    	Intent msgIntent = new Intent();
-	    	msgIntent.setClass(this, TextMessageUploadActivity.class);
-	    	msgIntent.putExtra("MESSAGE", sharedText);
-    		
-	    	if(GPSLocation.GPS_AVAILABLE){
-	    		System.out.println("Message "+sharedText+ " received.");
-	    		startActivity(msgIntent);
-			}else{
-				GPSLocation.getInstance(MainActivity.this);
-				if(!GPSLocation.GPS_AVAILABLE){
-					showLocationAlert();
-				}else {
-					startActivity(msgIntent);
-				}
-			}
-	    }
-		
-	}
+
 
 	private OnSharedPreferenceChangeListener listener;
 
@@ -223,17 +192,7 @@ public class MainActivity extends Activity {
 		Application.unregisterSensorListeners();
 		super.onResume();
 		
-		 // Get intent, action and MIME type
-	    Intent intent = getIntent();
-	    String action = intent.getAction();
-	    String type = intent.getType();
-
-		Log.d(DEBUG_TAG, action+" -- "+type);
-	    if (Intent.ACTION_SEND.equals(action) && type != null) {
-	        if ("text/plain".equals(type)) {
-	            handleSendText(intent); // Handle text being sent
-	        } 
-	    } 
+		
 	}
 
 	public void onStop() {
@@ -249,32 +208,8 @@ public class MainActivity extends Activity {
 	
 	}
 	
-	
-	 private void showLocationAlert() {
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					MainActivity.this);
-			builder.setTitle("Location settings disabled"); // GPS not found
-			builder.setMessage("This application requires the usage of location features. Please change your location settings."); // Want
-																		// to
-																		// enable?
-			builder.setPositiveButton("Continue",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialogInterface,
-								int i) {
-							startActivity(new Intent(
-									android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-						}
-					});
-			builder.setNegativeButton("Exit", 
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialogInterface,
-						int i) {
-					System.exit(0);
-				}
-			});
-			builder.create().show();
-			Toast.makeText(MainActivity.this, "You location could not be determined. Please enable your Network Providers.", Toast.LENGTH_LONG).show();
 
-		
-	}
+	
+	
+	
 }

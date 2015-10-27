@@ -3,6 +3,15 @@ package ch.ethz.coss.nervous.pulse.utils;
 import java.text.DecimalFormat;
 import java.util.Random;
 
+import android.app.AlertDialog;
+import android.app.Application;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.provider.SyncStateContract.Constants;
+import android.widget.Toast;
+import ch.ethz.coss.nervous.pulse.LightSensorReadingActivity;
+
 public class Utils {
 	
 	
@@ -38,7 +47,7 @@ public class Utils {
 	}
 
 	public static double[] addNoiseToLocation(double latitude, double longitude) {
-		int decimalLength = 2 + new Random().nextInt(2);
+		int decimalLength = 2 + new Random().nextInt(4);
 		
 		return new double[] { Double.parseDouble(String.format("%."+decimalLength+"f", latitude)), Double.parseDouble(String.format("%."+decimalLength+"f", longitude)) };
 
@@ -2346,6 +2355,27 @@ public class Utils {
 			{37.7306,-88.9331}
 
 	};
+	
+	
+	static ProgressDialog dialog;
+	static AlertDialog alertDialog;
+
+	public static void showProgress(Context context) {
+		dialog = ProgressDialog.show(context, "Sharing data", "Please wait...", true);
+		
+	}
+	
+	
+	public static void dismissProgress(){
+		if(dialog != null)
+		dialog.dismiss();
+	}
+	
+	public static void showAlert(Context context, String title, String message) {
+		
+		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+	}
 
 
 }
