@@ -4,7 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -36,26 +38,42 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 		this.sqlse = sqlse;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		// InputStream is;
 		DataInputStream in = null;
 		try {
-			//System.out.println("inside try loop");
 			in = new DataInputStream(new BufferedInputStream(
 					socket.getInputStream()));
 			boolean connected = true;
 			while (connected) {
 				connected &= !socket.isClosed();
-				//System.out.println("before reading JSON STRING = ");
 				Visual reading = null;
 				JsonObject featureCollection = new JsonObject();
 				JsonArray features = new JsonArray();
 				JsonObject feature = null;
 				try {
-					String json =  in.readUTF();
-					//System.out.println("JSON STRING = "+json);
-					reading = new JSONDeserializer<Visual>().deserialize(json, Visual.class);       
+//					String json =  in.readUTF();
+					
+					StringBuffer json = new StringBuffer();
+		            String tmp; 
+		        	try {
+		            while ((tmp = in.readLine()) != null) {
+		            	json.append(tmp);
+		            }
+		            
+		            
+		            //use inputLine.toString(); here it would have whole source
+		            in.close();
+		        	   } catch (MalformedURLException me) {
+		                   System.out.println("MalformedURLException: " + me);
+		               } catch (IOException ioe) {
+		                   System.out.println("IOException: " + ioe);
+		               }
+					System.out.println("JSON STRING = "+json);
+					System.out.println("JSON Length = "+json.length());
+					reading = new JSONDeserializer<Visual>().deserialize(new String(json), Visual.class);       
 					feature = new JsonObject();
 
 					feature.addProperty("type", "Feature");
@@ -197,7 +215,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 			}
 
 		} catch (EOFException e) {
-			// e.printStackTrace();
+			 e.printStackTrace();
 			Log.getInstance().append(Log.FLAG_WARNING,
 					"EOFException occurred, but ignored it for now.");
 		} catch (IOException e) {
