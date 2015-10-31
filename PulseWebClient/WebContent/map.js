@@ -71,8 +71,8 @@ $(document)
 					// method that we will use to update the control based on
 					// feature properties passed
 					info.update = function(props) {
-						this._div.style.fontSize = "80%"
-						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'115px\' height=\'10%\' bgcolor=\'#FFFFFF\'> <p width=\'20%\' align: \'left\'  style=\'color: #FFA500; font-family: verdana; display:inline-block; vertical-align: -7px;\'><i>mapping the world together</p><br>';
+						this._div.style.fontSize = "90%"
+						this._div.innerHTML = '<img align = "left" src=\'pulse_logo.png\' width=\'70px\' bgcolor=\'#FFFFFF\'> <p width=\'20%\' align: \'top\'  style=\'color: #FF770D; font-family: verdana; display:inline-block; vertical-align: -25px;\'>&nbsp;<b>mapping the world together</p><br>';
 
 					};
 
@@ -177,7 +177,6 @@ $(document)
 					};
 
 					/** *************************** */
-
 					/** ****************************** */
 					var downloadAppButton = L.easyButton({
 						states : [ {
@@ -283,6 +282,21 @@ $(document)
 					/** *************************** */
 					
 
+					/** ****************************** */
+					var infoButton = L.easyButton({
+						states : [ {
+							stateName : 'Information',
+							icon : 'fa fa-info',
+							title : 'About / Info',
+							onClick : function(control) {
+								showInfo();
+							}
+						} ],
+						position : "bottomright"
+					});
+
+					infoButton.addTo(map);
+					/** ****************************** */
 				
 					/** ********** */
 
@@ -859,6 +873,31 @@ $(document)
 
 					}
 					
+					function showInfo(){
+
+						$('#info').dialog(
+								{
+									open : function(event, ui) {
+										$(".ui-dialog-titlebar-close",
+												ui.dialog | ui).hide();
+									},
+									modal : true,
+									resizable : false,
+									closeOnEscape : true,
+									buttons : [ {
+										text : "OK",
+										"class" : 'button',
+										click : function() {
+											 $(this).dialog('close');
+
+										}
+									}],
+									dialogClass: ' success-dialog'
+								});
+
+					
+					}
+					
 					function showDialog() {
 						$('#dialog').dialog(
 								{
@@ -873,7 +912,6 @@ $(document)
 										text : "Android",
 										"class" : 'button',
 										click : function() {
-											// Cancel code here
 											location.assign("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse");
 											 $(this).dialog('close');
 
@@ -882,7 +920,6 @@ $(document)
 										text : "iOS",
 										"class" : 'button',
 										click : function() {
-											// Save code here
 											 $(this).dialog('close');
 
 										}

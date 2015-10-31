@@ -1,6 +1,6 @@
 body {
 	font-family: 'Dosis', sans-serif;
-	background-color: #000000;
+	background-color: #555555;
 	color: white;
 	scrollbar-base-color: #ff00ff;
 	height: 93%;
@@ -575,8 +575,9 @@ opacity
 
 .ui-widget-content.success-dialog {
 	background: #F9F9F9;
-	border: 1px solid #90d93f;
+	border: 1px solid #FF770D;
 	color: #222222;
+	text-align: center;
 }
 
 .ui-dialog.success-dialog {
