@@ -1,6 +1,7 @@
 package ch.ethz.coss.nervous.pulse.sql;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -43,9 +44,10 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 	public void run() {
 		// InputStream is;
 		DataInputStream in = null;
+		 
 		try {
-			in = new DataInputStream(new BufferedInputStream(
-					socket.getInputStream()));
+			in = new DataInputStream(
+					socket.getInputStream());
 			boolean connected = true;
 			while (connected) {
 				connected &= !socket.isClosed();
@@ -56,13 +58,22 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 				try {
 //					String json =  in.readUTF();
 					
-					StringBuffer json = new StringBuffer();
-		            String tmp; 
+//					StringBuffer json = new StringBuffer();
+//		            String tmp; 
+					String json = null;
 		        	try {
-		            while ((tmp = in.readLine()) != null) {
-		            	json.append(tmp);
-		            }
+//		            while ((tmp = in.read()) != null) {
+//		            	json.append(tmp);
+//		            }
 		            
+		            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		            byte buffer[] = new byte[1024];
+		            for(int s; (s=in.read(buffer)) != -1; )
+		            {
+		              baos.write(buffer, 0, s);
+		            }
+		            byte result[] = baos.toByteArray();
+		           json = new String(result);
 		            
 		            //use inputLine.toString(); here it would have whole source
 		            in.close();
@@ -73,7 +84,10 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 		               }
 					System.out.println("JSON STRING = "+json);
 					System.out.println("JSON Length = "+json.length());
-					reading = new JSONDeserializer<Visual>().deserialize(new String(json), Visual.class);       
+					
+					if(json.length() <= 0)
+						continue;
+					reading = new JSONDeserializer<Visual>().deserialize(json, Visual.class);       
 					feature = new JsonObject();
 
 					feature.addProperty("type", "Feature");
