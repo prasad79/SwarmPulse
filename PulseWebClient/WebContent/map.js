@@ -593,7 +593,8 @@ $(document)
 // });
 							markerArray.push(lightMarker);
 							pruneCluster.RegisterMarker(lightMarker);
-							
+						
+						
 							
 
 						} else if (msg.properties.readingType == 1
@@ -1127,7 +1128,9 @@ $(document)
 // marker.bindPopup(content, data.popupOptions);
 // }
 // }
+
 				    };
+				    
 					
 // pruneCluster.PrepareLeafletMarker = function(leafletMarker, data) {
 //						
