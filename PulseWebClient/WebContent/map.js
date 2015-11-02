@@ -6,7 +6,9 @@ $(document)
 					var current_state = 0; // 0 - Real-Time, 1 - Time-Machine
 					var current_layer = -1;
 					var last_layer = 0;
-							
+					var initialReq = true;//jhkjhkhkhk marker not clearing check this initial implemnt
+
+					var markerArray = [];
 					var data = [];
 					var map = L.map('map', {
 						zoomControl : false
@@ -310,16 +312,41 @@ $(document)
 							
 							resetToLightReadings();
 							last_layer = 0;
+							
+							
+							hideSpinner();
+							if(current_state == 0){
+
+								initialReq = true;
+								makeInitialRequest();
+							}
+							$('#statusmsgs').text("LIGHT");
+							
 						} else if (a.name == "Noise" && current_layer != 1) {
 
 							
 							resetToNoiseReadings();
 							last_layer = 1;
+							$('#statusmsgs').text("NOISE");
+							hideSpinner();
+							if(current_state == 0){
+
+								initialReq = true;
+								makeInitialRequest();
+							}
 						} else if (a.name == "Messages" && current_layer != 2) {
 
 //							current_layer = 2;
 							resetToMessagesOverlay();
 							last_layer = 2;
+							$('#statusmsgs').text("MESSAGES");
+							hideSpinner();
+							if(current_state == 0){
+
+								initialReq = true;
+								makeInitialRequest();
+							}
+						
 						}
 					});
 
@@ -520,9 +547,9 @@ $(document)
 
 					lightMarkers.addLayer(pruneCluster);
 
-					var markerArray = [];
 					function addMarker(msg) {
 						counter++;
+//						console.log("Adding marker");
 						if (msg.properties.readingType == 0
 								&& current_layer == 0) {
 							
@@ -531,6 +558,12 @@ $(document)
 											+ msg.properties.level
 											+ '</strong> lux';
 							lightMarker.data.name = msg.properties.recordTime;
+							
+							//TODO --- BUg here since lightMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
+							if(lightMarker.data.name === undefined)
+								lightMarker.data.name = new Date().getTime();
+							
+							
 							// lightMarker.data.id = msg.properties.readingType;
 							lightMarker.data.weight = getLightId(msg.properties.level); // Weight
 																						// is
@@ -678,14 +711,13 @@ $(document)
 					}).addTo(map).startUpdating();
 
 					function updateMarkerArray() {
-					
 						var currentTime = new Date().getTime();
 						showSpinner();
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
 // if (currentTime - marker.options.startTime >= 60000 * 5) {
-							if(currentTime - marker.data.name >= 60000 * 5){ // 5
-																				// minutes
+//							console.log(marker.data.name);
+							if(currentTime - marker.data.name >= 60000 * 30){ // 30	minutes 									// minutes
 // markersCluster.removeLayer(marker);
 								var myArray = [];
 								myArray.push(marker);
@@ -739,10 +771,25 @@ $(document)
 						websocket.send('WebClient Listening!');
 
 						conButton.state('connected');
+						initialReq = true;
+						makeInitialRequest();
+						
+					}
+					
+					function makeInitialRequest(){
+						/******God knows why i agreed to do this. this might backfire**********/
+						if(initialReq){
+							changeSocketToTimeMachine();
+							var date = new Date();
+				        	sendTimeMachineRequest(current_layer, date.getTime()- (60000 * 3000), date.getTime() );
+				        	
+						}
+						/****************/
 					}
 
 					function onClose(evt) {
 						conButton.state('disconnected');
+						showAlert("Server disconnected.\nIf you want to reconnect again, please click on the broken chain icon on the right top corner.");
 					}
 
 					function onMessage(evt) {
@@ -758,12 +805,20 @@ $(document)
 								   
 								}
 							 pruneCluster.ProcessView();
+							 
+							 if(initialReq){
+								 changeSocketToRealTime();
+								 initialReq = false
+								 console.log("changeSocketToRealTime initial req");
+							 }
+							 
+
+							
 						 } else {
 							    parseFeature(features);
 								pruneCluster.ProcessView();
 							
 						 }
-						
 // console.log("msg.properties.readingType "
 // + msg.properties.readingType);
 						
@@ -848,10 +903,10 @@ $(document)
 					}
 
 					function showAlert(alertMsg) {
-						$("#alert").text(alertMsg);
 						$('#alert').dialog(
 								// ...which upon when it's opened...
 								{
+									title: "Alert",
 									open : function(event, ui) {
 										$(".ui-dialog-titlebar-close",
 												ui.dialog | ui).hide();
@@ -871,12 +926,15 @@ $(document)
 									dialogClass: ' success-dialog'
 								});
 
+						$("#alert").text(alertMsg);
+
 					}
 					
 					function showInfo(){
 
 						$('#info').dialog(
 								{
+									title: "About",
 									open : function(event, ui) {
 										$(".ui-dialog-titlebar-close",
 												ui.dialog | ui).hide();
@@ -901,6 +959,7 @@ $(document)
 					function showDialog() {
 						$('#dialog').dialog(
 								{
+									title: "Select your mobile platform:",
 									open : function(event, ui) {
 										$(".ui-dialog-titlebar-close",
 												ui.dialog | ui).hide();

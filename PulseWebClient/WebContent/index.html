@@ -27,18 +27,20 @@
 
 <body bgcolor="#555555">
 	<div id="map" style="background: #333d3f;"></div>
+	<div id="status" style="background: #555555;">
 		<div id="datePicker" style="background: #555555; z-index: 900 !important">
 		<input id="txtDate" type="text" style="background: #333d3f" /> 
 		<input id="txtTime" type="text" style="background: #333d3f" />
 		<button type="submit" name="button1" onclick="window.prepareTimeMachineReq()" style="background-color:#555555; color:#fff;">
 		Fetch
 		</button>
-
+	<div id="statusmsgs" style="background: #555555;">LIGHT
+	</div>
 	</div>
 	
-	<div id="dialog" style="display: none;">Select your mobile OS:</div>
-	<div id="alert" style="display: none;"></div>
-    <div id="info" style="display: none;"><b>SwarmPulse </b><sup>beta</sup> <br><br><sub>a research initiative by:</sub><br><br> <b>ETH Zurich</b><br> <p>Department of Humanities and Social Sciences (D-GESS)<br>
+	<div id="dialog" style="display: none;" title="Select your mobile OS: ">Select your mobile OS:</div>
+	<div id="alert" style="display: none;" title="Alert"></div>
+    <div id="info" style="display: none;" title="About"><b>SwarmPulse </b><sup>beta</sup> <br><br><sub>a research initiative by:</sub><br><br> <b>ETH Zurich</b><br> <p>Department of Humanities and Social Sciences (D-GESS)<br>
 Professorship of Computational Social Science (COSS)<br>
 Clausiusstrasse 50,<br> 8092 Zurich,<br> Switzerland<br></div>
 	<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
