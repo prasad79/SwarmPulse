@@ -1,6 +1,7 @@
 $(document)
 		.ready(
 				function() {
+					var DEBUG = false;
 					var websocket;
 					var counter = 0;
 					var current_state = 0; // 0 - Real-Time, 1 - Time-Machine
@@ -306,8 +307,7 @@ $(document)
 					
 
 					map.on('overlayadd', function(a) {
-// console.log("a.name "+a.name);
-// console.log("current_layer "+current_layer);
+					
 						if (a.name == "Light" && current_layer != 0) {
 							
 							resetToLightReadings();
@@ -548,114 +548,143 @@ $(document)
 					lightMarkers.addLayer(pruneCluster);
 
 					function addMarker(msg) {
-						counter++;
-//						console.log("Adding marker");
-						if (msg.properties.readingType == 0
-								&& current_layer == 0) {
-							
-							var lightMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
-							lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
-											+ msg.properties.level
-											+ '</strong> lux';
-							lightMarker.data.name = msg.properties.recordTime;
-							
-							//TODO --- BUg here since lightMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
-							if(lightMarker.data.name === undefined)
-								lightMarker.data.name = new Date().getTime();
-							
-							
-							// lightMarker.data.id = msg.properties.readingType;
-							lightMarker.data.weight = getLightId(msg.properties.level); // Weight
-																						// is
-																						// the
-																						// level
-																						// of
-																						// Light
-																						// or
-																						// Noise
-							lightMarker.data.category = msg.properties.readingType; // Category
-																					// is
-																					// readingType
-							lightMarker.weight = getLightId(msg.properties.level);
-// lightMarker.bindPopup(
-// '<p style="color:black" align="center"><strong>'
-// + msg.properties.level
-// + '</strong> lux', {
-// closeButton : false,
-// offset : L.point(0, -5)
-// });
-
-// lightMarker.on('mouseover', function() {
-// lightMarker.openPopup();
-// });
-// lightMarker.on('mouseout', function() {
-// lightMarker.closePopup();
-// });
-							markerArray.push(lightMarker);
-							pruneCluster.RegisterMarker(lightMarker);
 						
-						
+						if(DEBUG){
+							console.log("*****LOG***** inside method addMarker -- lat = "+msg.geometry.coordinates[0]+", long = "+msg.geometry.coordinates[1])
 							
-
-						} else if (msg.properties.readingType == 1
-								&& current_layer == 1) {
-							var noiseMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
-							noiseMarker.data.popup ='<p style="color:black"  ><strong>'
-								+ msg.properties.level
-								+ '</strong> db';
-							noiseMarker.data.name = msg.properties.recordTime;
-// noiseMarker.data.id = getNoiseId(msg.properties.level);
-							noiseMarker.data.weight = getNoiseId(msg.properties.level); // Weight
-																						// is
-																						// the
-																						// level
-																						// of
-																						// Light
-																						// or
-																						// Noise
-							noiseMarker.data.category = msg.properties.readingType; // Category
-																					// is
-																					// readingType
-							noiseMarker.weight = getNoiseId(msg.properties.level);
-							markerArray.push(noiseMarker);
-							pruneCluster.RegisterMarker(noiseMarker);
-
-						} else if (msg.properties.readingType == 2
-								&& current_layer == 2) {
-							
-							var msgMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
-							
-							if(containsURLWithHTMLLinks(msg.properties.message)){
-								msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
-									+ replaceURLWithHTMLLinks(msg.properties.message) 
-									+ '</strong>';
-								msgMarker.data.weight = 1; // Weight is the
-															// level of Light or
-															// Noise
-								
-							}else {
-
-								msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
-									+ (msg.properties.message)
-									+ '</strong>';
-								msgMarker.data.weight = 0; // Weight is the
-															// level of Light or
-															// Noise
-								
-							}
-								
-								
-							
-							msgMarker.data.name = msg.properties.recordTime;
-							msgMarker.data.category = msg.properties.readingType; // Category
-																					// is
-																					// readingType
-							
-							markerArray.push(msgMarker);
-							pruneCluster.RegisterMarker(msgMarker);
 						}
+						
+						if((msg.geometry.coordinates[0] == 0 &&  msg.geometry.coordinates[1] == 0 )|| (isNaN(msg.geometry.coordinates[0])) || isNaN(msg.geometry.coordinates[1])){
+							if(DEBUG){
+								console.log("*****WARNING***** coordinates are null");
+							}
+							
+							hideSpinner();
+							
+							return false;
+							
+						}else {
+							if(DEBUG){
+								console.log("*****LOG***** ADDING MARKER");
+							}
+							counter++;
+							if (msg.properties.readingType == 0
+									&& current_layer == 0) {
+								
+								
+								var lightMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
+								lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
+												+ msg.properties.level
+												+ '</strong> lux';
+								
+								
+								//TODO --- BUg here since lightMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
+								if(msg.properties.recordTime === undefined){
+									lightMarker.data.name = new Date().getTime();
+								}else
+									lightMarker.data.name = msg.properties.recordTime;
+			
+								
+								
+								
+								// lightMarker.data.id = msg.properties.readingType;
+								lightMarker.data.weight = getLightId(msg.properties.level); // Weight
+																							// is
+																							// the
+																							// level
+																							// of
+																							// Light
+																							// or
+																							// Noise
+								lightMarker.data.category = msg.properties.readingType; // Category
+																						// is
+																						// readingType
+								lightMarker.weight = getLightId(msg.properties.level);
+
+								markerArray.push(lightMarker);
+								pruneCluster.RegisterMarker(lightMarker);
+							
+							
+								
+
+							} else if (msg.properties.readingType == 1
+									&& current_layer == 1) {
+								var noiseMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
+								noiseMarker.data.popup ='<p style="color:black"  ><strong>'
+									+ msg.properties.level
+									+ '</strong> db';
+								
+								
+								
+								//TODO --- required for initial request coz timemachine data does not send time.
+								//BUg here since NoiseMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
+								if(msg.properties.recordTime === undefined){
+									noiseMarker.data.name = new Date().getTime();
+								}else
+									noiseMarker.data.name = msg.properties.recordTime;
+
+								noiseMarker.data.weight = getNoiseId(msg.properties.level); // Weight
+																							// is
+																							// the
+																							// level
+																							// of
+																							// Light
+																							// or
+																							// Noise
+								noiseMarker.data.category = msg.properties.readingType; // Category
+																						// is
+																						// readingType
+								noiseMarker.weight = getNoiseId(msg.properties.level);
+								markerArray.push(noiseMarker);
+								pruneCluster.RegisterMarker(noiseMarker);
+
+							} else if (msg.properties.readingType == 2
+									&& current_layer == 2) {
+								
+								var msgMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
+								
+								if(containsURLWithHTMLLinks(msg.properties.message)){
+									msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
+										+ replaceURLWithHTMLLinks(msg.properties.message) 
+										+ '</strong>';
+									msgMarker.data.weight = 1; // Weight is the
+																// level of Light or
+																// Noise
+									
+								}else {
+
+									msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
+										+ (msg.properties.message)
+										+ '</strong>';
+									msgMarker.data.weight = 0; // Weight is the
+																// level of Light or
+																// Noise
+									
+								}
+									
+									
+								//TODO --- required for initial request coz timemachine data does not send time.
+								//BUg here since msgMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
+								if(msg.properties.recordTime === undefined){
+									msgMarker.data.name = new Date().getTime();
+								}else
+									msgMarker.data.name = msg.properties.recordTime;
+								
+								msgMarker.data.category = msg.properties.readingType; // Category
+																						// is
+																						// readingType
+								
+								markerArray.push(msgMarker);
+								pruneCluster.RegisterMarker(msgMarker);
+							}
+							
+							
+							return true;
+						}
+						
+						
 					}
-					;
+					
 
 					
 					function createIcon(data, category) {
@@ -712,14 +741,14 @@ $(document)
 					}).addTo(map).startUpdating();
 
 					function updateMarkerArray() {
+						if(DEBUG){
+							console.log("*****LOG***** + inside updateMarkerArray()");
+							}
 						var currentTime = new Date().getTime();
 						showSpinner();
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
-// if (currentTime - marker.options.startTime >= 60000 * 5) {
-//							console.log(marker.data.name);
-							if(currentTime - marker.data.name >= 60000 * 30){ // 30	minutes 									// minutes
-// markersCluster.removeLayer(marker);
+							if(currentTime - marker.data.name >= 60000 * 30){ // 30	minutes 
 								var myArray = [];
 								myArray.push(marker);
 								pruneCluster.RemoveMarkers(myArray);
@@ -794,23 +823,33 @@ $(document)
 					}
 
 					function onMessage(evt) {
+						if(DEBUG){
+							console.log("*****LOG***** inside onMessage");
+							console.log("Message received - "+evt.data);
+						}
 						
 						hideSpinner();
-// console.log(evt.data);
 						var msg = JSON.parse(evt.data);
 						var features = msg.features;
 						 if (Array.isArray(features)) {
+							 if(DEBUG){
+							 console.log("*****LOG***** Inside if condition checking if ArrayisArray true with length = "+features.length);
+							 }
 							 for(var i = 0; i < features.length; i++) {
 								    var feature = features[i];
+								    
 								    parseFeature(feature);
 								   
 								}
 							 pruneCluster.ProcessView();
 							 
 							 if(initialReq){
+								 if(DEBUG){
+									 console.log("*****LOG***** since it is initial req call changeSocketToRealTime");
+								 }
 								 changeSocketToRealTime();
 								 initialReq = false
-								 console.log("changeSocketToRealTime initial req");
+								
 							 }
 							 
 
@@ -820,9 +859,6 @@ $(document)
 								pruneCluster.ProcessView();
 							
 						 }
-// console.log("msg.properties.readingType "
-// + msg.properties.readingType);
-						
 
 					}
 
@@ -874,7 +910,6 @@ $(document)
 					}
 					
 					window.prepareTimeMachineReq = function(){
-// console.log("inside prepareTimeMachineReq");
 						
 						 var txtDate =document.getElementById('txtDate').value;
 						 var txtTime =document.getElementById('txtTime').value;
@@ -980,6 +1015,8 @@ $(document)
 										text : "iOS",
 										"class" : 'button',
 										click : function() {
+											
+											location.assign("https://itunes.apple.com/us/app/swarmpulse/id1053129873");
 											 $(this).dialog('close');
 
 										}
@@ -998,7 +1035,7 @@ $(document)
 					}
 					
 					function parseFeature(feature){
-								addMarker(feature);
+								return addMarker(feature);
 					}
 					
 					function showSpinner() {
@@ -1027,7 +1064,7 @@ $(document)
 													// to the spinner
 							, top: '50%' // Top position relative to parent
 							, left: '50%' // Left position relative to parent
-							, shadow: false // Whether to render a shadow
+							, shadow: true // Whether to render a shadow
 							, hwaccel: false // Whether to use hardware
 												// acceleration
 							, position: 'absolute' });
