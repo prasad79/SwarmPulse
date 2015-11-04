@@ -1007,7 +1007,7 @@ $(document)
 										text : "Android",
 										"class" : 'button',
 										click : function() {
-											location.assign("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse");
+											window.open("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse");
 											 $(this).dialog('close');
 
 										}
@@ -1016,7 +1016,7 @@ $(document)
 										"class" : 'button',
 										click : function() {
 											
-											location.assign("https://itunes.apple.com/us/app/swarmpulse/id1053129873");
+											window.open("https://itunes.apple.com/us/app/swarmpulse/id1053129873");
 											 $(this).dialog('close');
 
 										}
