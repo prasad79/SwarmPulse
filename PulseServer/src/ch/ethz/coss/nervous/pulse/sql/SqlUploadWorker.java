@@ -18,11 +18,13 @@ import ch.ethz.coss.nervous.pulse.model.LightReading;
 import ch.ethz.coss.nervous.pulse.model.NoiseReading;
 import ch.ethz.coss.nervous.pulse.model.TextVisual;
 import ch.ethz.coss.nervous.pulse.model.Visual;
+import ch.ethz.coss.nervous.pulse.model.VisualLocation;
 import ch.ethz.coss.nervous.pulse.socket.ConcurrentSocketWorker;
 import ch.ethz.coss.nervous.pulse.utils.Log;
 import flexjson.JSONDeserializer;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
@@ -101,8 +103,17 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					// construct a JSONArray from a string; can also use an
 					// array or list
 					JsonArray coord = new JsonArray();
-					coord.add(new JsonPrimitive(reading.location.latnLong[0]));
-					coord.add(new JsonPrimitive(reading.location.latnLong[1]));
+					if(reading == null || reading.location == null)
+						continue;
+					else if(reading.location.latnLong[0] == 0 && reading.location.latnLong[1] == 0 )
+						continue;
+								
+						
+					
+					
+					coord.add(new JsonPrimitive(new String(""+reading.location.latnLong[0])));
+					coord.add(new JsonPrimitive(new String(""+reading.location.latnLong[1])));
+					
 					point.add("coordinates", coord);
 					feature.add("geometry", point);
 					

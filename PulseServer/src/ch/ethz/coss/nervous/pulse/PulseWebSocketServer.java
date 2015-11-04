@@ -95,11 +95,11 @@ public class PulseWebSocketServer extends WebSocketServer {
 					
 				}
 				
-				//System.out.println("hTimeMachineConnectionList size after adding = "+prhServer.hTimeMachineConnectionList.size());
 				
-				//System.out.println("TYPE=1");
 				break;
+			
 			}
+
 
 		}
 	}
