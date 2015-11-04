@@ -27,7 +27,7 @@ $(document)
 					L.tileLayer(
 						    'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 						    attribution: '&copy; OpenStreetMap contributors, CC-BY-SA',
-						    maxZoom: 19
+						    maxZoom: 16
 						    });
 					
 					mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
@@ -38,7 +38,7 @@ $(document)
 						L.tileLayer(
 							    'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
 							    attribution: '&copy; '+mapLink+'. Tiles courtesy of '+mapquestLink+mapquestPic,
-							    maxZoom: 22,
+							    maxZoom: 16,
 							    subdomains: '1234',
 							    });
 					
@@ -47,7 +47,7 @@ $(document)
 									'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 22
+										maxZoom : 16
 									});
 
 					var mapWithLabels = L
@@ -55,7 +55,7 @@ $(document)
 									'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 22
+										maxZoom : 16
 									});
 
 	
@@ -93,9 +93,10 @@ $(document)
 
 					var groupedOverlays = {
 						"Overlays" : {
+
+							"Messages" : msgMarkers,
 							"Light" : lightMarkers,
-							"Noise" : noiseMarkers,
-							"Messages" : msgMarkers
+							"Noise" : noiseMarkers
 
 						}
 					};
@@ -251,20 +252,19 @@ $(document)
 							title : 'Time-Machine',
 							onClick : function(control) {
 								control.state("realTime");
-// doConnect();
 								
 								if(current_layer == 0){
-									resetToLightReadings();
+
+									resetToMessagesOverlay();
 									last_layer = 0;
 								}else if (current_layer == 1) {
 
+									resetToLightReadings();
 									
-									resetToNoiseReadings();
 									last_layer = 1;
 								} else if (current_layer == 2) {
 
-//									current_layer = 2;
-									resetToMessagesOverlay();
+									resetToNoiseReadings();
 									last_layer = 2;
 								}
 								changeSocketToRealTime();
@@ -308,10 +308,10 @@ $(document)
 
 					map.on('overlayadd', function(a) {
 					
-						if (a.name == "Light" && current_layer != 0) {
+						if (a.name == "Light" && current_layer != 1) {
 							
 							resetToLightReadings();
-							last_layer = 0;
+							last_layer = 1;
 							
 							
 							hideSpinner();
@@ -322,11 +322,11 @@ $(document)
 							}
 							$('#statusmsgs').text("LIGHT");
 							
-						} else if (a.name == "Noise" && current_layer != 1) {
+						} else if (a.name == "Noise" && current_layer != 2) {
 
 							
 							resetToNoiseReadings();
-							last_layer = 1;
+							last_layer = 2;
 							$('#statusmsgs').text("NOISE");
 							hideSpinner();
 							if(current_state == 0){
@@ -334,11 +334,11 @@ $(document)
 								initialReq = true;
 								makeInitialRequest();
 							}
-						} else if (a.name == "Messages" && current_layer != 2) {
+						} else if (a.name == "Messages" && current_layer != 0) {
 
 //							current_layer = 2;
 							resetToMessagesOverlay();
-							last_layer = 2;
+							last_layer = 0;
 							$('#statusmsgs').text("MESSAGES");
 							hideSpinner();
 							if(current_state == 0){
@@ -352,12 +352,12 @@ $(document)
 
 					function resetToLightReadings() {
 						removeAllMarkers();
-						if (current_layer != 0)
+						if (current_layer != 1)
 							legendLight.addTo(map);
-						if (last_layer == 1)
+						if (last_layer == 2)
 							legendSound.removeFrom(map);
 						
-						current_layer = 0;
+						current_layer = 1;
 						lightMarkers.addLayer(pruneCluster);
 						map.addLayer(lightMarkers);
 					
@@ -365,13 +365,13 @@ $(document)
 
 					function resetToNoiseReadings() {
 						removeAllMarkers();
-						if (current_layer != 1)
+						if (current_layer != 2)
 							legendSound.addTo(map);
 						
-						if (last_layer == 0)
+						if (last_layer == 1)
 							legendLight.removeFrom(map);
 						
-						current_layer = 1;
+						current_layer = 2;
 
 						noiseMarkers.addLayer(pruneCluster);
 						map.addLayer(noiseMarkers);
@@ -380,12 +380,12 @@ $(document)
 					function resetToMessagesOverlay() {
 						removeAllMarkers();
 						
-						if (last_layer == 1)
+						if (last_layer == 2)
 							legendSound.removeFrom(map);
-						else if (last_layer == 0)
+						else if (last_layer == 1)
 							legendLight.removeFrom(map);
-						current_layer = 2;
-						msgMarkers.addLayer(pruneCluster	);
+						current_layer = 0;
+						msgMarkers.addLayer(pruneCluster);
 						map.addLayer(msgMarkers);
 
 					}
@@ -569,7 +569,7 @@ $(document)
 							}
 							counter++;
 							if (msg.properties.readingType == 0
-									&& current_layer == 0) {
+									&& current_layer == 1) {
 								
 								
 								var lightMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
@@ -608,7 +608,7 @@ $(document)
 								
 
 							} else if (msg.properties.readingType == 1
-									&& current_layer == 1) {
+									&& current_layer == 2) {
 								var noiseMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
 								noiseMarker.data.popup ='<p style="color:black"  ><strong>'
 									+ msg.properties.level
@@ -639,7 +639,7 @@ $(document)
 								pruneCluster.RegisterMarker(noiseMarker);
 
 							} else if (msg.properties.readingType == 2
-									&& current_layer == 2) {
+									&& current_layer == 0) {
 								
 								var msgMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
 								
@@ -811,7 +811,7 @@ $(document)
 						if(initialReq){
 							changeSocketToTimeMachine();
 							var date = new Date();
-				        	sendTimeMachineRequest(current_layer, date.getTime()- (60000 * 3000), date.getTime() );
+				        	sendTimeMachineRequest(current_layer == 0?2:current_layer == 1? 0: 1, date.getTime()- (60000 * 3000), date.getTime() );
 				        	
 						}
 						/****************/
@@ -883,6 +883,7 @@ $(document)
 						current_state = 1;
 						websocket.send('type=1');
 					}
+					
 					function changeSocketToRealTime(){
 						current_state = 0;
 						websocket.send('type=0');
@@ -897,13 +898,13 @@ $(document)
 					function resetBeforeSendingTimeMachineRequest() {
 						removeAllMarkers();
 						
-						if(current_layer == 0){
+						if(current_layer == 1){
 							lightMarkers.addLayer(pruneCluster);
 							map.addLayer(lightMarkers)	
-						} else if(current_layer == 1){
+						} else if(current_layer == 2){
 							noiseMarkers.addLayer(pruneCluster);
 							map.addLayer(noiseMarkers)	
-						} else if(current_layer == 2){
+						} else if(current_layer == 0){
 							msgMarkers.addLayer(pruneCluster);
 							map.addLayer(msgMarkers);
 						}
@@ -927,7 +928,7 @@ $(document)
 						        	var timeAsObject =  $('#txtTime').timepicker('getTime', new Date(0));
 						        	var millisec = dateAsObject.getTime() + timeAsObject.getTime()
 						        	var date = new Date(millisec);
-						        	sendTimeMachineRequest(current_layer, date.getTime(), date.getTime() + (60000 * 30));
+						        	sendTimeMachineRequest(current_layer == 0?2:current_layer == 1? 0: 1, date.getTime(), date.getTime() + (60000 * 30));
 						        		
 						        }
 					
@@ -1107,10 +1108,10 @@ $(document)
 					            iconSize = 44;
 					        }
 					        
-					        if(current_layer == 0){
+					        if(current_layer == 1){
 					        	c += "-0-";
 					        	c += ((cluster.totalWeight/cluster.population).toFixed());
-					        } else  if(current_layer == 1){
+					        } else  if(current_layer == 2){
 								c += "-1-"
 								c += ((cluster.totalWeight/cluster.population).toFixed());
 							} 
@@ -1231,7 +1232,7 @@ $(document)
 						  }
 						};
 					/** ********************************************** */
-					resetToLightReadings();
+						resetToMessagesOverlay();
 					$('#datePicker').hide(0);
 					
 				});
