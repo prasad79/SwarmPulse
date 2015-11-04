@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 @SuppressLint({ "Wakelock" })
@@ -105,4 +107,45 @@ public class ParentActivity extends Activity {
 
 		
 	}
+	 
+	 
+
+		@Override
+		protected synchronized void onDestroy() {
+			Log.d(DEBUG_TAG, "onDestroy");
+
+			super.onDestroy();
+		}
+
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+
+			return true;
+		}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+
+			return super.onOptionsItemSelected(item);
+		}
+		@Override
+		public void onPause() {
+			Log.d(DEBUG_TAG, "onPause");
+			super.onPause();
+		}
+		@Override
+		public void onResume() {
+			Log.d(DEBUG_TAG, "onResume");
+			super.onResume();
+		}
+		@Override
+		public void onStop() {
+			Log.d(DEBUG_TAG, "onStop");
+			super.onStop();
+		}
+		@Override
+		public void onStart() {
+			Log.d(DEBUG_TAG, "onStart");
+			super.onStart();
+		}
 }

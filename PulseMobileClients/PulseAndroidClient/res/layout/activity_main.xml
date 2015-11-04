@@ -2,14 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white"
+    android:background="#434343"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -23,7 +22,7 @@
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
-                android:background="@drawable/border_gradient" />
+                android:background="@drawable/border_no_gradient" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,7 +37,7 @@
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
-                android:background="@drawable/border_gradient" />
+                android:background="@drawable/border_no_gradient" />
         </LinearLayout>
 
         <HorizontalScrollView
@@ -46,36 +45,36 @@
             android:layout_height="fill_parent" >
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="5dp"
-                android:weightSum="2"  >
+                android:weightSum="2"  
+                android:background="#FF770D">
 
                 <ImageButton
                     android:id="@+id/icon_light"
-                    android:layout_width="100dp"
+                    android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circular_button"
+                    android:background="#FF770D"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_light" 
-                     android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:text="Light"/>
 
                 <ImageButton
                     android:id="@+id/icon_sound"
-                    android:layout_width="100dp"
+                    android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circular_button"
+                    android:background="#7E7E7E"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_noise" 
                      android:layout_weight="1"/>
@@ -93,7 +92,7 @@
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
-                android:background="@drawable/border_gradient" />
+                android:background="@drawable/border_no_gradient" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,7 +107,7 @@
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
-                android:background="@drawable/border_gradient" />
+                android:background="@drawable/border_no_gradient" />
         </LinearLayout>
 
         <HorizontalScrollView
@@ -149,7 +148,7 @@
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
-                android:background="@drawable/border_gradient" />
+                android:background="@drawable/border_no_gradient" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -164,7 +163,7 @@
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
-                android:background="@drawable/border_gradient" />
+                android:background="@drawable/border_no_gradient" />
         </LinearLayout>
 
         <HorizontalScrollView
@@ -187,7 +186,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circular_button"
+                    android:background="#434343"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_visual" />
 
@@ -202,7 +201,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circular_button"
+                    android:background="#7E7E7E"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_about" />
             </LinearLayout>

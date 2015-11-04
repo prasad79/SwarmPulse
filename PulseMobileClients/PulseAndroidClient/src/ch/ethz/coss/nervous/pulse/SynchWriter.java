@@ -114,9 +114,12 @@ public class SynchWriter {
 			try {
 				for (Visual o : buffer) {
 					String json = new JSONSerializer().deepSerialize(o);
+
+					System.out.println("SENDING JSON -- "+json);
+					byte [] jsonBytes = json.getBytes();
+					oos.write(jsonBytes, 0, jsonBytes.length);
 					
-					//System.out.println("JSON -- "+json);
-					oos.writeUTF(json);
+//					oos.writeUTF(json);
 					
 				}
 				
@@ -126,15 +129,7 @@ public class SynchWriter {
 				exceptionFlag = true;
 				if (printTrace)
 					e.printStackTrace();
-				try {
-					oos.close();
-				} catch (Exception f) {
-					if (printTrace)
-						f.printStackTrace();
-				} finally {
-					oos = null;
-					return false;
-				}
+				
 			} finally {
 				try {
 					oos.close();
@@ -150,12 +145,16 @@ public class SynchWriter {
 		
 		
 		 protected void onPostExecute(Object obj) {   
-				Utils.dismissProgress();
-				
-				if(exceptionFlag)
-					Toast.makeText(mContext, "There was a problem sharing the data. Please check your internte connection or try again later.", Toast.LENGTH_SHORT).show();
-				else
-					Toast.makeText(mContext, "The data has been shared succesfully.", Toast.LENGTH_SHORT).show();
+			 Utils.dismissProgress();
+			 
+				if(!Constants.DUMMY_DATA_COLLECT){
+					
+					if(exceptionFlag)
+						Toast.makeText(mContext, "There was a problem sharing the data. Please check your internte connection or try again later.", Toast.LENGTH_SHORT).show();
+					else
+						Toast.makeText(mContext, "The data has been shared succesfully.", Toast.LENGTH_SHORT).show();
+				}
+			
 					
 		    }
 	}

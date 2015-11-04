@@ -79,7 +79,7 @@ public class Application extends android.app.Application {
 	}
 
 	protected static void registerListener(int type) {
-
+System.out.println("registerListener "+type);
 		if (type == Sensor.TYPE_LIGHT) {
 			Application.sensorManager.registerListener(sensorService,
 					sensorManager.getDefaultSensor(type),
@@ -100,6 +100,8 @@ public class Application extends android.app.Application {
 		if (sensorManager != null)
 			sensorManager.unregisterListener(sensorService,
 					sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT));
+		
+		sensorService.reset();
 	}
 
 	private void handleUncaughtException(Thread thread, Throwable e) {

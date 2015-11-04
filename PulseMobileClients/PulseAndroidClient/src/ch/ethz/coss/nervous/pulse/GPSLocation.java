@@ -58,7 +58,7 @@ public class GPSLocation {
 				.getSystemService(mContext.LOCATION_SERVICE);
 
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-				10000, 1, mLocationListener);
+				10000, 10, mLocationListener);
 
       
         
@@ -173,8 +173,8 @@ public class GPSLocation {
 	 */
 	public double[] getLocation() {
 		
-		if(latitude == 0 && longitude == 0)
-			return null;
+//		if(latitude == 0 && longitude == 0)
+//			return null;
 
 		return Utils.addNoiseToLocation(latitude, longitude);
 			

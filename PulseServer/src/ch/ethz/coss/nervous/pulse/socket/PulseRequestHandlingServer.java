@@ -24,7 +24,7 @@ public class PulseRequestHandlingServer implements Runnable {
 	private SqlFetchWorkerFactory factory;
 	
 	public  Hashtable<WebSocket, PulseTimeMachineRequest> hTimeMachineConnectionList = new Hashtable<WebSocket, PulseTimeMachineRequest>();
-	private  ArrayList<PulseTimeMachineRequest> timeMachineRequestArrayList = new ArrayList<PulseTimeMachineRequest>();
+	private ArrayList<PulseTimeMachineRequest> timeMachineRequestArrayList = new ArrayList<PulseTimeMachineRequest>();
 	   
 
 	public PulseRequestHandlingServer(int numThreads,
@@ -54,7 +54,9 @@ public class PulseRequestHandlingServer implements Runnable {
 		}
 
 		while (!isStopped()) {
+			synchronized(timeMachineRequestArrayList) { //Added this to avoid concurrentmodificationexception.
 			Iterator<PulseTimeMachineRequest> iterator = timeMachineRequestArrayList.iterator();
+		
 			while (iterator.hasNext()) {
 				try {
 					PulseTimeMachineRequest ptmRequest = (PulseTimeMachineRequest)iterator.next();
@@ -80,7 +82,7 @@ public class PulseRequestHandlingServer implements Runnable {
 			}
 			
 			timeMachineRequestArrayList.clear();
-			
+		}
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {

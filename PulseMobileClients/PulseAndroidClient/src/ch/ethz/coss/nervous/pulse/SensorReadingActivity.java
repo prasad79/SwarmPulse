@@ -11,7 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 @SuppressLint({ "Wakelock", "InlinedApi" })
-public abstract class SensorReadingActivity extends ParentActivity {
+public abstract class SensorReadingActivity extends Activity {
 
 	public static final String DEBUG_TAG = "SensorReadingActivityPulse";
 
@@ -33,6 +33,7 @@ public abstract class SensorReadingActivity extends ParentActivity {
 
 	}
 
+	@Override
 	protected synchronized void onDestroy() {
 		Log.d(DEBUG_TAG, "onDestroy");
 
@@ -50,22 +51,22 @@ public abstract class SensorReadingActivity extends ParentActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
-
+	@Override
 	public void onPause() {
 		Log.d(DEBUG_TAG, "onPause");
 		super.onPause();
 	}
-
+	@Override
 	public void onResume() {
 		Log.d(DEBUG_TAG, "onResume");
 		super.onResume();
 	}
-
+	@Override
 	public void onStop() {
 		Log.d(DEBUG_TAG, "onStop");
 		super.onStop();
 	}
-
+	@Override
 	public void onStart() {
 		Log.d(DEBUG_TAG, "onStart");
 		super.onStart();

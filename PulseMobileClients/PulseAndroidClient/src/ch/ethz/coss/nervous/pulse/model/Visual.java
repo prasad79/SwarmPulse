@@ -10,11 +10,9 @@ public abstract class Visual implements Serializable {
 	public VisualLocation location;
 	public long timestamp;
 	public String uuid;
+//	public long volatility; //Data Volatility in seconds not milliseconds
 	
 	
-	public void pushingDataSuccessCallback(){
-		Utils.dismissProgress();
-		
-	}
+	
 	
 }

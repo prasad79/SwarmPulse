@@ -1,5 +1,8 @@
 package ch.ethz.coss.nervous.pulse;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -30,14 +33,52 @@ public class LightSensorReadingActivity extends SensorReadingActivity {
 		setContentView(R.layout.activity_light);
 
 		// Sign up button click handler
-		((Button) findViewById(R.id.submit))
-				.setOnClickListener(new OnClickListener() {
+		final Button submitButton = (Button) findViewById(R.id.submit);
+		
+		submitButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						if (reading != null){
-							Utils.showProgress(LightSensorReadingActivity.this);
-							Application.pushReadingToServer(reading, LightSensorReadingActivity.this);
 							
+							if(reading.location == null){
+								Utils.showAlert(LightSensorReadingActivity.this, "Location not found.", "Unable to find the location which is required for visualizing the data on the map. Please restart you app.");
+								return;
+							}
+							
+							Utils.showProgress(LightSensorReadingActivity.this);
+							
+							
+							Application.pushReadingToServer(reading, LightSensorReadingActivity.this);
+							submitButton.setEnabled(false);
+							submitButton.setText("Please wait for 5 seconds.");
+							final Timer buttonTimer = new Timer();
+							
+							buttonTimer.scheduleAtFixedRate(new TimerTask() {
+								 int counter = 5;
+							    @Override
+							    public void run() {
+							        runOnUiThread(new Runnable() {
+
+							            @Override
+							            public void run() {
+							            	if(counter < 1){
+
+								            	submitButton.setText("Share sensor data");
+							            		submitButton.setEnabled(true);
+							            		buttonTimer.cancel();
+							            		System.out.println("timer cancelled");
+							            	}
+							            	else{
+							            		System.out.println("timer running");
+							            		submitButton.setText("Please wait for "+counter+" seconds.");
+							            		counter--;
+							            	}
+							            		
+							            	
+							            }
+							        });
+							    }
+							}, 1000, 1000);
 						}
 							
 					}
@@ -59,13 +100,13 @@ public class LightSensorReadingActivity extends SensorReadingActivity {
 	public void onPause() {
 		super.onPause();
 		
-		try {
-			unregisterReceiver(broadcastReceiver);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		stopService(intent);
+//		try {
+//			unregisterReceiver(broadcastReceiver);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		stopService(intent);
 	}
 
 	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

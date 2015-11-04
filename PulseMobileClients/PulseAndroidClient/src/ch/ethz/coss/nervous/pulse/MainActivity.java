@@ -81,7 +81,7 @@ public class MainActivity extends ParentActivity {
 							GPSLocation.getInstance(MainActivity.this);
 							if(!GPSLocation.GPS_AVAILABLE){
 								showLocationAlert();
-							}else {
+							}else{
 								Application.registerListener(0);
 								startActivity(new Intent(MainActivity.this,
 										NoiseSensorReadingActivity.class));

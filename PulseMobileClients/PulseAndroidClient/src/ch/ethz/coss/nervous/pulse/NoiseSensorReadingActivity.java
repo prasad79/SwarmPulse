@@ -1,5 +1,8 @@
 package ch.ethz.coss.nervous.pulse;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,14 +32,31 @@ public class NoiseSensorReadingActivity extends SensorReadingActivity {
 		setContentView(R.layout.activity_sound);
 
 		// Sign up button click handler
-		((Button) findViewById(R.id.submit))
-				.setOnClickListener(new OnClickListener() {
+		final Button submitButton = ((Button) findViewById(R.id.submit));
+		
+		submitButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						if (reading != null){
 							Utils.showProgress(NoiseSensorReadingActivity.this);
 							Application.pushReadingToServer(reading, NoiseSensorReadingActivity.this);
-						
+							submitButton.setEnabled(false);
+							submitButton.setText("Please wait for 5 seconds.");
+							Timer buttonTimer = new Timer();
+							buttonTimer.schedule(new TimerTask() {
+
+							    @Override
+							    public void run() {
+							        runOnUiThread(new Runnable() {
+
+							            @Override
+							            public void run() {
+							            	submitButton.setText("Share sensor data");
+							            	submitButton.setEnabled(true);
+							            }
+							        });
+							    }
+							}, 5000);
 						}
 							
 					}

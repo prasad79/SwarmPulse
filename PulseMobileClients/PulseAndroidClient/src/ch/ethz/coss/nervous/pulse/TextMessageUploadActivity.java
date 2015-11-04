@@ -1,5 +1,8 @@
 package ch.ethz.coss.nervous.pulse;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,8 +40,8 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 		setContentView(R.layout.activity_msg_upload);
 		final TextView msgTV = (TextView) findViewById(R.id.messageTF);
 		// Sign up button click handler
-		((Button) findViewById(R.id.submit))
-				.setOnClickListener(new OnClickListener() {
+		final Button submitButton =((Button) findViewById(R.id.submit));
+		submitButton.setOnClickListener(new OnClickListener() {
 
 					
 					
@@ -56,6 +59,24 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 								Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
 							
 								msgTV.setText("");
+								
+								submitButton.setEnabled(false);
+								submitButton.setText("Please wait for 5 seconds.");
+								Timer buttonTimer = new Timer();
+								buttonTimer.schedule(new TimerTask() {
+
+								    @Override
+								    public void run() {
+								        runOnUiThread(new Runnable() {
+
+								            @Override
+								            public void run() {
+								            	submitButton.setText("Share message");
+								            	submitButton.setEnabled(true);
+								            }
+								        });
+								    }
+								}, 5000);
 							}
 						}
 

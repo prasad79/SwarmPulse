@@ -65,6 +65,7 @@ public class SensorService extends Service implements SensorEventListener,
 					event.values[2], System.currentTimeMillis(),
 					new VisualLocation(GPSLocation.getInstance(context)
 							.getLocation()));
+			System.out.println("Inside TYPE_ACCELEROMETER");
 			Log.d(DEBUG_TAG, reading.toString());
 
 			if (intent == null)
@@ -98,6 +99,7 @@ public class SensorService extends Service implements SensorEventListener,
 										.getLocation()));
 				intent.putExtra("LightReading", reading);
 				context.sendBroadcast(intent);
+				System.out.println("Inside TYPE_Light");
 				Log.d(DEBUG_TAG, reading.toString());
 			}
 
@@ -129,18 +131,17 @@ public class SensorService extends Service implements SensorEventListener,
 		if(Constants.DUMMY_DATA_COLLECT){
 			new Thread() {
 				public void run() {
-					for (int i = 0; i < 5; i++){
 					
 					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime,
 							new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 					Application.pushReadingToServer(noiseReading, context);
 					intent.putExtra("NoiseReading", noiseReading);
 					context.sendBroadcast(intent);
-					}
+					
 				}
 
 			}.start();
-		} else {
+		} else {	
 					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime,
 							new VisualLocation(GPSLocation.getInstance(context)
 									.getLocation()));
@@ -171,13 +172,15 @@ public class SensorService extends Service implements SensorEventListener,
 									GPSLocation.getInstance(context)
 											.getLocation()));
 					// out.send(reading);
+
+					System.out.println("Inside SensorValueUpdaterTask TYPE_ACCELEROMETER");
 					Log.d(DEBUG_TAG, reading.toString());
 				} else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
 					LightReading reading = new LightReading(Application.uuid.toString(),event.values[0],
 							System.currentTimeMillis(), new VisualLocation(
 									GPSLocation.getInstance(context)
 											.getLocation()));
-					
+					System.out.println("Inside SensorValueUpdaterTask TYPE_Light");
 					Log.d(DEBUG_TAG, reading.toString());
 				} else {
 					event = null;
@@ -231,6 +234,10 @@ public class SensorService extends Service implements SensorEventListener,
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void reset(){
+		this.event = null;
 	}
 
 	public void cancelTask() {
