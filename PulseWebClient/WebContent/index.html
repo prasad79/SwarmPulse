@@ -27,22 +27,26 @@
 
 <body bgcolor="#555555">
 	<div id="map" style="background: #333d3f;"></div>
-	<div id="status" style="background: #555555;">
-		<div id="datePicker" style="background: #555555; z-index: 900 !important">
-		<input id="txtDate" type="text" style="background: #333d3f" /> 
+		<div id="statusmsgs" style="background: #555555; text-align: center;"><p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">Messages</span>
+</p>
+	</div>
+	<div id="status" style="background: #555555;"> 
+		<div id="datePicker" style="background: #555555; z-index: 900 !important; text-align: center;">
+		Time-Machine: (Choose a date and time )&nbsp;&nbsp;&nbsp;<input id="txtDate" type="text" style="background: #333d3f" /> 
 		<input id="txtTime" type="text" style="background: #333d3f" />
 		<button type="submit" name="button1" onclick="window.prepareTimeMachineReq()" style="background-color:#555555; color:#fff;">
 		Fetch
 		</button>
 		</div>
-	<div id="statusmsgs" style="background: #555555;">MESSAGES
-	</div>
+
 	
 	<div id="dialog" style="display: none;" title="Select your mobile OS: ">Select your mobile OS:</div>
 	<div id="alert" style="display: none;" title="Alert"></div>
     <div id="info" style="display: none;" title="About"><b>SwarmPulse </b><sup>beta</sup> <br><br><sub>a research initiative by:</sub><br><br> <b>ETH Zurich</b><br> <p>Department of Humanities and Social Sciences (D-GESS)<br>
 Professorship of Computational Social Science (COSS)<br>
-Clausiusstrasse 50,<br> 8092 Zurich,<br> Switzerland<br></div>
+Clausiusstrasse 50,<br> 8092 Zurich,<br> Switzerland<br><br>
+<a href="http://www.coss.ethz.ch" target="_blank">www.coss.ethz.ch</a><br>
+<a href="http://www.nervousnet.info" target="_blank">www.nervousnet.info</a></div>
 	<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
 	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script type="text/javascript" src="socket.io-1.3.5.js"></script>

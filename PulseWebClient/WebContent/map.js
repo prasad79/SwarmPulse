@@ -96,7 +96,7 @@ $(document)
 
 							"Messages" : msgMarkers,
 							"Light" : lightMarkers,
-							"Noise" : noiseMarkers
+							"Sound" : noiseMarkers
 
 						}
 					};
@@ -134,7 +134,7 @@ $(document)
 						div.style.borderRadius = "2px";
 						div.style.backgroundColor = "#2A2A2A";
 						div.style.color = "#ffffff";
-						div.style.fontSize = "70%";
+						div.style.fontSize = "80%";
 						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Sound Level (db)</p>  <br>';
 
 						for (var i = 0; i < grades.length; i++) {
@@ -166,7 +166,7 @@ $(document)
 						div.style.borderRadius = "2px";
 						div.style.backgroundColor = "#2A2A2A";
 						div.style.color = "#ffffff";
-						div.style.fontSize = "70%";
+						div.style.fontSize = "80%";
 						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Light Level (lux)</p>  <br>';
 
 						for (var i = 0; i < lightGrades.length; i++) {
@@ -320,14 +320,16 @@ $(document)
 								initialReq = true;
 								makeInitialRequest();
 							}
-							$('#statusmsgs').text("LIGHT");
+							$('#statusmsgs').html('<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">LIGHT</span></p>');
+
 							
-						} else if (a.name == "Noise" && current_layer != 2) {
+						} else if (a.name == "Sound" && current_layer != 2) {
 
 							
 							resetToNoiseReadings();
 							last_layer = 2;
-							$('#statusmsgs').text("NOISE");
+							$('#statusmsgs').html('<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">SOUND</span></p>');
+
 							hideSpinner();
 							if(current_state == 0){
 
@@ -339,7 +341,7 @@ $(document)
 //							current_layer = 2;
 							resetToMessagesOverlay();
 							last_layer = 0;
-							$('#statusmsgs').text("MESSAGES");
+							$('#statusmsgs').html('<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MESSAGES</span></p>');
 							hideSpinner();
 							if(current_state == 0){
 
@@ -451,13 +453,22 @@ $(document)
 					}
 
 					function getLightColor(d) {
-						return d > 100000 ? '#FFFFFF' : d > 10000 ? '#DADFA2'
-								: d > 1000 ? '#BBBF8C' : d > 100 ? '#9C9F77'
-										: d > 10 ? '#7D8061'
-												: d > 5 ? '#5E604C'
-														: d > 0 ? '#3F4036'
-																: '#212121';
+						return d > 100000 ? '#800026' : d > 10000 ? '#BD0026'
+								: d > 1000 ? '#E31A1C' : d > 100 ? '#FC4E2A'
+										: d > 10 ? '#FD8D3C'
+												: d > 5 ? '#FEB24C'
+														: d > 0 ? '#FED976'
+																: '#FFEDA0';
 					}
+					
+//					function getLightColor(d) {
+//						return d > 100000 ? '#FFFFFF' : d > 10000 ? '#DADFA2'
+//								: d > 1000 ? '#BBBF8C' : d > 100 ? '#9C9F77'
+//										: d > 10 ? '#7D8061'
+//												: d > 5 ? '#5E604C'
+//														: d > 0 ? '#3F4036'
+//																: '#212121';
+//					}
 
 					function getInnerColor(type) {
 
@@ -538,9 +549,9 @@ $(document)
 						}
 						var avg = sum / markers.length;
 
-						if (lightLayerFlag)
-							return getLightColor(avg);
-						else
+//						if (lightLayerFlag)
+//							return getLightColor(avg);
+//						else
 							return getNoiseColor(avg);
 					}
 					;
@@ -1107,9 +1118,13 @@ $(document)
 					            c += 'large';
 					            iconSize = 44;
 					        }
-					        
+					         
+					        if(current_layer == 0){
+						        	c += "-1-"; 
+						        	c += 1;
+						    }else 
 					        if(current_layer == 1){
-					        	c += "-0-";
+					        	c += "-1-"; //IMP - changing 0 to 1 as we want Light and noise color legends to be same.
 					        	c += ((cluster.totalWeight/cluster.population).toFixed());
 					        } else  if(current_layer == 2){
 								c += "-1-"
