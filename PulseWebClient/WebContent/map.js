@@ -27,7 +27,7 @@ $(document)
 					L.tileLayer(
 						    'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 						    attribution: '&copy; OpenStreetMap contributors, CC-BY-SA',
-						    maxZoom: 16
+						    maxZoom: 22
 						    });
 					
 					mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
@@ -38,7 +38,7 @@ $(document)
 						L.tileLayer(
 							    'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
 							    attribution: '&copy; '+mapLink+'. Tiles courtesy of '+mapquestLink+mapquestPic,
-							    maxZoom: 16,
+							    maxZoom: 22,
 							    subdomains: '1234',
 							    });
 					
@@ -47,7 +47,7 @@ $(document)
 									'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 16
+										maxZoom : 22
 									});
 
 					var mapWithLabels = L
@@ -55,7 +55,7 @@ $(document)
 									'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 16
+										maxZoom : 22
 									});
 
 	
@@ -586,7 +586,8 @@ $(document)
 								var lightMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
 								lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
 												+ msg.properties.level
-												+ '</strong> lux';
+												+ '</strong> lux<br>'
+												+msg.geometry.coordinates[0]+', '+msg.geometry.coordinates[1];
 								
 								
 								//TODO --- BUg here since lightMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
@@ -615,15 +616,14 @@ $(document)
 								markerArray.push(lightMarker);
 								pruneCluster.RegisterMarker(lightMarker);
 							
-							
 								
-
 							} else if (msg.properties.readingType == 1
 									&& current_layer == 2) {
 								var noiseMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
 								noiseMarker.data.popup ='<p style="color:black"  ><strong>'
 									+ msg.properties.level
-									+ '</strong> db';
+									+ '</strong> db<br>'
+									+msg.geometry.coordinates[0]+', '+msg.geometry.coordinates[1];
 								
 								
 								
@@ -1146,41 +1146,27 @@ $(document)
 							    iconUrl: getIcon(data.category, data.weight),
 							    iconAnchor: [20,40]})); 
 						
+						if (data.popup) {
+							var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
+							if (marker.getPopup()) {
+								marker.setPopupContent(content, data.popupOptions);
+							} else {
+								marker.bindPopup(content, data.popupOptions);
+							}
+							marker.openPopup();
+						}
 						
-// if (data.icon) {
-// if (typeof data.icon === 'function') {
-// marker.setIcon(data.icon(data, category));
-// }
-// else {
-// // marker.setIcon(data.icon);
-// marker.setIcon(L.icon({
-// iconUrl: getIcon(category, data.weight),
-// iconAnchor: [20,40]}));
-// }
-// }
+						
+						
 						  marker.on('mouseover', function(e){
-							    // do click event logic here
-// leafletMarker.openPopup();
 							    	generatePopup(e, data.popup);
 							    	
 							    });
 						  
 						marker.on('click', function(e){
-						    // do click event logic here
-// leafletMarker.openPopup();
 						    	generatePopup(e, data.popup);
 						    	
 						    });
-// if (data.popup) {
-// var content = typeof data.popup === 'function' ? data.popup(data, category) :
-// data.popup;
-// if (marker.getPopup()) {
-// marker.setPopupContent(content, data.popupOptions);
-// }
-// else {
-// marker.bindPopup(content, data.popupOptions);
-// }
-// }
 
 				    };
 				    
@@ -1217,7 +1203,6 @@ $(document)
 // };
 					
 					var generatePopup = function (e, popupContent) {
-
 						  var clickedPopup = e.target.getPopup();
 						  var newPopup = new L.popup({
 						    offset: new L.Point(0, -20),
@@ -1247,7 +1232,7 @@ $(document)
 						  }
 						};
 					/** ********************************************** */
-						resetToMessagesOverlay();
+					resetToMessagesOverlay();
 					$('#datePicker').hide(0);
 					
 				});
