@@ -22,3 +22,17 @@ PulseServer/pulse_configbackup.xml
 PulseServer/log.txt
 
 PulseServer/.DS_Store
+
+*.mov
+
+PulseWebClient/WebContent/.DS_Store
+
+Images/.DS_Store
+
+Documents/.DS_Store
+
+PulseMobileClients/PulseAndroidClient/.DS_Store
+
+*.ap_
+
+*.ap_
