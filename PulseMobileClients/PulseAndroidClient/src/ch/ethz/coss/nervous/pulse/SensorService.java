@@ -81,14 +81,13 @@ public class SensorService extends Service implements SensorEventListener,
 			if(Constants.DUMMY_DATA_COLLECT){
 				new Thread() {
 					public void run() {
-						for (int i = 0; i < 5; i++){
 						Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
 								System.currentTimeMillis(), new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 						intent.putExtra("LightReading", reading);
 
 						Application.pushReadingToServer(reading,context);
 						context.sendBroadcast(intent);
-						}
+						
 					}
 
 				}.start();

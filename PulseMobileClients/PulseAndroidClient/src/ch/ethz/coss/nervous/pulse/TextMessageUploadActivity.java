@@ -48,37 +48,49 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 					@Override
 					public void onClick(View v) {
 						String message = (msgTV.getText()).toString();
-						if (message.length() >= 2) {
+
+						if(Constants.DUMMY_DATA_COLLECT){
+
+							message = Utils.generateRandomJoke();
 							TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message, System
-									.currentTimeMillis(), new VisualLocation(
-									GPSLocation.getInstance(
-											TextMessageUploadActivity.this)
-											.getLocation()));
-							if (txtMsg != null) {
-								Utils.showProgress(TextMessageUploadActivity.this);
-								Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
-							
-								msgTV.setText("");
+									.currentTimeMillis(), new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
+							Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
+						} else {
+							message = message.trim();
+							if (message.length() >= 2) {
+								TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message, System
+										.currentTimeMillis(), new VisualLocation(
+										GPSLocation.getInstance(
+												TextMessageUploadActivity.this)
+												.getLocation()));
+								if (txtMsg != null) {
+									Utils.showProgress(TextMessageUploadActivity.this);
+									
+									Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
 								
-								submitButton.setEnabled(false);
-								submitButton.setText("Please wait for 5 seconds.");
-								Timer buttonTimer = new Timer();
-								buttonTimer.schedule(new TimerTask() {
+									msgTV.setText("");
+									
+									submitButton.setEnabled(false);
+									submitButton.setText("Please wait for 5 seconds.");
+									Timer buttonTimer = new Timer();
+									buttonTimer.schedule(new TimerTask() {
 
-								    @Override
-								    public void run() {
-								        runOnUiThread(new Runnable() {
+									    @Override
+									    public void run() {
+									        runOnUiThread(new Runnable() {
 
-								            @Override
-								            public void run() {
-								            	submitButton.setText("Share message");
-								            	submitButton.setEnabled(true);
-								            }
-								        });
-								    }
-								}, 5000);
+									            @Override
+									            public void run() {
+									            	submitButton.setText("Share message");
+									            	submitButton.setEnabled(true);
+									            }
+									        });
+									    }
+									}, 5000);
+								}
 							}
 						}
+						
 
 					}
 				});

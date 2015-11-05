@@ -111,11 +111,11 @@ public final class R {
     public static final class id {
         public static final int detail=0x7f0b0000;
         public static final int empty=0x7f0b0002;
-        public static final int icon_about=0x7f0b000a;
+        public static final int icon_about=0x7f0b0009;
         public static final int icon_light=0x7f0b0006;
         public static final int icon_sound=0x7f0b0007;
         public static final int icon_text=0x7f0b0008;
-        public static final int icon_visual=0x7f0b0009;
+        public static final int icon_visual=0x7f0b000a;
         public static final int lightValueTF=0x7f0b0004;
         public static final int messageLabelTF=0x7f0b000b;
         public static final int messageTF=0x7f0b000c;
