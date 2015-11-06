@@ -1,12 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:fillViewport="true" >
+    <LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:background="@color/white"
     android:gravity="top"
     android:orientation="vertical" 
-    android:padding="@dimen/activity_horizontal_margin"
-    android:fillViewport="true" >
+    android:padding="@dimen/activity_horizontal_margin">
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,3 +49,4 @@
         android:text="Share Message" />
 
 </LinearLayout>
+</ScrollView>

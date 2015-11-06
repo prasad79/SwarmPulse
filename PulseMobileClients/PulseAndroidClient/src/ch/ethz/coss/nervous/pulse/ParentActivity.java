@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -105,6 +106,27 @@ public class ParentActivity extends Activity {
 			builder.create().show();
 			Toast.makeText(ParentActivity.this, "You location could not be determined. Please enable your Network Providers.", Toast.LENGTH_LONG).show();
 
+		
+	}
+	 
+	 protected void showVisualizationAlert() {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					ParentActivity.this);
+			builder.setTitle("Information"); // GPS not found
+			builder.setMessage("Please note that visualization of the SwarmPulse website (http://www.swarmpulse.net) is best viewed on desktop/laptop browser.\n The SwarmPulse website is not currently optimized for mobile browsers."); // Want
+																		// to
+																		// enable?
+			builder.setPositiveButton("Continue",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialogInterface,
+								int i) {
+							Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+									Uri.parse("http://www.swarmpulse.net"));
+							startActivity(browserIntent);
+						}
+					});
+			
+			builder.create().show();
 		
 	}
 	 

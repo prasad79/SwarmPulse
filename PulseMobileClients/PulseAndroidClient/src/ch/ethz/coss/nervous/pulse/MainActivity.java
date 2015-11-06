@@ -124,9 +124,7 @@ public class MainActivity extends ParentActivity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-								Uri.parse("http://www.swarmpulse.net"));
-						startActivity(browserIntent);
+					showVisualizationAlert();
 
 					}
 				});
