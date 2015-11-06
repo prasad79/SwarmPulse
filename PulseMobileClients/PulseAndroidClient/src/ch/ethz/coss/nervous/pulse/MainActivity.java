@@ -152,7 +152,7 @@ public class MainActivity extends ParentActivity {
 				"WifyLock");
 		wifiLock.acquire();
 
-		GPSLocation.getInstance(this);
+//		GPSLocation.getInstance(this);
 		
 		handleShareIntent();
 

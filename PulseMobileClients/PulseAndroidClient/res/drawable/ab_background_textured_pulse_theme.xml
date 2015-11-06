@@ -18,5 +18,5 @@
 -->
 
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/ab_texture_tile_pulse_theme"
+    android:src="@drawable/ab_solid_pulse_theme"
     android:tileMode="repeat" />
