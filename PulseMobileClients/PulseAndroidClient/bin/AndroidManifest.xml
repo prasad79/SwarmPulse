@@ -73,6 +73,12 @@
             android:label="@string/app_name"
             android:noHistory="true">
         </activity>
+        <activity
+            android:name="ch.ethz.coss.nervous.pulse.HelpActivity"
+            android:label="@string/app_name"
+            android:noHistory="true">
+        </activity>
+        
     </application>
 
 </manifest>

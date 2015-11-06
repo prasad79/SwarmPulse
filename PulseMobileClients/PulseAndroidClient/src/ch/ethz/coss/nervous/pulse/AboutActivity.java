@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 public class AboutActivity extends ParentActivity{
 
-	public static final String DEBUG_TAG = "NoiseSensorReadingActivityPulse";
+	public static final String DEBUG_TAG = "AboutActivityPulse";
 
 	private Intent intent;
 

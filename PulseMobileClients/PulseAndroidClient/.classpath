@@ -3,8 +3,8 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="lib" path="/Users/prasad/Root/4_Development/GitHub/Pulse/PulseMobileClients/PulseAndroidClient/lib/flexjson-2.1.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="/Users/prasad/Root/4_Development/GitHub/Pulse/PulseMobileClients/PulseAndroidClient/flexjson-2.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

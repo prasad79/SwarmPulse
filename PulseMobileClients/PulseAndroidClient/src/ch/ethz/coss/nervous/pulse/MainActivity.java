@@ -110,13 +110,13 @@ public class MainActivity extends ParentActivity {
 			}
 		});
 
-//		ImageButton testButton = ((ImageButton) findViewById(R.id.icon_test));
-//		testButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				startActivity(new Intent(MainActivity.this, TestActivity.class));
-//			}
-//		});
+		ImageButton helpButton = ((ImageButton) findViewById(R.id.icon_help));
+		helpButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainActivity.this, HelpActivity.class));
+			}
+		});
 
 	
 
