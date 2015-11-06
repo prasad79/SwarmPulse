@@ -4,19 +4,22 @@ The SwarmPulse service allows for collective visualization and sharing of mobile
 
 <b>Visit</b>: www.swarmpulse.net<br>
 
+
 <b>Download mobile app from</b>:<br>
-<b>Android</b>: https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse<br>
-<b>iOS</b>: https://itunes.apple.com/us/app/swarmpulse/id1053129873<br>
-
-
-<b>***************************HOW-TO***************************</b><br><br>
-<b><i>Share</i></b><br>
+<p style="text-align: justify; padding: 10px">
+<b>Android</b>:<br> https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse<br>
+<b>iOS</b>:<br> https://itunes.apple.com/us/app/swarmpulse/id1053129873<br>
+<br>
+</p>
+<b>*******HOW-TO*******</b><br>
+<p style="text-align: justify; padding: 10px">
+<b>Share</b><br>
 Use the SwarmPulse mobile app:<br>
-1. View current Light and Sound sensor readings.<br>
-2. Share or upload the sensor reading to the server as you wish.<br>
-3. Android and iOS version available on respective App Stores.<br>
-
-<b><i>Visualize</i></b><br>
+1. To view current Light and Sound sensor readings on your mobile phone.<br>
+2. To share or upload the sensor reading to the server as and when you want to.<br>
+3. Android and iOS versions available on respective App Stores.<br>
+<br>
+<b>Visualize</b><br>
 1. On you desktop or laptop browser visit <b><i>www.swarmpulse.net</i></b><br>
 2. Use the Real-Time mode or Time-Machine mode to visualize Messages / Light sensor / Sound sensor data.<br>
 3. The "Clock" icon on the top right corner is used to switch between Real-Time and Time-Machine modes.<br>
@@ -27,5 +30,4 @@ Use the SwarmPulse mobile app:<br>
  &nbsp;&nbsp;     .  Select a time and date by using the date input fields at the bottom of the browser and click on fetch to view the data.<br>
  &nbsp;&nbsp;     .  This mode shows data that is 30 minutes from the time chosen by the user.
 
-
-
+</p>
