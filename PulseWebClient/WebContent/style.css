@@ -599,9 +599,10 @@ opacity
 
 .ui-dialog.success-dialog .ui-widget-header {
 	background: #f3fcfe;
-	border: 0;
-	color: #fff;
+	border: 1;
+	color: #000000;
 	font-weight: normal;
+	text-align: center;
 }
 
 .ui-dialog.success-dialog .ui-dialog-titlebar {
@@ -609,7 +610,7 @@ opacity
 	position: relative;
 	font-size: 1em;
 	font-family: Verdana, Arial, sans-serif;
-	background: #ffffff;
+	background: #FF770D;
 }
 
 .ui-dialog {

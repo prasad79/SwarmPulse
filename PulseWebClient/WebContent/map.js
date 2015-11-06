@@ -289,7 +289,7 @@ $(document)
 					var infoButton = L.easyButton({
 						states : [ {
 							stateName : 'Information',
-							icon : 'fa fa-info',
+							icon : 'fa fa-info-circle fa-lg',
 							title : 'About / Info',
 							onClick : function(control) {
 								showInfo();
@@ -300,7 +300,21 @@ $(document)
 
 					infoButton.addTo(map);
 					/** ****************************** */
-				
+					/** ****************************** */
+					var helpButton = L.easyButton({
+						states : [ {
+							stateName : 'Help',
+							icon : 'fa fa-question-circle fa-lg',
+							title : 'Help / FAQ',
+							onClick : function(control) {
+								showHelp();
+							}
+						} ],
+						position : "bottomright"
+					});
+
+					helpButton.addTo(map);
+					/** ****************************** */
 					/** ********** */
 
 					mapStandard.addTo(map);
@@ -586,8 +600,8 @@ $(document)
 								var lightMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
 								lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
 												+ msg.properties.level
-												+ '</strong> lux<br>'
-												+msg.geometry.coordinates[0]+', '+msg.geometry.coordinates[1];
+												+ '</strong> lux<br>';
+//												+msg.geometry.coordinates[0]+', '+msg.geometry.coordinates[1];
 								
 								
 								//TODO --- BUg here since lightMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
@@ -622,8 +636,8 @@ $(document)
 								var noiseMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
 								noiseMarker.data.popup ='<p style="color:black"  ><strong>'
 									+ msg.properties.level
-									+ '</strong> db<br>'
-									+msg.geometry.coordinates[0]+', '+msg.geometry.coordinates[1];
+									+ '</strong> db<br>';
+//									+msg.geometry.coordinates[0]+', '+msg.geometry.coordinates[1];
 								
 								
 								
@@ -999,6 +1013,33 @@ $(document)
 										}
 									}],
 									dialogClass: ' success-dialog'
+								});
+
+					
+					}
+					
+					function showHelp(){
+
+						$('#help').dialog(
+								{
+									title: "Help",
+									open : function(event, ui) {
+										$(".ui-dialog-titlebar-close",
+												ui.dialog | ui).hide();
+									},
+									modal : true,
+									resizable : true,
+									closeOnEscape : true,
+									buttons : [ {
+										text : "OK",
+										"class" : 'button',
+										click : function() {
+											 $(this).dialog('close');
+
+										}
+									}],
+									minWidth: 400,
+									dialogClass: 'success-dialog'
 								});
 
 					
