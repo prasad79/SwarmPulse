@@ -1,4 +1,4 @@
-<b>SwarmPulse</b> - <i>mapping the world together</i>
+<b>SwarmPulse</b>  <sup> <i>mapping the world together</i></sup>
 
 The SwarmPulse service allows for collective visualization and sharing of mobile sensor data, text messages, media files and more.. The "SwarmPulse" service is built on top of the Nervousnet research platform, a large-scale distributed research platform that provides real-time social sensing services as a public good. Existing Big Data systems threaten social cohesion as they are designed to be closed, proprietary, privacy-intrusive and discriminatory. In contrast, the Planetary Nervous System is an open, privacy-preserving and participatory platform designed to be collectively built by citizens and for citizens.
 
