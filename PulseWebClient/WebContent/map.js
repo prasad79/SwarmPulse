@@ -407,7 +407,9 @@ $(document)
 					}
 
 					function removeAllMarkers() {
-
+						if(DEBUG){
+							console.log("*****LOG***** inside removeAllMarkers ");
+						}
 						markerArray = [];
 
 						pruneCluster.RemoveMarkers();
@@ -418,6 +420,10 @@ $(document)
 						map.removeLayer(noiseMarkers);
 						map.removeLayer(msgMarkers);
 						counter = 0;
+						if(DEBUG){
+							console.log("*****LOG***** end of  removeAllMarkers ");
+						}
+					
 					}
 
 				/** *********************************** */
@@ -1186,17 +1192,7 @@ $(document)
 						marker.setIcon(L.icon({
 							    iconUrl: getIcon(data.category, data.weight),
 							    iconAnchor: [20,40]})); 
-						
-						if (data.popup) {
-							var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
-							if (marker.getPopup()) {
-								marker.setPopupContent(content, data.popupOptions);
-							} else {
-								marker.bindPopup(content, data.popupOptions);
-							}
-							marker.openPopup();
-						}
-						
+					
 						
 						
 						  marker.on('mouseover', function(e){
