@@ -202,7 +202,7 @@ $(document)
 					var conButton = L.easyButton({
 						states : [ {
 							stateName : 'disconnected',
-							icon : 'fa-chain-broken fa-lg red',
+							icon : 'fa-chain-broken fa-lg',
 							title : 'Server disconnected',
 							onClick : function(control) {
 								control.state("connecting");
@@ -235,7 +235,7 @@ $(document)
 					var realTimeButton = L.easyButton({
 						states : [ {
 							stateName : 'realTime',
-							icon : 'fa-clock-o fa-lg red',
+							icon : 'fa-clock-o fa-lg',
 							title : 'Real-Time',
 							onClick : function(control) {
 								control.state("timeMachine");
@@ -289,7 +289,7 @@ $(document)
 					var infoButton = L.easyButton({
 						states : [ {
 							stateName : 'Information',
-							icon : 'fa fa-info-circle fa-lg',
+							icon : 'fa-info fa-lg .fa-info',
 							title : 'About / Info',
 							onClick : function(control) {
 								showInfo();
@@ -304,7 +304,7 @@ $(document)
 					var helpButton = L.easyButton({
 						states : [ {
 							stateName : 'Help',
-							icon : 'fa fa-question-circle fa-lg',
+							icon : 'fa-question fa-lg',
 							title : 'Help / FAQ',
 							onClick : function(control) {
 								showHelp();
@@ -434,6 +434,13 @@ $(document)
 							return "images/marker_"+category+"_"+weight+".png";
 						
 					}
+					
+					function getRetinaIcon(category, weight) {
+						
+						
+						return "images/marker_"+category+"_"+weight+".png";
+					
+				    }
 
 					function getLightId(d) {
 						return d > 100000 ? 7 : d > 10000 ? 6
@@ -1064,7 +1071,7 @@ $(document)
 									closeOnEscape : true,
 									buttons : [ {
 										text : "Android",
-										"class" : 'button',
+										"style" : '<i class="fa fa-android fa-lg"></i>',
 										click : function() {
 											window.open("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse");
 											 $(this).dialog('close');
@@ -1191,6 +1198,7 @@ $(document)
 					pruneCluster.PrepareLeafletMarker = function (marker, data, category) {
 						marker.setIcon(L.icon({
 							    iconUrl: getIcon(data.category, data.weight),
+							    iconRetinaUrl: getRetinaIcon(data.category, data.weight),
 							    iconAnchor: [20,40]})); 
 					
 						

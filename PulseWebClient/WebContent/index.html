@@ -4,6 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="Share and collectively visualize sensor data, text messages, media files and more using the SwarmPulse.net website and mobile application for android and iOS" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SwarmPulse - beta</title>
 <link rel="stylesheet" href="leaflet.css" />
 <link href='http://fonts.googleapis.com/css?family=Dosis:300'
@@ -30,7 +31,7 @@
 		<div id="statusmsgs" style="background: #555555; text-align: center;"><p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">Messages</span>
 </p>
 	</div>
-	<div id="status" style="background: #555555;"> 
+	<div id="status" style="background: #555555;display: none;"> 
 		<div id="datePicker" style="background: #555555; z-index: 900 !important; text-align: center;">
 		Time-Machine: (Choose a date and time )&nbsp;&nbsp;&nbsp;<input id="txtDate" type="text" style="background: #333d3f" /> 
 		<input id="txtTime" type="text" style="background: #333d3f" />
@@ -40,38 +41,42 @@
 		</div>
 
 	
-	<div id="dialog" style="display: none;" title="Select your mobile OS: ">
+	<div id="dialog" style="display: none;" title="">To share your sensor data, links and messages, please download the SwarmPulse mobile app.</div>
 	<div id="alert" style="display: none;" title="Alert"></div>
-	  <div id="help" style="display: none;" title="Help"><b>SwarmPulse</b> <sup> <i>mapping the world together</i></sup><br>
-
-The SwarmPulse service allows for collective visualization and sharing of mobile sensor data, text messages, media files and more.. 
+	  <div id="help" style="display: none;" title="Help">
+The <b>SwarmPulse </b><sup>beta</sup> service allows for collective visualization and sharing of mobile sensor data, text messages, media files and more.. 
 <br>
-<br>
-<b>Download mobile app from</b>:<br>
-<p style="text-align: justify; padding: 10px">
-<b>Android</b>:<br> https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse<br>
-<b>iOS</b>:<br> https://itunes.apple.com/us/app/swarmpulse/id1053129873<br>
 <br>
 </p>
 <b>*******HOW-TO*******</b><br>
 <p style="text-align: justify; padding: 10px">
 <b>Share</b><br>
 Use the SwarmPulse mobile app:<br>
-1. To view current Light and Sound sensor readings on your mobile phone.<br>
-2. To share or upload the sensor reading to the server as and when you want to.<br>
-3. Android and iOS versions available on respective App Stores.<br>
+1. To share text messages and your favorite links.<br>
+2. To view current Light and Sound sensor readings on your mobile phone.<br>
+3. To share or upload the sensor reading to the server as and when you want to.<br>
+4. Click on the  "Download Mobile App" <i class="fa fa-mobile fa-lg"></i> icon on the top right corner of the website to download the SwarmPulse mobile app for <i class="fa fa-android fa-lg"></i> Android and <i class="fa fa-apple fa-lg"></i> iOS Platforms<br>
 <br>
 <b>Visualize</b><br>
 1. On you desktop or laptop browser visit <b><i>www.swarmpulse.net</i></b><br>
 2. Use the Real-Time mode or Time-Machine mode to visualize Messages / Light sensor / Sound sensor data.<br>
-3. The "Clock" icon on the top right corner is used to switch between Real-Time and Time-Machine modes.<br>
-4. Real-Time mode:<br>
- &nbsp;&nbsp;    .  Allows for visualizing data as and when it is shared by users.<br>
-5. Time-Machine mode:<br>
- &nbsp;&nbsp;     .  Allows the user to go back in time and visualize the data in the past.<br>
- &nbsp;&nbsp;     .  Select a time and date by using the date input fields at the bottom of the browser and click on fetch to view the data.<br>
- &nbsp;&nbsp;     .  This mode shows data that is 30 minutes from the time chosen by the user.
-
+3. The <span  title="Real-Time">
+    <i class="fa fa-clock-o fa-lg"></i>
+</span> and  <span title="Time-Machine">
+    <i class="fa fa-history fa-lg"></i>
+</span> icon on the top right corner of the website is used to switch between Real-Time and Time-Machine modes.<br>
+4.  <i class="fa fa-clock-o fa-lg"></i> Real-Time mode  : 
+<ul style="text-align: justify;">
+<li>Allows for visualizing data as and when it is shared by users.</li>
+<li>In this mode data is kept alive on the map for only a limited amount of time. 30 minutes as of now.</li>
+  </ul>
+  <p style="text-align: justify; padding: 10px">
+5. <i class="fa fa-history fa-lg"></i> Time-Machine mode : 
+<ul style="text-align: justify;">
+<li>Allows the user to go back in time and visualize the data in the past.</li>
+<li>Select a time and date by using the date input fields at the bottom of the browser and click on fetch to view the data.</li>
+<li>This mode shows data that is 30 minutes from the time chosen by the user.</li>	
+ </ul>
 </p>
 <b>********************</b><br>
 </div>
