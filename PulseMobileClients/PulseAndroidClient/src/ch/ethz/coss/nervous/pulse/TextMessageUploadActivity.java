@@ -53,13 +53,13 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 
 							message = Utils.generateRandomJoke();
 							TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message, System
-									.currentTimeMillis(), new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
+									.currentTimeMillis(), -2, new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 							Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
 						} else {
 							message = message.trim();
 							if (message.length() >= 2) {
 								TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message, System
-										.currentTimeMillis(), new VisualLocation(
+										.currentTimeMillis(), -1, new VisualLocation(
 										GPSLocation.getInstance(
 												TextMessageUploadActivity.this)
 												.getLocation()));

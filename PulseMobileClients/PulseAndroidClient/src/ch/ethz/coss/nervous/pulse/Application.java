@@ -35,7 +35,7 @@ public class Application extends android.app.Application {
 	       SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 	       long msb = settings.getLong("uuid_msb", 0);
 	       long lsb = settings.getLong("uuid_msb", 0);
-	       
+	       boolean visualAlert = settings.getBoolean("visual_alert", false);
 	       if(msb != 0 && lsb != 0){
 	    		uuid = new UUID(msb, lsb);
 	    		////System.out.println("MSB and LSB present");
@@ -191,6 +191,18 @@ System.out.println("registerListener "+type);
 		}
 		return success;
 	}
+	
+//	public void writeVisualAlertPrefs(boolean alertShown){
+//
+//		 // Restore preferences
+//	       SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+//	       
+//	    	   SharedPreferences.Editor editor = settings.edit();
+//	    	   editor.putBoolean("visual_alert", alertShown );
+//	    	   editor.commit();
+//	       
+//	
+//	}
 	
 
 

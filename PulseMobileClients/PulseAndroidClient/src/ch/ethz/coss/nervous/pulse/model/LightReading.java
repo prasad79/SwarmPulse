@@ -11,11 +11,12 @@ public class LightReading extends Visual implements Serializable {
 		
 	}
 	
-	public LightReading(String uuid, double lightVal, long timestamp, VisualLocation loc) {
+	public LightReading(String uuid, double lightVal, long timestamp, long volatility, VisualLocation loc) {
 		type = 0;
 		this.uuid = uuid;
 		this.lightVal = lightVal;
 		this.timestamp = timestamp;
+		this.volatility = volatility;
 		this.location = loc;
 		serialVersionUID = 2L;
 	}

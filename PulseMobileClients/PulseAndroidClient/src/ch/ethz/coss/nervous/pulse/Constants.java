@@ -2,7 +2,7 @@ package ch.ethz.coss.nervous.pulse;
 
 public class Constants {
 
-	public static boolean DUMMY_DATA_COLLECT = false;
+	public static boolean DUMMY_DATA_COLLECT = true;
 
 	protected static final int SENSOR_TYPE_ACCELEROMETER = 0;
 	protected static final int SENSOR_TYPE_LIGHT = 1;

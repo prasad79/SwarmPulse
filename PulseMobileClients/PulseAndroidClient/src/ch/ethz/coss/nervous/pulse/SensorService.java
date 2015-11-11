@@ -82,7 +82,7 @@ public class SensorService extends Service implements SensorEventListener,
 				new Thread() {
 					public void run() {
 						Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
-								System.currentTimeMillis(), new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
+								System.currentTimeMillis(), -1, new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 						intent.putExtra("LightReading", reading);
 
 						Application.pushReadingToServer(reading,context);
@@ -93,7 +93,7 @@ public class SensorService extends Service implements SensorEventListener,
 				}.start();
 			} else {
 				Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
-						System.currentTimeMillis(), new VisualLocation(
+						System.currentTimeMillis(), -1, new VisualLocation(
 								GPSLocation.getInstance(context)
 										.getLocation()));
 				intent.putExtra("LightReading", reading);
@@ -131,7 +131,7 @@ public class SensorService extends Service implements SensorEventListener,
 			new Thread() {
 				public void run() {
 					
-					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime,
+					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime, -1,
 							new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 					Application.pushReadingToServer(noiseReading, context);
 					intent.putExtra("NoiseReading", noiseReading);
@@ -141,7 +141,7 @@ public class SensorService extends Service implements SensorEventListener,
 
 			}.start();
 		} else {	
-					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime,
+					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime, -1,
 							new VisualLocation(GPSLocation.getInstance(context)
 									.getLocation()));
 					Log.d(DEBUG_TAG,
@@ -176,7 +176,7 @@ public class SensorService extends Service implements SensorEventListener,
 					Log.d(DEBUG_TAG, reading.toString());
 				} else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
 					LightReading reading = new LightReading(Application.uuid.toString(),event.values[0],
-							System.currentTimeMillis(), new VisualLocation(
+							System.currentTimeMillis(), -1, new VisualLocation(
 									GPSLocation.getInstance(context)
 											.getLocation()));
 					System.out.println("Inside SensorValueUpdaterTask TYPE_Light");

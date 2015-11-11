@@ -120,6 +120,8 @@ public class ParentActivity extends Activity {
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialogInterface,
 								int i) {
+//							writeVisualAlertPrefs();
+							
 							Intent browserIntent = new Intent(Intent.ACTION_VIEW,
 									Uri.parse("http://www.swarmpulse.net"));
 							startActivity(browserIntent);
