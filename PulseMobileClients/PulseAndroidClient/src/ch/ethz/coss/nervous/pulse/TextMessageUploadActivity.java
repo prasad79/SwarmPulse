@@ -21,6 +21,7 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 	public static final String DEBUG_TAG = "NoiseSensorReadingActivityPulse";
 
 	private Intent intent;
+	public static int counter = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +49,18 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 					@Override
 					public void onClick(View v) {
 						String message = (msgTV.getText()).toString();
-
+						
 						if(Constants.DUMMY_DATA_COLLECT){
-
-							message = Utils.generateRandomJoke();
-							TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message, System
-									.currentTimeMillis(), -2, new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
-							Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
+							counter++;
+							
+								
+								TextVisual txtMsg = new TextVisual(Application.uuid.toString(),  Utils.University_links[counter], System
+										.currentTimeMillis(), -2, Utils.University_link_coords[counter]);
+								Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
+							
+							
+							
+							
 						} else {
 							message = message.trim();
 							if (message.length() >= 2) {
