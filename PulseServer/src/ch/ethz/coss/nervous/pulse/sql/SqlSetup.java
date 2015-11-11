@@ -58,7 +58,7 @@ public class SqlSetup {
 		if (types != null) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("INSERT INTO `ELEMENT_" + PulseConstants.getLabel(readingType)
-					+ "` VALUES (DEFAULT,?,?,");
+					+ "` VALUES (DEFAULT,?,?,?,");
 			for (int i = 0; i < types.size() - 1; i++) {
 				sb.append("?,");
 			}
@@ -109,6 +109,7 @@ public class SqlSetup {
 			sb.append("`RecordID` INT NOT NULL UNIQUE AUTO_INCREMENT,\n");
 			sb.append("`UUID` VARCHAR(38) NOT NULL,\n");
 			sb.append("`RecordTime` BIGINT UNSIGNED NOT NULL,\n");
+			sb.append("`Volatility` BIGINT UNSIGNED NOT NULL,\n");
 			for (PulseElementAttribute attribute : element.getAttributes()) {
 				types.add(attribute.getType());
 				String sqlType = "";

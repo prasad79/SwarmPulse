@@ -46,7 +46,11 @@ public class SqlRequestWorker extends SqlFetchWorker {
 					features = new JsonArray();
 					//System.out.println("SQL query result size = "+rs.getFetchSize());
 					while (rs.next()) {
-					
+						long volatility = rs.getLong("Volatility");
+						
+						if(volatility == 0)
+							continue;
+						
 						String lat = rs.getString("lat");
 						String lon = rs.getString("lon");
 
@@ -61,6 +65,8 @@ public class SqlRequestWorker extends SqlFetchWorker {
 						feature.add("geometry", point);
 
 						JsonObject properties = new JsonObject();
+						
+						properties.addProperty("volatility", volatility);
 						if (ptmRequest.readingType == 0) {
 							String luxVal = rs.getString("Light");
 							//System.out.println("Reading instance of light");
@@ -77,8 +83,8 @@ public class SqlRequestWorker extends SqlFetchWorker {
 						} else {
 							//System.out.println("Reading instance not known");
 						}
-						feature.add("properties", properties);
 						
+						feature.add("properties", properties);			
 						features.add(feature);
 						
 //						if((features.getAsJsonArray()).size() >= 60000){

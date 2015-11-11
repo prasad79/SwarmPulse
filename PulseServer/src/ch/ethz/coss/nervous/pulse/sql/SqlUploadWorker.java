@@ -135,98 +135,55 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 						//System.out.println("Reading instance not known");
 					}
 					properties.addProperty("recordTime", reading.timestamp);
+					properties.addProperty("volatility", reading.volatility);
 					feature.add("properties", properties);
 					features.add(feature);
 					featureCollection.add("features", features);
-					/***** SQL insert ********/
-					// Insert data
-					//System.out.println("before uploading SQL - reading uuid = "+reading.uuid);
-					PreparedStatement datastmt = sqlse
-							.getSensorInsertStatement(connection,reading.type);
-					if (datastmt != null) {
-						//System.out.println("datastmt - " + datastmt.toString());
-						List<Integer> types = sqlse
-								.getArgumentExpectation((long)reading.type);
-						datastmt.setString(1, reading.uuid);
-						if (reading.type == 0) {
-							datastmt.setLong(2, reading.timestamp);
-							datastmt.setDouble(3,
-									((LightReading) reading).lightVal);
-							datastmt.setDouble(4, reading.location.latnLong[0]);
-							datastmt.setDouble(5, reading.location.latnLong[1]);
-						} else if (reading.type == 1) {
-							datastmt.setLong(2, reading.timestamp);
-							datastmt.setDouble(3,
-									((NoiseReading) reading).soundVal);
-							datastmt.setDouble(4, reading.location.latnLong[0]);
-							datastmt.setDouble(5, reading.location.latnLong[1]);
-						} else if (reading.type == 2) {
-							datastmt.setLong(2, reading.timestamp);
-							datastmt.setString(3,
-									((TextVisual) reading).textMsg);
-							datastmt.setDouble(4, reading.location.latnLong[0]);
-							datastmt.setDouble(5, reading.location.latnLong[1]);
+					
+					if(reading.volatility != 0){
+						/***** SQL insert ********/
+						// Insert data
+						//System.out.println("before uploading SQL - reading uuid = "+reading.uuid);
+						PreparedStatement datastmt = sqlse
+								.getSensorInsertStatement(connection,reading.type);
+						if (datastmt != null) {
+							//System.out.println("datastmt - " + datastmt.toString());
+							List<Integer> types = sqlse
+									.getArgumentExpectation((long)reading.type);
+							datastmt.setString(1, reading.uuid);
+							if (reading.type == 0) {
+								datastmt.setLong(2, reading.timestamp);
+								datastmt.setLong(3, reading.volatility);
+								datastmt.setDouble(4,
+										((LightReading) reading).lightVal);
+								datastmt.setDouble(5, reading.location.latnLong[0]);
+								datastmt.setDouble(6, reading.location.latnLong[1]);
+							} else if (reading.type == 1) {
+								datastmt.setLong(2, reading.timestamp);
+								datastmt.setLong(3, reading.volatility);
+								datastmt.setDouble(4,
+										((NoiseReading) reading).soundVal);
+								datastmt.setDouble(5, reading.location.latnLong[0]);
+								datastmt.setDouble(6, reading.location.latnLong[1]);
+							} else if (reading.type == 2) {
+								datastmt.setLong(2, reading.timestamp);
+								datastmt.setLong(3, reading.volatility);
+								datastmt.setString(4,
+										((TextVisual) reading).textMsg);
+								datastmt.setDouble(5, reading.location.latnLong[0]);
+								datastmt.setDouble(6, reading.location.latnLong[1]);
+							}
+							//System.out.println("datastmt after populating - "
+//									+ datastmt.toString());
+
+							datastmt.addBatch();
+							datastmt.executeBatch();
+							datastmt.close();
 						}
-						//System.out.println("datastmt after populating - "
-//								+ datastmt.toString());
+						/*************/
 
-						datastmt.addBatch();
-						// for (SensorData sd : sensorValues) {
-						// try {
-						// datastmt.setBytes(1, uuid);
-						// datastmt.setLong(2, sd.getRecordTime());
-						//
-						// Iterator<Boolean> iterBool =
-						// sd.getValueBoolList().iterator();
-						// Iterator<Integer> iterInteger =
-						// sd.getValueInt32List().iterator();
-						// Iterator<Long> iterLong =
-						// sd.getValueInt64List().iterator();
-						// Iterator<Float> iterFloat =
-						// sd.getValueFloatList().iterator();
-						// Iterator<Double> iterDouble =
-						// sd.getValueDoubleList().iterator();
-						// Iterator<String> iterString =
-						// sd.getValueStringList().iterator();
-						//
-						// int counter = 3;
-						// for (Integer type : types) {
-						// switch (type) {
-						// case SqlSetup.TYPE_BOOL:
-						// datastmt.setBoolean(counter, iterBool.next());
-						// break;
-						// case SqlSetup.TYPE_INT32:
-						// datastmt.setInt(counter, iterInteger.next());
-						// break;
-						// case SqlSetup.TYPE_INT64:
-						// datastmt.setLong(counter, iterLong.next());
-						// break;
-						// case SqlSetup.TYPE_FLOAT:
-						// datastmt.setFloat(counter, iterFloat.next());
-						// break;
-						// case SqlSetup.TYPE_DOUBLE:
-						// datastmt.setDouble(counter, iterDouble.next());
-						// break;
-						// case SqlSetup.TYPE_STRING:
-						// datastmt.setString(counter, iterString.next());
-						// break;
-						// default:
-						// break;
-						// }
-						// counter++;
-						// }
-						// datastmt.addBatch();
-						// } catch (NoSuchElementException e) {
-						// Log.getInstance().append(Log.FLAG_WARNING,
-						// "Sensor data type mismatch with database");
-						// }
-						// }
-						// Add sensor data to the database
-						datastmt.executeBatch();
-						datastmt.close();
 					}
-					/*************/
-
+					
 				} catch (JsonParseException e) {
 					System.out.println("can't save json object: "
 							+ e.toString());
