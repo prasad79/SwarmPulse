@@ -238,6 +238,9 @@ $(document)
 							icon : 'fa-clock-o fa-lg',
 							title : 'Real-Time',
 							onClick : function(control) {
+								if(DEBUG){
+									console.log("******LOG*******Inside onClick realTime Button");	
+								}
 								control.state("timeMachine");
 								changeSocketToTimeMachine();
 								
@@ -251,6 +254,9 @@ $(document)
 							icon : 'fa-history fa-lg',
 							title : 'Time-Machine',
 							onClick : function(control) {
+								if(DEBUG){
+									console.log("******LOG*******Inside onClick timeMachine button");	
+								}
 								control.state("realTime");
 								
 								if(current_layer == 0){
@@ -268,8 +274,6 @@ $(document)
 									last_layer = 2;
 								}
 								changeSocketToRealTime();
-// sliderControl.removeFrom(controlDiv);
-// document.getElementById('footer').removeChild(controlDiv);
 
 								$('#datePicker').hide(0);
 							}
@@ -707,7 +711,7 @@ $(document)
 									msgMarker.data.name = new Date().getTime();
 								}else
 									msgMarker.data.name = msg.properties.recordTime;
-								
+								msgMarker.data.volatility = msg.properties.volatility;
 								msgMarker.data.category = msg.properties.readingType; // Category
 																						// is
 																						// readingType
@@ -786,15 +790,35 @@ $(document)
 						showSpinner();
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
-							if(currentTime - marker.data.name >= 60000 * 30){ // 30	minutes 
-								var myArray = [];
-								myArray.push(marker);
-								pruneCluster.RemoveMarkers(myArray);
-								pruneCluster.ProcessView();
-								markerArray.splice(i, 1);
-								counter--;
-							}else 
-								break;
+							if(marker.data.volatility != -2) { 
+								if(DEBUG){
+									console.log("*****LOG***** + marker.data.volatility = "+marker.data.volatility);
+									}
+								if(currentTime - marker.data.name >= 60000 * 10){ // 10	minutes 
+									if(DEBUG){
+										console.log("*****LOG***** + clear this marker");
+										}
+									var myArray = [];
+									myArray.push(marker);
+									pruneCluster.RemoveMarkers(myArray);
+									pruneCluster.ProcessView();
+									markerArray.splice(i, 1);
+									counter--;
+								}else {
+									//Permanent marker.
+									if(DEBUG){
+										console.log("*****LOG***** + do not clear this marker, seconds alive = "+(currentTime - marker.data.name));
+										}
+									break;
+								}
+									
+							}else{
+								if(DEBUG){
+									console.log("*****LOG***** + Volatility is -2");
+									}
+							}
+							
+							
 						}
 						hideSpinner();
 						
@@ -850,7 +874,7 @@ $(document)
 							changeSocketToTimeMachine();
 							var date = new Date();
 				        	sendTimeMachineRequest(current_layer == 0?2:current_layer == 1? 0: 1, date.getTime()- (60000 * 3000), date.getTime() );
-				        	
+				        
 						}
 						/****************/
 					}
@@ -887,6 +911,9 @@ $(document)
 								 }
 								 changeSocketToRealTime();
 								 initialReq = false
+								 if(DEBUG){
+									 console.log("*****LOG***** Initial Request set to false");
+								 }
 								
 							 }
 							 
