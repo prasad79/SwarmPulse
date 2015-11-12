@@ -1,0 +1,26 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/title_data_retention" >
+        <SwitchPreference
+            android:key="data_rentention"
+            android:switchTextOff="No"
+            android:switchTextOn="Yes"
+            android:title="Store my data on the server" />
+
+        <ListPreference
+            android:dependency="data_rentention"
+            android:entries="@array/time_limit"
+            android:entryValues="@array/time_limit_secs"
+            android:key="time_limit_data_retention"
+            android:title="Maximum time data can be stored" android:summary="value comes here" android:defaultValue="-1"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/title_data_privacy" >
+itle="Unique ID associated with data:">
+        <Preference
+            android:key="UUID"
+            android:layout="@layout/layout_reset_uuid_prefs"
+            android:summary="*******Not generated**********"
+            android:title="Unique ID associated with Data:" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
