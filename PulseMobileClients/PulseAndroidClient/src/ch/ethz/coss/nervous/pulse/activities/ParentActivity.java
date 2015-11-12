@@ -1,4 +1,4 @@
-package ch.ethz.coss.nervous.pulse;
+package ch.ethz.coss.nervous.pulse.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import ch.ethz.coss.nervous.pulse.GPSLocation;
 
 @SuppressLint({ "Wakelock" })
 public class ParentActivity extends Activity {

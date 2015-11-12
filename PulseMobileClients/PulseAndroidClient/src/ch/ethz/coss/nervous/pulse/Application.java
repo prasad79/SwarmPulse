@@ -19,7 +19,7 @@ public class Application extends android.app.Application {
 	public static final String PREFS_NAME = "PulsePrefs";
 	public static SynchWriter synchWriter;
 	public static SensorService sensorService;
-	static SensorManager sensorManager;
+	public static SensorManager sensorManager;
 	public static UUID uuid = UUID.randomUUID();
 	private File dir;
 	
@@ -34,7 +34,7 @@ public class Application extends android.app.Application {
 		 // Restore preferences
 	       SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 	       long msb = settings.getLong("uuid_msb", 0);
-	       long lsb = settings.getLong("uuid_msb", 0);
+	       long lsb = settings.getLong("uuid_lsb", 0);
 	       boolean visualAlert = settings.getBoolean("visual_alert", false);
 	       if(msb != 0 && lsb != 0){
 	    		uuid = new UUID(msb, lsb);
@@ -58,7 +58,7 @@ public class Application extends android.app.Application {
 
 	}
 
-	protected static void initSensorService(Context context) {
+	public static void initSensorService(Context context) {
 		sensorManager = (SensorManager) context
 				.getSystemService(SENSOR_SERVICE);
 		try {
@@ -74,11 +74,11 @@ public class Application extends android.app.Application {
 
 	}
 
-	protected static void stopSensor() {
+	public static void stopSensor() {
 		sensorService.cancelTask();
 	}
 
-	protected static void registerListener(int type) {
+	public static void registerListener(int type) {
 System.out.println("registerListener "+type);
 		if (type == Sensor.TYPE_LIGHT) {
 			Application.sensorManager.registerListener(sensorService,
@@ -96,7 +96,7 @@ System.out.println("registerListener "+type);
 		}
 	}
 
-	protected static void unregisterSensorListeners() {
+	public static void unregisterSensorListeners() {
 		if (sensorManager != null)
 			sensorManager.unregisterListener(sensorService,
 					sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT));

@@ -1,4 +1,4 @@
-package ch.ethz.coss.nervous.pulse;
+package ch.ethz.coss.nervous.pulse.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import ch.ethz.coss.nervous.pulse.R;
+import ch.ethz.coss.nervous.pulse.R.id;
+import ch.ethz.coss.nervous.pulse.R.layout;
 
 @SuppressLint({ "Wakelock", "InlinedApi" })
 public abstract class SensorReadingActivity extends Activity {

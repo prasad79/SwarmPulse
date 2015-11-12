@@ -1,11 +1,8 @@
-package ch.ethz.coss.nervous.pulse;
+package ch.ethz.coss.nervous.pulse.activities;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.hardware.Sensor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +10,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import ch.ethz.coss.nervous.pulse.Constants;
+import ch.ethz.coss.nervous.pulse.R;
 
 public class AboutActivity extends ParentActivity{
 

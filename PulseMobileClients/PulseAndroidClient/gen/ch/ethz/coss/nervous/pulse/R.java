@@ -9,24 +9,25 @@ package ch.ethz.coss.nervous.pulse;
 
 public final class R {
     public static final class array {
-        public static final int ent=0x7f060002;
-        public static final int entvalues=0x7f060003;
-        public static final int sensorTypes=0x7f060000;
-        public static final int sensorValues=0x7f060001;
+        public static final int ent=0x7f070002;
+        public static final int entvalues=0x7f070003;
+        public static final int races_array=0x7f070004;
+        public static final int sensorTypes=0x7f070000;
+        public static final int sensorValues=0x7f070001;
     }
     public static final class attr {
     }
     public static final class color {
-        public static final int black=0x7f050001;
-        public static final int gray=0x7f050002;
-        public static final int nnorange=0x7f050004;
-        public static final int nnorangel=0x7f050005;
-        public static final int red=0x7f050003;
-        public static final int white=0x7f050000;
+        public static final int black=0x7f060001;
+        public static final int gray=0x7f060002;
+        public static final int nnorange=0x7f060004;
+        public static final int nnorangel=0x7f060005;
+        public static final int red=0x7f060003;
+        public static final int white=0x7f060000;
     }
     public static final class dimen {
-        public static final int action_bar_subtitle_text_size=0x7f070003;
-        public static final int action_bar_title_text_size=0x7f070002;
+        public static final int action_bar_subtitle_text_size=0x7f080003;
+        public static final int action_bar_title_text_size=0x7f080002;
         /**  Default screen margins, per the Android Design guidelines. 
 
          Example customization of dimensions originally defined in res/values/dimens.xml
@@ -35,17 +36,17 @@ public final class R {
 
     
          */
-        public static final int activity_horizontal_margin=0x7f070000;
-        public static final int activity_vertical_margin=0x7f070001;
-        public static final int edit_text_size=0x7f070005;
-        public static final int griditem_size=0x7f07000a;
-        public static final int listitem_horizontal_margin=0x7f070008;
-        public static final int listitem_vertical_margin=0x7f070009;
-        public static final int staff_view_griditem_size=0x7f07000b;
-        public static final int text_view_text_size=0x7f070004;
-        public static final int transaction_griditem_size=0x7f07000c;
-        public static final int user_profile_height=0x7f070007;
-        public static final int user_profile_width=0x7f070006;
+        public static final int activity_horizontal_margin=0x7f080000;
+        public static final int activity_vertical_margin=0x7f080001;
+        public static final int edit_text_size=0x7f080005;
+        public static final int griditem_size=0x7f08000a;
+        public static final int listitem_horizontal_margin=0x7f080008;
+        public static final int listitem_vertical_margin=0x7f080009;
+        public static final int staff_view_griditem_size=0x7f08000b;
+        public static final int text_view_text_size=0x7f080004;
+        public static final int transaction_griditem_size=0x7f08000c;
+        public static final int user_profile_height=0x7f080007;
+        public static final int user_profile_width=0x7f080006;
     }
     public static final class drawable {
         public static final int ab_background_textured_pulse_theme=0x7f020000;
@@ -113,23 +114,27 @@ public final class R {
         public static final int tab_unselected_pulse_theme=0x7f02003e;
     }
     public static final class id {
-        public static final int detail=0x7f0b0000;
-        public static final int empty=0x7f0b0002;
-        public static final int help=0x7f0b0004;
-        public static final int icon_about=0x7f0b000b;
-        public static final int icon_help=0x7f0b000d;
-        public static final int icon_light=0x7f0b0007;
-        public static final int icon_settings=0x7f0b000c;
-        public static final int icon_sound=0x7f0b0008;
-        public static final int icon_text=0x7f0b0009;
-        public static final int icon_visual=0x7f0b000a;
-        public static final int lightValueTF=0x7f0b0005;
-        public static final int messageLabelTF=0x7f0b000e;
-        public static final int messageTF=0x7f0b000f;
-        public static final int noiseValueTF=0x7f0b0010;
-        public static final int rateButton=0x7f0b0003;
-        public static final int submit=0x7f0b0006;
-        public static final int version=0x7f0b0001;
+        public static final int UUID=0x7f0c0012;
+        public static final int detail=0x7f0c0000;
+        public static final int empty=0x7f0c0002;
+        public static final int help=0x7f0c0004;
+        public static final int icon_about=0x7f0c000b;
+        public static final int icon_help=0x7f0c000d;
+        public static final int icon_light=0x7f0c0007;
+        public static final int icon_settings=0x7f0c000c;
+        public static final int icon_sound=0x7f0c0008;
+        public static final int icon_text=0x7f0c0009;
+        public static final int icon_visual=0x7f0c000a;
+        public static final int lightValueTF=0x7f0c0005;
+        public static final int messageLabelTF=0x7f0c000e;
+        public static final int messageTF=0x7f0c000f;
+        public static final int noiseValueTF=0x7f0c0010;
+        public static final int rateButton=0x7f0c0003;
+        public static final int reset=0x7f0c0013;
+        public static final int resetButton=0x7f0c0014;
+        public static final int reset_uuid_layout=0x7f0c0011;
+        public static final int submit=0x7f0c0006;
+        public static final int version=0x7f0c0001;
     }
     public static final class layout {
         public static final int activity_about=0x7f030000;
@@ -139,31 +144,36 @@ public final class R {
         public static final int activity_msg_upload=0x7f030004;
         public static final int activity_settings=0x7f030005;
         public static final int activity_sound=0x7f030006;
+        public static final int layout_reset_uuid_prefs=0x7f030007;
+        public static final int pref_reset_button=0x7f030008;
     }
     public static final class menu {
-        public static final int main=0x7f0a0000;
+        public static final int main=0x7f0b0000;
     }
     public static final class raw {
-        public static final int nervousneticon=0x7f040000;
+        public static final int nervousneticon=0x7f050000;
     }
     public static final class string {
-        public static final int action_settings=0x7f080001;
-        public static final int app_name=0x7f080000;
-        public static final int label_sensors=0x7f080002;
-        public static final int label_settings=0x7f080004;
-        public static final int label_share=0x7f080003;
-        public static final int license_label=0x7f080008;
-        public static final int organization=0x7f080005;
-        public static final int rate_app_label=0x7f080006;
-        public static final int terms=0x7f080007;
+        public static final int action_settings=0x7f090001;
+        public static final int app_name=0x7f090000;
+        public static final int default_checkbox_data_retention=0x7f09000a;
+        public static final int label_sensors=0x7f090002;
+        public static final int label_settings=0x7f090004;
+        public static final int label_share=0x7f090003;
+        public static final int license_label=0x7f090008;
+        public static final int organization=0x7f090005;
+        public static final int rate_app_label=0x7f090006;
+        public static final int terms=0x7f090007;
+        public static final int title_data_privacy=0x7f09000b;
+        public static final int title_data_retention=0x7f090009;
     }
     public static final class style {
-        public static final int ActionBar_Solid_pulse_theme=0x7f090004;
-        public static final int ActionBar_SubTitleTextStyle_Host_theme=0x7f090006;
-        public static final int ActionBar_TitleTextStyle_Host_theme=0x7f090005;
-        public static final int ActionBar_Transparent_pulse_theme=0x7f090007;
-        public static final int ActionBarTabStyle_pulse_theme=0x7f09000d;
-        public static final int ActionButton_CloseMode_pulse_theme=0x7f090010;
+        public static final int ActionBar_Solid_pulse_theme=0x7f0a0004;
+        public static final int ActionBar_SubTitleTextStyle_Host_theme=0x7f0a0006;
+        public static final int ActionBar_TitleTextStyle_Host_theme=0x7f0a0005;
+        public static final int ActionBar_Transparent_pulse_theme=0x7f0a0007;
+        public static final int ActionBarTabStyle_pulse_theme=0x7f0a000d;
+        public static final int ActionButton_CloseMode_pulse_theme=0x7f0a0010;
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
@@ -183,24 +193,28 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f090000;
+        public static final int AppBaseTheme=0x7f0a0000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f090001;
-        public static final int Button_pulse_theme=0x7f090009;
-        public static final int DropDownListView_pulse_theme=0x7f09000c;
-        public static final int DropDownNav_pulse_theme=0x7f09000e;
-        public static final int EditText_pulse_theme=0x7f090013;
-        public static final int MyTheme=0x7f090008;
-        public static final int PopupMenu_pulse_theme=0x7f09000b;
-        public static final int ProgressBar_pulse_theme=0x7f09000f;
-        public static final int RadioButton_pulse_theme=0x7f09000a;
-        public static final int TextView_pulse_theme=0x7f090012;
-        public static final int Theme_pulse_theme=0x7f090002;
+        public static final int AppTheme=0x7f0a0001;
+        public static final int Button_pulse_theme=0x7f0a0009;
+        public static final int DropDownListView_pulse_theme=0x7f0a000c;
+        public static final int DropDownNav_pulse_theme=0x7f0a000e;
+        public static final int EditText_pulse_theme=0x7f0a0013;
+        public static final int MyTheme=0x7f0a0008;
+        public static final int PopupMenu_pulse_theme=0x7f0a000b;
+        public static final int ProgressBar_pulse_theme=0x7f0a000f;
+        public static final int RadioButton_pulse_theme=0x7f0a000a;
+        public static final int TextView_pulse_theme=0x7f0a0012;
+        public static final int Theme_pulse_theme=0x7f0a0002;
         /**  this style is only referenced in a Light.DarkActionBar based theme 
          */
-        public static final int Theme_pulse_theme_Widget=0x7f090011;
-        public static final int Widget_Spinner=0x7f090003;
+        public static final int Theme_pulse_theme_Widget=0x7f0a0011;
+        public static final int Widget_Spinner=0x7f0a0003;
+    }
+    public static final class xml {
+        public static final int preferences=0x7f040000;
+        public static final int prefs=0x7f040001;
     }
 }

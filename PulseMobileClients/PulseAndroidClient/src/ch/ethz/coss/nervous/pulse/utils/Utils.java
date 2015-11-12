@@ -12,7 +12,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.provider.SyncStateContract.Constants;
 import android.widget.Toast;
-import ch.ethz.coss.nervous.pulse.LightSensorReadingActivity;
+import ch.ethz.coss.nervous.pulse.activities.LightSensorReadingActivity;
 import ch.ethz.coss.nervous.pulse.model.VisualLocation;
 
 public class Utils {

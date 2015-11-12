@@ -1,16 +1,24 @@
-package ch.ethz.coss.nervous.pulse;
+package ch.ethz.coss.nervous.pulse.activities;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import ch.ethz.coss.nervous.pulse.Application;
+import ch.ethz.coss.nervous.pulse.Constants;
+import ch.ethz.coss.nervous.pulse.GPSLocation;
+import ch.ethz.coss.nervous.pulse.R;
+import ch.ethz.coss.nervous.pulse.R.id;
+import ch.ethz.coss.nervous.pulse.R.layout;
 import ch.ethz.coss.nervous.pulse.model.TextVisual;
 import ch.ethz.coss.nervous.pulse.model.VisualLocation;
 import ch.ethz.coss.nervous.pulse.utils.Utils;
@@ -53,9 +61,15 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 						if(Constants.DUMMY_DATA_COLLECT){
 							counter++;
 							
-								
+
+							SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(TextMessageUploadActivity.this);
+						    boolean volatility = prefs.getBoolean("data_rentention", true);
+						  
+						    	
 								TextVisual txtMsg = new TextVisual(Application.uuid.toString(),  Utils.University_links[counter], System
-										.currentTimeMillis(), -2, Utils.University_link_coords[counter]);
+										.currentTimeMillis(), volatility?-1:0, Utils.University_link_coords[counter]);
+								
+								
 								Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
 							
 							

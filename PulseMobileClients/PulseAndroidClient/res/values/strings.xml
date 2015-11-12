@@ -14,5 +14,8 @@ Clausiusstrasse 50,\n 8092 Zurich,\n Switzerland\n</string>
     <string name="rate_app_label">Rate App</string>
     <string name="terms">Terms and Conditions</string>
     <string name="license_label">License</string>
+    <string name="title_data_retention">Data Retention</string>
+    <string name="default_checkbox_data_retention"></string>
+    <string name="title_data_privacy">Data Privacy</string>
 
 </resources>

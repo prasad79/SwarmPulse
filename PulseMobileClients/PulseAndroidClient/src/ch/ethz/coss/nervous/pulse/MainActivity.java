@@ -21,6 +21,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import ch.ethz.coss.nervous.pulse.R;
+import ch.ethz.coss.nervous.pulse.R.id;
+import ch.ethz.coss.nervous.pulse.R.layout;
+import ch.ethz.coss.nervous.pulse.R.menu;
+import ch.ethz.coss.nervous.pulse.activities.AboutActivity;
+import ch.ethz.coss.nervous.pulse.activities.HelpActivity;
+import ch.ethz.coss.nervous.pulse.activities.LightSensorReadingActivity;
+import ch.ethz.coss.nervous.pulse.activities.NoiseSensorReadingActivity;
+import ch.ethz.coss.nervous.pulse.activities.ParentActivity;
+import ch.ethz.coss.nervous.pulse.activities.SettingsActivity;
+import ch.ethz.coss.nervous.pulse.activities.TextMessageUploadActivity;
 
 @SuppressLint({ "Wakelock" })
 public class MainActivity extends ParentActivity {
@@ -128,6 +139,18 @@ public class MainActivity extends ParentActivity {
 
 					}
 				});
+		
+		((ImageButton) findViewById(R.id.icon_settings))
+		.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				// Start and intent for the logged out activity
+				startActivity(new Intent(MainActivity.this,
+						SettingsActivity.class));
+
+			}
+		});
 
 		((ImageButton) findViewById(R.id.icon_about))
 				.setOnClickListener(new OnClickListener() {

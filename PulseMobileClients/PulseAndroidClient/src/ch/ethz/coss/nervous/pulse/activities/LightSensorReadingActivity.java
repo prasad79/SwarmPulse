@@ -1,4 +1,4 @@
-package ch.ethz.coss.nervous.pulse;
+package ch.ethz.coss.nervous.pulse.activities;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,12 +9,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import ch.ethz.coss.nervous.pulse.Application;
+import ch.ethz.coss.nervous.pulse.R;
+import ch.ethz.coss.nervous.pulse.SensorService;
+import ch.ethz.coss.nervous.pulse.R.id;
+import ch.ethz.coss.nervous.pulse.R.layout;
 import ch.ethz.coss.nervous.pulse.model.LightReading;
 import ch.ethz.coss.nervous.pulse.utils.Utils;
 
@@ -47,7 +54,12 @@ public class LightSensorReadingActivity extends SensorReadingActivity {
 							
 							Utils.showProgress(LightSensorReadingActivity.this);
 							
-							
+							SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LightSensorReadingActivity.this);
+							    if (prefs.getBoolean("data_rentention", true)){
+							    	reading.volatility = -1;
+							    }else
+							    	reading.volatility = 0;
+							    
 							Application.pushReadingToServer(reading, LightSensorReadingActivity.this);
 							submitButton.setEnabled(false);
 							submitButton.setText("Please wait for 5 seconds.");

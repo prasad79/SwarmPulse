@@ -1,4 +1,4 @@
-package ch.ethz.coss.nervous.pulse;
+package ch.ethz.coss.nervous.pulse.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,6 +14,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import ch.ethz.coss.nervous.pulse.Constants;
+import ch.ethz.coss.nervous.pulse.R;
+import ch.ethz.coss.nervous.pulse.R.id;
+import ch.ethz.coss.nervous.pulse.R.layout;
 
 public class HelpActivity extends ParentActivity{
 
