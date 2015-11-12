@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class VisualLocation implements Serializable {
 
 	public double[] latnLong;
-	
+
 	public VisualLocation() {
 	}
 

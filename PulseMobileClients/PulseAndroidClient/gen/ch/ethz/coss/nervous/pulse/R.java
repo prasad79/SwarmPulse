@@ -46,6 +46,7 @@ public final class R {
         public static final int listitem_vertical_margin=0x7f080009;
         public static final int staff_view_griditem_size=0x7f08000b;
         public static final int text_view_text_size=0x7f080004;
+        public static final int text_view_txt_size=0x7f08000d;
         public static final int transaction_griditem_size=0x7f08000c;
         public static final int user_profile_height=0x7f080007;
         public static final int user_profile_width=0x7f080006;
@@ -116,25 +117,29 @@ public final class R {
         public static final int tab_unselected_pulse_theme=0x7f02003e;
     }
     public static final class id {
-        public static final int UUID=0x7f0c0012;
+        public static final int UUID=0x7f0c0016;
+        public static final int data_storage_hint=0x7f0c0008;
+        public static final int data_storage_hint2=0x7f0c0014;
+        public static final int data_storage_hint3=0x7f0c0012;
         public static final int detail=0x7f0c0000;
         public static final int empty=0x7f0c0002;
         public static final int help=0x7f0c0004;
-        public static final int icon_about=0x7f0c000b;
-        public static final int icon_help=0x7f0c000d;
-        public static final int icon_light=0x7f0c0007;
-        public static final int icon_settings=0x7f0c000c;
-        public static final int icon_sound=0x7f0c0008;
-        public static final int icon_text=0x7f0c0009;
-        public static final int icon_visual=0x7f0c000a;
-        public static final int lightValueTF=0x7f0c0005;
-        public static final int messageLabelTF=0x7f0c000e;
-        public static final int messageTF=0x7f0c000f;
-        public static final int noiseValueTF=0x7f0c0010;
+        public static final int icon_about=0x7f0c000d;
+        public static final int icon_help=0x7f0c000f;
+        public static final int icon_light=0x7f0c0009;
+        public static final int icon_settings=0x7f0c000e;
+        public static final int icon_sound=0x7f0c000a;
+        public static final int icon_text=0x7f0c000b;
+        public static final int icon_visual=0x7f0c000c;
+        public static final int lightValueHeader=0x7f0c0005;
+        public static final int lightValueTF=0x7f0c0007;
+        public static final int messageLabelTF=0x7f0c0010;
+        public static final int messageTF=0x7f0c0011;
+        public static final int noiseValueTF=0x7f0c0013;
         public static final int rateButton=0x7f0c0003;
-        public static final int reset=0x7f0c0013;
-        public static final int resetButton=0x7f0c0014;
-        public static final int reset_uuid_layout=0x7f0c0011;
+        public static final int reset=0x7f0c0017;
+        public static final int resetButton=0x7f0c0018;
+        public static final int reset_uuid_layout=0x7f0c0015;
         public static final int submit=0x7f0c0006;
         public static final int version=0x7f0c0001;
     }

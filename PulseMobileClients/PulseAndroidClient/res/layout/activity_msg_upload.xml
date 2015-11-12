@@ -39,6 +39,17 @@
         android:maxLines="5"
         android:maxLength="140"
         android:textColor="@color/black" />
+    
+     <TextView
+                android:id="@+id/data_storage_hint3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|bottom"
+                android:text="Your data will not be saved on the server.  Click here to change settings"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_view_txt_size" />
+   
 
     <Button
         android:id="@+id/submit"

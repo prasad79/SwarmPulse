@@ -18,9 +18,15 @@ public class NoiseSensor {
 												// minimum
 	public static final int NYQUIST = 4000; // Take this 4000Hz regardless of
 											// SAMPPERSEC
-	public static final float BANDLOGBASE = (float) Math.exp(Math.log(NYQUIST)
-			/ BANDCOUNT); // Get the basis for the log structured frequency
-							// bands
+	public static final float BANDLOGBASE = (float) Math.exp(Math.log(NYQUIST) / BANDCOUNT); // Get
+																								// the
+																								// basis
+																								// for
+																								// the
+																								// log
+																								// structured
+																								// frequency
+																								// bands
 	public static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 	public static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
 
@@ -35,8 +41,7 @@ public class NoiseSensor {
 	private Lock listenerMutex = new ReentrantLock();
 
 	public interface NoiseListener {
-		public void noiseSensorDataReady(long recordTime, float rms, float spl,
-				float[] bands);
+		public void noiseSensorDataReady(long recordTime, float rms, float spl, float[] bands);
 	}
 
 	public void addListener(NoiseListener listener) {
@@ -77,14 +82,12 @@ public class NoiseSensor {
 			long duration = params[0];
 			long sampleDurationProd = duration * SAMPPERSEC;
 			int exp1 = binlog((int) (sampleDurationProd / 1000)) + 1;
-			int exp2 = binlog(AudioRecord.getMinBufferSize(SAMPPERSEC, CHANNEL,
-					ENCODING)) + 1;
+			int exp2 = binlog(AudioRecord.getMinBufferSize(SAMPPERSEC, CHANNEL, ENCODING)) + 1;
 			buflen = (int) Math.pow(2, Math.max(exp1, exp2));
 			buffersize = buflen * 2;
 			fftlen = buflen / 2;
 			buffer = new short[buffersize];
-			audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
-					SAMPPERSEC, CHANNEL, ENCODING, buffersize);
+			audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPPERSEC, CHANNEL, ENCODING, buffersize);
 			long startTime = System.currentTimeMillis();
 			audioRecord.startRecording();
 			samplesRead = audioRecord.read(buffer, 0, buffersize);
@@ -144,13 +147,10 @@ public class NoiseSensor {
 			float[] bands = new float[BANDCOUNT];
 			for (int i = 0; i < BANDCOUNT; i++) {
 				float avg = 0;
-				int lowFreq = (int) Math
-						.round((float) Math.pow(BANDLOGBASE, i));
-				int hiFreq = (int) Math.round((float) Math.pow(BANDLOGBASE,
-						i + 1));
+				int lowFreq = (int) Math.round((float) Math.pow(BANDLOGBASE, i));
+				int hiFreq = (int) Math.round((float) Math.pow(BANDLOGBASE, i + 1));
 				int fromIndex = (int) Math.round(((double) lowFreq) / freqFact);
-				int toIndex = Math.min(
-						(int) Math.round(((double) hiFreq) / freqFact), fftlen);
+				int toIndex = Math.min((int) Math.round(((double) hiFreq) / freqFact), fftlen);
 				for (int j = fromIndex; j < toIndex; j++) {
 					avg += Math.abs(power[j]);
 				}

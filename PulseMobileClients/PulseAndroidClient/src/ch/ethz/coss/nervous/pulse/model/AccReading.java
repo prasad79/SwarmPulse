@@ -6,8 +6,7 @@ public class AccReading extends Visual implements Serializable {
 
 	public double x, y, z;
 
-	public AccReading(String uuid, double x, double y, double z, long timestamp,
-			VisualLocation location) {
+	public AccReading(String uuid, double x, double y, double z, long timestamp, VisualLocation location) {
 		this.uuid = uuid;
 		this.x = x;
 		this.y = y;
@@ -19,7 +18,6 @@ public class AccReading extends Visual implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AccReading = (" + "," + timestamp + ") -> " + "(" + x + "," + y
-				+ "," + z + ")";
+		return "AccReading = (" + "," + timestamp + ") -> " + "(" + x + "," + y + "," + z + ")";
 	}
 }

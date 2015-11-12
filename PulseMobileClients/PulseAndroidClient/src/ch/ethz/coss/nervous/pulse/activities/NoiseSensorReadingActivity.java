@@ -38,43 +38,58 @@ public class NoiseSensorReadingActivity extends SensorReadingActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sound);
 
+		
+		TextView tv = (TextView) findViewById(R.id.data_storage_hint2);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NoiseSensorReadingActivity.this);
+
+		tv.setText("Please change the 'Data Retention' settings to allow for data storage onto the SwarmPulse servers. Click here to change the settings");
+				
+		tv.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(NoiseSensorReadingActivity.this, SettingsActivity.class));
+				
+			}
+		});
+		
 		// Sign up button click handler
 		final Button submitButton = ((Button) findViewById(R.id.submit));
-		
+
 		submitButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if (reading != null){
-							Utils.showProgress(NoiseSensorReadingActivity.this);
-						
-							SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NoiseSensorReadingActivity.this);
-						    if (prefs.getBoolean("data_rentention", true)){
-						    	reading.volatility = -1;
-						    }else
-						    	reading.volatility = 0;
-						    
-							Application.pushReadingToServer(reading, NoiseSensorReadingActivity.this);
-							submitButton.setEnabled(false);
-							submitButton.setText("Please wait for 5 seconds.");
-							Timer buttonTimer = new Timer();
-							buttonTimer.schedule(new TimerTask() {
+			@Override
+			public void onClick(View v) {
+				if (reading != null) {
+					Utils.showProgress(NoiseSensorReadingActivity.this);
 
-							    @Override
-							    public void run() {
-							        runOnUiThread(new Runnable() {
+					SharedPreferences prefs = PreferenceManager
+							.getDefaultSharedPreferences(NoiseSensorReadingActivity.this);
+					if (prefs.getBoolean("data_rentention", true)) {
+						reading.volatility = -1;
+					} else
+						reading.volatility = 0;
 
-							            @Override
-							            public void run() {
-							            	submitButton.setText("Share sensor data");
-							            	submitButton.setEnabled(true);
-							            }
-							        });
-							    }
-							}, 5000);
+					Application.pushReadingToServer(reading, NoiseSensorReadingActivity.this);
+					submitButton.setEnabled(false);
+					submitButton.setText("Please wait for 5 seconds.");
+					Timer buttonTimer = new Timer();
+					buttonTimer.schedule(new TimerTask() {
+
+						@Override
+						public void run() {
+							runOnUiThread(new Runnable() {
+
+								@Override
+								public void run() {
+									submitButton.setText("Share sensor data");
+									submitButton.setEnabled(true);
+								}
+							});
 						}
-							
-					}
-				});
+					}, 5000);
+				}
+
+			}
+		});
 
 		intent = new Intent(this, SensorService.class);
 	}
@@ -83,8 +98,7 @@ public class NoiseSensorReadingActivity extends SensorReadingActivity {
 	public void onResume() {
 		super.onResume();
 		startService(intent);
-		registerReceiver(broadcastReceiver, new IntentFilter(
-				SensorService.BROADCAST_READING_ACTION));
+		registerReceiver(broadcastReceiver, new IntentFilter(SensorService.BROADCAST_READING_ACTION));
 	}
 
 	@Override

@@ -40,10 +40,6 @@ public class MainActivity extends ParentActivity {
 
 	WakeLock wakeLock;
 	WifiLock wifiLock;
-	
-	
-
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,70 +48,60 @@ public class MainActivity extends ParentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		
 		Application.initSensorService(MainActivity.this);
 
-		
-		((ImageButton) findViewById(R.id.icon_light))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if(GPSLocation.GPS_AVAILABLE){
-							Application.registerListener(Sensor.TYPE_LIGHT);
-							// Start and intent for the logged out activity
-							startActivity(new Intent(MainActivity.this,
-									LightSensorReadingActivity.class));
-						}else{
-							GPSLocation.getInstance(MainActivity.this);
-							if(!GPSLocation.GPS_AVAILABLE){
-								showLocationAlert();
-							}else {
-								Application.registerListener(Sensor.TYPE_LIGHT);
-								startActivity(new Intent(MainActivity.this,
-										LightSensorReadingActivity.class));
-							}	
-						}
-					
+		((ImageButton) findViewById(R.id.icon_light)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (GPSLocation.GPS_AVAILABLE) {
+					Application.registerListener(Sensor.TYPE_LIGHT);
+					// Start and intent for the logged out activity
+					startActivity(new Intent(MainActivity.this, LightSensorReadingActivity.class));
+				} else {
+					GPSLocation.getInstance(MainActivity.this);
+					if (!GPSLocation.GPS_AVAILABLE) {
+						showLocationAlert();
+					} else {
+						Application.registerListener(Sensor.TYPE_LIGHT);
+						startActivity(new Intent(MainActivity.this, LightSensorReadingActivity.class));
 					}
-				});
+				}
 
-		((ImageButton) findViewById(R.id.icon_sound))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if(GPSLocation.GPS_AVAILABLE){
-						Application.registerListener(0); // FOR SOUND
+			}
+		});
 
-						startActivity(new Intent(MainActivity.this,
-								NoiseSensorReadingActivity.class));
-						}else{
-							GPSLocation.getInstance(MainActivity.this);
-							if(!GPSLocation.GPS_AVAILABLE){
-								showLocationAlert();
-							}else{
-								Application.registerListener(0);
-								startActivity(new Intent(MainActivity.this,
-										NoiseSensorReadingActivity.class));
-							}	
-						}
+		((ImageButton) findViewById(R.id.icon_sound)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (GPSLocation.GPS_AVAILABLE) {
+					Application.registerListener(0); // FOR SOUND
 
+					startActivity(new Intent(MainActivity.this, NoiseSensorReadingActivity.class));
+				} else {
+					GPSLocation.getInstance(MainActivity.this);
+					if (!GPSLocation.GPS_AVAILABLE) {
+						showLocationAlert();
+					} else {
+						Application.registerListener(0);
+						startActivity(new Intent(MainActivity.this, NoiseSensorReadingActivity.class));
 					}
-				});
+				}
+
+			}
+		});
 
 		ImageButton txtButton = ((ImageButton) findViewById(R.id.icon_text));
 		txtButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(GPSLocation.GPS_AVAILABLE){
-					startActivity(new Intent(MainActivity.this,
-						TextMessageUploadActivity.class));
-				}else{
+				if (GPSLocation.GPS_AVAILABLE) {
+					startActivity(new Intent(MainActivity.this, TextMessageUploadActivity.class));
+				} else {
 					GPSLocation.getInstance(MainActivity.this);
-					if(!GPSLocation.GPS_AVAILABLE){
+					if (!GPSLocation.GPS_AVAILABLE) {
 						showLocationAlert();
-					}else {
-						startActivity(new Intent(MainActivity.this,
-								TextMessageUploadActivity.class));
+					} else {
+						startActivity(new Intent(MainActivity.this, TextMessageUploadActivity.class));
 					}
 				}
 			}
@@ -129,65 +115,54 @@ public class MainActivity extends ParentActivity {
 			}
 		});
 
-	
-
-		((ImageButton) findViewById(R.id.icon_visual))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-					showVisualizationAlert();
-
-					}
-				});
-		
-		((ImageButton) findViewById(R.id.icon_settings))
-		.setOnClickListener(new OnClickListener() {
+		((ImageButton) findViewById(R.id.icon_visual)).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				// Start and intent for the logged out activity
-				startActivity(new Intent(MainActivity.this,
-						SettingsActivity.class));
+				showVisualizationAlert();
 
 			}
 		});
 
-		((ImageButton) findViewById(R.id.icon_about))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
+		((ImageButton) findViewById(R.id.icon_settings)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
 
-						// Start and intent for the logged out activity
-						startActivity(new Intent(MainActivity.this,
-								AboutActivity.class));
+				// Start and intent for the logged out activity
+				startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
-					}
-				});
+			}
+		});
+
+		((ImageButton) findViewById(R.id.icon_about)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				// Start and intent for the logged out activity
+				startActivity(new Intent(MainActivity.this, AboutActivity.class));
+
+			}
+		});
 
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
 		wakeLock.acquire();
 
 		WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		wifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF,
-				"WifyLock");
+		wifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "WifyLock");
 		wifiLock.acquire();
 
-//		GPSLocation.getInstance(this);
-		
+		// GPSLocation.getInstance(this);
+
 		handleShareIntent();
 
 	}
-
-
 
 	private OnSharedPreferenceChangeListener listener;
 
 	protected synchronized void onDestroy() {
 		Log.d(DEBUG_TAG, "onDestroy");
 		if (Application.sensorManager != null)
-			Application.sensorManager
-					.unregisterListener(Application.sensorService);
+			Application.sensorManager.unregisterListener(Application.sensorService);
 		if (Application.synchWriter != null)
 			Application.synchWriter.stop();
 		if (wakeLock != null)
@@ -212,8 +187,7 @@ public class MainActivity extends ParentActivity {
 		Log.d(DEBUG_TAG, "onResume");
 		Application.unregisterSensorListeners();
 		super.onResume();
-		
-		
+
 	}
 
 	public void onStop() {
@@ -225,12 +199,7 @@ public class MainActivity extends ParentActivity {
 		Log.d(DEBUG_TAG, "onStart");
 		Application.unregisterSensorListeners();
 		super.onStart();
-		
-	
-	}
-	
 
-	
-	
-	
+	}
+
 }

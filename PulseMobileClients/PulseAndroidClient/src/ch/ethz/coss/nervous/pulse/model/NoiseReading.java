@@ -7,9 +7,8 @@ public class NoiseReading extends Visual implements Serializable {
 
 	public double soundVal;
 
-	
-	public NoiseReading(){
-		
+	public NoiseReading() {
+
 	}
 
 	public NoiseReading(String uuid, double soundVal, long timestamp, long volatility, VisualLocation loc) {
@@ -24,7 +23,6 @@ public class NoiseReading extends Visual implements Serializable {
 
 	@Override
 	public String toString() {
-		return "NoiseReading = (" + timestamp + ") -> " + "(" + soundVal
-				+ ") @ " + Arrays.toString(location.latnLong);
+		return "NoiseReading = (" + timestamp + ") -> " + "(" + soundVal + ") @ " + Arrays.toString(location.latnLong);
 	}
 }

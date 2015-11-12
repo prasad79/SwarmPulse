@@ -14,13 +14,5 @@
             android:key="time_limit_data_retention"
             android:title="Maximum time data can be stored" android:summary="value comes here" android:defaultValue="-1"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/title_data_privacy" >
-itle="Unique ID associated with data:">
-        <Preference
-            android:key="UUID"
-            android:layout="@layout/layout_reset_uuid_prefs"
-            android:summary="*******Not generated**********"
-            android:title="Unique ID associated with Data:" />
-    </PreferenceCategory>
 
 </PreferenceScreen>

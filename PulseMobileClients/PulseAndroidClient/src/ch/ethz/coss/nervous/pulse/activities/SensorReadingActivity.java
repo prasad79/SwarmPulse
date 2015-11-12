@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import ch.ethz.coss.nervous.pulse.R;
 import ch.ethz.coss.nervous.pulse.R.id;
 import ch.ethz.coss.nervous.pulse.R.layout;
@@ -23,16 +24,8 @@ public abstract class SensorReadingActivity extends Activity {
 		Log.d(DEBUG_TAG, "onCreate");
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_light);
 
-		// Sign up button click handler
-		((Button) findViewById(R.id.submit))
-				.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-
-					}
-				});
+	
 
 	}
 
@@ -54,21 +47,25 @@ public abstract class SensorReadingActivity extends Activity {
 
 		return super.onOptionsItemSelected(item);
 	}
+
 	@Override
 	public void onPause() {
 		Log.d(DEBUG_TAG, "onPause");
 		super.onPause();
 	}
+
 	@Override
 	public void onResume() {
 		Log.d(DEBUG_TAG, "onResume");
 		super.onResume();
 	}
+
 	@Override
 	public void onStop() {
 		Log.d(DEBUG_TAG, "onStop");
 		super.onStop();
 	}
+
 	@Override
 	public void onStart() {
 		Log.d(DEBUG_TAG, "onStart");

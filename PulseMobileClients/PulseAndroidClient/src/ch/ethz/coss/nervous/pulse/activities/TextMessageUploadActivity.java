@@ -34,90 +34,95 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d(DEBUG_TAG, "onCreate");
-		
+
 		super.onCreate(savedInstanceState);
 		String message = null;
-		
+
 		Bundle extras = getIntent().getExtras();
-		  if (extras != null) {
-		   message = extras.getString("MESSAGE");
-		
-			   
-		   }  
-		   
-		   
+		if (extras != null) {
+			message = extras.getString("MESSAGE");
+
+		}
+
 		setContentView(R.layout.activity_msg_upload);
 		final TextView msgTV = (TextView) findViewById(R.id.messageTF);
+		
+		
+		
+		TextView tv = (TextView) findViewById(R.id.data_storage_hint3);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(TextMessageUploadActivity.this);
+
+		tv.setText("Please change the 'Data Retention' settings to allow for data storage onto the SwarmPulse servers. Click here to change the settings");
+				
+		tv.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(TextMessageUploadActivity.this, SettingsActivity.class));
+				
+			}
+		});
+		
 		// Sign up button click handler
-		final Button submitButton =((Button) findViewById(R.id.submit));
+		
+		final Button submitButton = ((Button) findViewById(R.id.submit));
 		submitButton.setOnClickListener(new OnClickListener() {
 
-					
-					
-					@Override
-					public void onClick(View v) {
-						String message = (msgTV.getText()).toString();
-						
-						if(Constants.DUMMY_DATA_COLLECT){
-							counter++;
-							
+			@Override
+			public void onClick(View v) {
+				String message = (msgTV.getText()).toString();
 
-							SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(TextMessageUploadActivity.this);
-						    boolean volatility = prefs.getBoolean("data_rentention", true);
-						  
-						    	
-								TextVisual txtMsg = new TextVisual(Application.uuid.toString(),  Utils.University_links[counter], System
-										.currentTimeMillis(), volatility?-1:0, Utils.University_link_coords[counter]);
-								
-								
-								Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
-							
-							
-							
-							
-						} else {
-							message = message.trim();
-							if (message.length() >= 2) {
-								TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message, System
-										.currentTimeMillis(), -1, new VisualLocation(
-										GPSLocation.getInstance(
-												TextMessageUploadActivity.this)
-												.getLocation()));
-								if (txtMsg != null) {
-									Utils.showProgress(TextMessageUploadActivity.this);
-									
-									Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
-								
-									msgTV.setText("");
-									
-									submitButton.setEnabled(false);
-									submitButton.setText("Please wait for 5 seconds.");
-									Timer buttonTimer = new Timer();
-									buttonTimer.schedule(new TimerTask() {
+				if (Constants.DUMMY_DATA_COLLECT) {
+					counter++;
 
-									    @Override
-									    public void run() {
-									        runOnUiThread(new Runnable() {
+					SharedPreferences prefs = PreferenceManager
+							.getDefaultSharedPreferences(TextMessageUploadActivity.this);
+					boolean volatility = prefs.getBoolean("data_rentention", true);
 
-									            @Override
-									            public void run() {
-									            	submitButton.setText("Share message");
-									            	submitButton.setEnabled(true);
-									            }
-									        });
-									    }
-									}, 5000);
+					TextVisual txtMsg = new TextVisual(Application.uuid.toString(), Utils.University_links[counter],
+							System.currentTimeMillis(), volatility ? -1 : 0, Utils.University_link_coords[counter]);
+
+					Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
+
+				} else {
+					message = message.trim();
+					if (message.length() >= 2) {
+						TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message,
+								System.currentTimeMillis(), -1, new VisualLocation(
+										GPSLocation.getInstance(TextMessageUploadActivity.this).getLocation()));
+						if (txtMsg != null) {
+							Utils.showProgress(TextMessageUploadActivity.this);
+
+							Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
+
+							msgTV.setText("");
+
+							submitButton.setEnabled(false);
+							submitButton.setText("Please wait for 5 seconds.");
+							Timer buttonTimer = new Timer();
+							buttonTimer.schedule(new TimerTask() {
+
+								@Override
+								public void run() {
+									runOnUiThread(new Runnable() {
+
+										@Override
+										public void run() {
+											submitButton.setText("Share message");
+											submitButton.setEnabled(true);
+										}
+									});
 								}
-							}
+							}, 5000);
 						}
-						
-
 					}
-				});
-		
-		if(message != null){
+				}
+
+			}
+		});
+
+		if (message != null) {
 			msgTV.setText(message);
-			
+
 		}
 
 	}

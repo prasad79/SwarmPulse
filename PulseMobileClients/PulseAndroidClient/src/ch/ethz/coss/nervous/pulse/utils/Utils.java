@@ -64,11 +64,11 @@ public class Utils {
 
 	public static VisualLocation University_link_coords[] = {
 			new VisualLocation(new double[] { 52.0115769, 4.3570677 }),
-			new VisualLocation(new double[] { 37.983917, 23.7293599	}),
-			new VisualLocation(new double[] { 45.2120878, 7.7309388}),
-			new VisualLocation(new double[] { 48.2081743, 16.3738189}),
+			new VisualLocation(new double[] { 37.983917, 23.7293599 }),
+			new VisualLocation(new double[] { 45.2120878, 7.7309388 }),
+			new VisualLocation(new double[] { 48.2081743, 16.3738189 }),
 			new VisualLocation(new double[] { 35.907757, 127.766922 }),
-			new VisualLocation(new double[] { 52.3764372, 8.3873742}),
+			new VisualLocation(new double[] { 52.3764372, 8.3873742 }),
 			new VisualLocation(new double[] { 49.0162566, 8.3873748 }),
 			new VisualLocation(new double[] { 53.2217873, 6.4947124 }),
 			new VisualLocation(new double[] { 46.1058242, 7.0487656 })

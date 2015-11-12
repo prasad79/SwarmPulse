@@ -1,36 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center_horizontal"
     android:background="@color/white"
     android:gravity="top"
-    android:orientation="vertical" 
-     android:padding="@dimen/activity_horizontal_margin">
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin" >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/lightValueHeader"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
         android:text="Light"
         android:textColor="@color/gray" />
 
-    <TextView
-        android:id="@+id/lightValueTF"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:text="Please move your phone for the sensor to detect light."
-        android:textColor="@color/black" />
-
     <Button
         android:id="@+id/submit"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal"
         android:text="Share sensor data" />
 
-</LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/lightValueTF"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="Please move your phone for the sensor to detect light."
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/data_storage_hint"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|bottom"
+                android:text="Your data will not be saved on the server.  Click here to change settings"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_view_txt_size" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

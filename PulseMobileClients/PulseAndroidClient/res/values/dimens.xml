@@ -14,5 +14,6 @@
     <dimen name="griditem_size">100dp</dimen>
     <dimen name="staff_view_griditem_size">200dp</dimen>
     <dimen name="transaction_griditem_size">200dp</dimen>
+    <dimen name="text_view_txt_size">12sp</dimen>
 
 </resources>

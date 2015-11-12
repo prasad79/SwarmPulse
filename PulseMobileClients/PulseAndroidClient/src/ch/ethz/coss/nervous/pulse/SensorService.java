@@ -21,8 +21,7 @@ import ch.ethz.coss.nervous.pulse.sensor.NoiseSensor;
 import ch.ethz.coss.nervous.pulse.sensor.NoiseSensor.NoiseListener;
 import ch.ethz.coss.nervous.pulse.utils.Utils;
 
-public class SensorService extends Service implements SensorEventListener,
-		NoiseListener {
+public class SensorService extends Service implements SensorEventListener, NoiseListener {
 	private static final String DEBUG_TAG = "SensorService";
 
 	public static final String BROADCAST_READING_ACTION = "";
@@ -42,7 +41,7 @@ public class SensorService extends Service implements SensorEventListener,
 		this.context = context;
 		this.updateInterval = writingInterval;
 		this.context = context;
-//		initTimer();
+		// initTimer();
 
 	}
 
@@ -61,52 +60,50 @@ public class SensorService extends Service implements SensorEventListener,
 		this.event = event;
 		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-			Visual reading = new AccReading(Application.uuid.toString(),event.values[0], event.values[1],
+			Visual reading = new AccReading(Application.uuid.toString(), event.values[0], event.values[1],
 					event.values[2], System.currentTimeMillis(),
-					new VisualLocation(GPSLocation.getInstance(context)
-							.getLocation()));
+					new VisualLocation(GPSLocation.getInstance(context).getLocation()));
 			System.out.println("Inside TYPE_ACCELEROMETER");
 			Log.d(DEBUG_TAG, reading.toString());
 
 			if (intent == null)
-				//System.out.println("Intent is null");
+				// System.out.println("Intent is null");
 
-			intent.putExtra("AccReading", reading);
+				intent.putExtra("AccReading", reading);
 			context.sendBroadcast(intent);
 
 			Log.d(DEBUG_TAG, reading.toString());
 
 		} else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-			
-			if(Constants.DUMMY_DATA_COLLECT){
+
+			if (Constants.DUMMY_DATA_COLLECT) {
 				new Thread() {
 					public void run() {
-						Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
-								System.currentTimeMillis(), -1, new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
+						Visual reading = new LightReading(Application.uuid.toString(), event.values[0],
+								System.currentTimeMillis(), -1,
+								new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 						intent.putExtra("LightReading", reading);
 
-						Application.pushReadingToServer(reading,context);
+						Application.pushReadingToServer(reading, context);
 						context.sendBroadcast(intent);
-						
+
 					}
 
 				}.start();
 			} else {
-				Visual reading = new LightReading(Application.uuid.toString(),event.values[0],
-						System.currentTimeMillis(), -1, new VisualLocation(
-								GPSLocation.getInstance(context)
-										.getLocation()));
+				Visual reading = new LightReading(Application.uuid.toString(), event.values[0],
+						System.currentTimeMillis(), -1,
+						new VisualLocation(GPSLocation.getInstance(context).getLocation()));
 				intent.putExtra("LightReading", reading);
 				context.sendBroadcast(intent);
 				System.out.println("Inside TYPE_Light");
 				Log.d(DEBUG_TAG, reading.toString());
 			}
 
-
 		} else {
 			this.event = null;
-			//System.out.println("OnSensorChanged called. But unknown Sensor "
-//					+ event.sensor.getName());
+			// System.out.println("OnSensorChanged called. But unknown Sensor "
+			// + event.sensor.getName());
 		}
 
 	}
@@ -124,32 +121,30 @@ public class SensorService extends Service implements SensorEventListener,
 	}
 
 	@Override
-	public void noiseSensorDataReady(final long recordTime, float rms,
-			final float spl, float[] bands) {
-		
-		if(Constants.DUMMY_DATA_COLLECT){
+	public void noiseSensorDataReady(final long recordTime, float rms, final float spl, float[] bands) {
+
+		if (Constants.DUMMY_DATA_COLLECT) {
 			new Thread() {
 				public void run() {
-					
-					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime, -1,
+
+					noiseReading = new NoiseReading(Application.uuid.toString(),
+							Double.parseDouble(String.format("%.2f", spl)), recordTime, -1,
 							new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 					Application.pushReadingToServer(noiseReading, context);
 					intent.putExtra("NoiseReading", noiseReading);
 					context.sendBroadcast(intent);
-					
+
 				}
 
 			}.start();
-		} else {	
-					noiseReading = new NoiseReading(Application.uuid.toString(),Double.parseDouble(String.format("%.2f", spl)), recordTime, -1,
-							new VisualLocation(GPSLocation.getInstance(context)
-									.getLocation()));
-					Log.d(DEBUG_TAG,
-							"Noise data collected - " + noiseReading.toString());
+		} else {
+			noiseReading = new NoiseReading(Application.uuid.toString(), Double.parseDouble(String.format("%.2f", spl)),
+					recordTime, -1, new VisualLocation(GPSLocation.getInstance(context).getLocation()));
+			Log.d(DEBUG_TAG, "Noise data collected - " + noiseReading.toString());
 
-					intent.putExtra("NoiseReading", noiseReading);
-					context.sendBroadcast(intent);
-					Log.d(DEBUG_TAG, "Noise data collected");
+			intent.putExtra("NoiseReading", noiseReading);
+			context.sendBroadcast(intent);
+			Log.d(DEBUG_TAG, "Noise data collected");
 		}
 	}
 
@@ -165,27 +160,22 @@ public class SensorService extends Service implements SensorEventListener,
 
 			if (event != null) {
 				if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-					Visual reading = new AccReading(Application.uuid.toString(),event.values[0],
-							event.values[1], event.values[2],
-							System.currentTimeMillis(), new VisualLocation(
-									GPSLocation.getInstance(context)
-											.getLocation()));
+					Visual reading = new AccReading(Application.uuid.toString(), event.values[0], event.values[1],
+							event.values[2], System.currentTimeMillis(),
+							new VisualLocation(GPSLocation.getInstance(context).getLocation()));
 					// out.send(reading);
 
 					System.out.println("Inside SensorValueUpdaterTask TYPE_ACCELEROMETER");
 					Log.d(DEBUG_TAG, reading.toString());
 				} else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-					LightReading reading = new LightReading(Application.uuid.toString(),event.values[0],
-							System.currentTimeMillis(), -1, new VisualLocation(
-									GPSLocation.getInstance(context)
-											.getLocation()));
+					LightReading reading = new LightReading(Application.uuid.toString(), event.values[0],
+							System.currentTimeMillis(), -1,
+							new VisualLocation(GPSLocation.getInstance(context).getLocation()));
 					System.out.println("Inside SensorValueUpdaterTask TYPE_Light");
 					Log.d(DEBUG_TAG, reading.toString());
 				} else {
 					event = null;
-					System.out
-							.println("OnSensorChanged called. But unknown Sensor "
-									+ event.sensor.getName());
+					System.out.println("OnSensorChanged called. But unknown Sensor " + event.sensor.getName());
 				}
 
 			} else {
@@ -193,7 +183,7 @@ public class SensorService extends Service implements SensorEventListener,
 					Log.d(DEBUG_TAG, noiseReading.toString());
 
 					NoiseSensor sensorNoise = new NoiseSensor();
-					//System.out.println("Sensor Noise activated");
+					// System.out.println("Sensor Noise activated");
 					sensorNoise.clearListeners();
 					sensorNoise.addListener(SensorService.this);
 					// Noise sensor doesn't really make sense with less than
@@ -234,8 +224,8 @@ public class SensorService extends Service implements SensorEventListener,
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		this.event = null;
 	}
 

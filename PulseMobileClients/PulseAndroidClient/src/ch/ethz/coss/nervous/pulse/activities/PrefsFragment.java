@@ -6,13 +6,13 @@ import ch.ethz.coss.nervous.pulse.R;
 
 public class PrefsFragment extends PreferenceFragment {
 
-	 @Override
-	 public void onCreate(Bundle savedInstanceState) {
-	  // TODO Auto-generated method stub
-	  super.onCreate(savedInstanceState);
-	  
-	  // Load the preferences from an XML resource
-	        addPreferencesFromResource(R.xml.prefs);
-	 }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
 
+		// Load the preferences from an XML resource
+		addPreferencesFromResource(R.xml.prefs);
 	}
+
+}

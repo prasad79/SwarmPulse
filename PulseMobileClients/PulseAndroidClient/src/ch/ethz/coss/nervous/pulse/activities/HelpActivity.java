@@ -19,7 +19,7 @@ import ch.ethz.coss.nervous.pulse.R;
 import ch.ethz.coss.nervous.pulse.R.id;
 import ch.ethz.coss.nervous.pulse.R.layout;
 
-public class HelpActivity extends ParentActivity{
+public class HelpActivity extends ParentActivity {
 
 	public static final String DEBUG_TAG = "HelpActivityPulse";
 
@@ -32,10 +32,9 @@ public class HelpActivity extends ParentActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
 		TextView txtHelp = (TextView) findViewById(R.id.help);
-		
+
 		txtHelp.setText(Html.fromHtml(Constants.helpHtml));
 
-		
 	}
 
 }

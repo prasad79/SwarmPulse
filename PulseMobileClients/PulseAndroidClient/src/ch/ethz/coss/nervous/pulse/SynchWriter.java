@@ -17,23 +17,20 @@ import ch.ethz.coss.nervous.pulse.utils.Utils;
 import flexjson.JSONSerializer;
 
 public class SynchWriter {
-	
-	
+
 	ArrayList<Object> data = new ArrayList<Object>();
 	OutputTask outTask = new OutputTask();
 	String ipAddress;
 	int port;
 	boolean printTrace = true;
-	
-	
 
-	public SynchWriter(String ipAddress, int port, int writingInterval)
-			throws IOException {
+	public SynchWriter(String ipAddress, int port, int writingInterval) throws IOException {
 		this.port = port;
 		this.ipAddress = ipAddress;
 	}
 
 	Context mContext = null;
+
 	public void send(Object o, Context context) {
 		mContext = context;
 		synchronized (data) {
@@ -47,24 +44,23 @@ public class SynchWriter {
 
 		DataOutputStream oos;
 		boolean exceptionFlag;
+
 		private synchronized DataOutputStream getObjectOutputStream() {
 
 			if (oos == null) {
 				try {
-					//System.out.println("Before Writing to server at "
-//							+ ipAddress + ":" + port);
+					// System.out.println("Before Writing to server at "
+					// + ipAddress + ":" + port);
 					@SuppressWarnings("resource")
 					Socket socket = new Socket();
 					socket.connect(new InetSocketAddress(ipAddress, port), 1000);
 					// //System.out.println("Writing to server");
-					OutputStream os = new BufferedOutputStream(
-							socket.getOutputStream());
+					OutputStream os = new BufferedOutputStream(socket.getOutputStream());
 					oos = new DataOutputStream(os);
 				} catch (Exception e) {
-					System.out.println("Exception thrown here "
-							+ e.getMessage());
+					System.out.println("Exception thrown here " + e.getMessage());
 					exceptionFlag = true;
-				
+
 					e.printStackTrace();
 					if (printTrace)
 						e.printStackTrace();
@@ -106,7 +102,7 @@ public class SynchWriter {
 				data.clear();
 			}
 
-			 oos = getObjectOutputStream();
+			oos = getObjectOutputStream();
 
 			if (oos == null)
 				return false;
@@ -115,21 +111,20 @@ public class SynchWriter {
 				for (Visual o : buffer) {
 					String json = new JSONSerializer().deepSerialize(o);
 
-					System.out.println("SENDING JSON -- "+json);
-					byte [] jsonBytes = json.getBytes();
+					System.out.println("SENDING JSON -- " + json);
+					byte[] jsonBytes = json.getBytes();
 					oos.write(jsonBytes, 0, jsonBytes.length);
-					
-//					oos.writeUTF(json);
-					
-				}
-				
 
-//				oos.flush();
+					// oos.writeUTF(json);
+
+				}
+
+				// oos.flush();
 			} catch (Exception e) {
 				exceptionFlag = true;
 				if (printTrace)
 					e.printStackTrace();
-				
+
 			} finally {
 				try {
 					oos.close();
@@ -142,21 +137,21 @@ public class SynchWriter {
 			}
 			return true;
 		}
-		
-		
-		 protected void onPostExecute(Object obj) {   
-			 Utils.dismissProgress();
-			 
-				if(!Constants.DUMMY_DATA_COLLECT){
-					
-					if(exceptionFlag)
-						Toast.makeText(mContext, "There was a problem sharing the data. Please check your internte connection or try again later.", Toast.LENGTH_SHORT).show();
-					else
-						Toast.makeText(mContext, "The data has been shared succesfully.", Toast.LENGTH_SHORT).show();
-				}
-			
-					
-		    }
+
+		protected void onPostExecute(Object obj) {
+			Utils.dismissProgress();
+
+			if (!Constants.DUMMY_DATA_COLLECT) {
+
+				if (exceptionFlag)
+					Toast.makeText(mContext,
+							"There was a problem sharing the data. Please check your internte connection or try again later.",
+							Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(mContext, "The data has been shared succesfully.", Toast.LENGTH_SHORT).show();
+			}
+
+		}
 	}
 
 	public void stop() {
