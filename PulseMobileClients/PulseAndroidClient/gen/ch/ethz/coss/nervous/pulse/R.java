@@ -11,9 +11,10 @@ public final class R {
     public static final class array {
         public static final int ent=0x7f070002;
         public static final int entvalues=0x7f070003;
-        public static final int races_array=0x7f070004;
         public static final int sensorTypes=0x7f070000;
         public static final int sensorValues=0x7f070001;
+        public static final int time_limit=0x7f070004;
+        public static final int time_limit_secs=0x7f070005;
     }
     public static final class attr {
     }
@@ -22,6 +23,7 @@ public final class R {
         public static final int gray=0x7f060002;
         public static final int nnorange=0x7f060004;
         public static final int nnorangel=0x7f060005;
+        public static final int pref_selector=0x7f060006;
         public static final int red=0x7f060003;
         public static final int white=0x7f060000;
     }

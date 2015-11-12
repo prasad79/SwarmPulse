@@ -23,13 +23,29 @@
     </string-array>
     
      <string-array
-        name="races_array">
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
+        name="time_limit">
+        <item>1 day</item>
+        <item>10 days</item>
+        <item>30 days</item>
+        <item>6 months</item>
+        <item>1 year</item>
+        <item>2 years</item>
+        <item>5 years</item>
+        <item>10 years</item>
+        <item>Forever</item>
+    </string-array>
+    
+     <string-array
+        name="time_limit_secs">
+        <item>86400</item>
+        <item>864000</item>
+        <item>2592000</item>
+        <item>15552000</item>
+        <item>31536000</item>
+        <item>63072000</item>
+        <item>157680000</item>
+        <item>315360000</item>
+        <item>-1</item>
     </string-array>
 
 </resources>
