@@ -7,7 +7,8 @@ $(document)
 					var current_state = 0; // 0 - Real-Time, 1 - Time-Machine
 					var current_layer = -1;
 					var last_layer = 0;
-					var initialReq = true;//jhkjhkhkhk marker not clearing check this initial implemnt
+					var initialReq = true;// jhkjhkhkhk marker not clearing
+											// check this initial implemnt
 
 					var markerArray = [];
 					var data = [];
@@ -21,33 +22,36 @@ $(document)
 					new L.Control.Zoom({
 						position : 'topright'
 					}).addTo(map);
-					
-					
-					var mapStandard = 
-					L.tileLayer(
-						    'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-						    attribution: '&copy; OpenStreetMap contributors, CC-BY-SA',
-						    maxZoom: 22
-						    });
-					
+
+					var mapStandard = L
+							.tileLayer(
+									'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+									{
+										attribution : '&copy; OpenStreetMap contributors, CC-BY-SA',
+										maxZoom : 19
+									});
+
 					mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 					mapquestLink = '<a href="http://www.mapquest.com//">MapQuest</a>';
 					mapquestPic = '<img src="http://developer.mapquest.com/content/osm/mq_logo.png">';
-					
-					var mapSatellite = 
-						L.tileLayer(
-							    'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
-							    attribution: '&copy; '+mapLink+'. Tiles courtesy of '+mapquestLink+mapquestPic,
-							    maxZoom: 22,
-							    subdomains: '1234',
-							    });
-					
+
+					var mapSatellite = L
+							.tileLayer(
+									'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
+									{
+										attribution : '&copy; ' + mapLink
+												+ '. Tiles courtesy of '
+												+ mapquestLink + mapquestPic,
+										maxZoom : 19,
+										subdomains : '1234',
+									});
+
 					var mapNoLabels = L
 							.tileLayer(
 									'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 22
+										maxZoom : 19
 									});
 
 					var mapWithLabels = L
@@ -55,10 +59,8 @@ $(document)
 									'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 22
+										maxZoom : 19
 									});
-
-	
 
 					/** ****Pulse Logo****** */
 					var info = L.control({
@@ -85,8 +87,8 @@ $(document)
 
 					/** ***************Layer Control********************* */
 					var baseMaps = {
-						"Standard Map": mapStandard,
-						"Satellite Map": mapSatellite,
+						"Standard Map" : mapStandard,
+						"Standard Map 2" : mapSatellite,
 						"Dark no labels Map" : mapNoLabels,
 						"Dark with labels Map" : mapWithLabels
 					};
@@ -112,9 +114,6 @@ $(document)
 
 					map.addControl(layerControl);
 					/** ***************Layer Control********************* */
-					
-		
-					
 
 					/** ********************************************************************* */
 
@@ -188,7 +187,7 @@ $(document)
 							icon : 'fa-mobile fa-lg',
 							title : 'Download Mobile App',
 							onClick : function(control) {
-// control.state("connecting");
+								// control.state("connecting");
 								// window.open("./Pulse.apk");
 								showDialog();
 							}
@@ -232,62 +231,65 @@ $(document)
 					 * ***********Real Time or Time Machine
 					 * Button****************
 					 */
-					var realTimeButton = L.easyButton({
-						states : [ {
-							stateName : 'realTime',
-							icon : 'fa-clock-o fa-lg',
-							title : 'Real-Time',
-							onClick : function(control) {
-								if(DEBUG){
-									console.log("******LOG*******Inside onClick realTime Button");	
-								}
-								control.state("timeMachine");
-								changeSocketToTimeMachine();
-								
-								resetBeforeSendingTimeMachineRequest();
-								
-								$('#datePicker').show(0);
-								
-							}
-						}, {
-							stateName : 'timeMachine',
-							icon : 'fa-history fa-lg',
-							title : 'Time-Machine',
-							onClick : function(control) {
-								if(DEBUG){
-									console.log("******LOG*******Inside onClick timeMachine button");	
-								}
-								control.state("realTime");
-								
-								if(current_layer == 0){
+					var realTimeButton = L
+							.easyButton({
+								states : [
+										{
+											stateName : 'realTime',
+											icon : 'fa-clock-o fa-lg',
+											title : 'Real-Time',
+											onClick : function(control) {
+												if (DEBUG) {
+													console
+															.log("******LOG*******Inside onClick realTime Button");
+												}
+												control.state("timeMachine");
+												changeSocketToTimeMachine();
 
-									resetToMessagesOverlay();
-									last_layer = 0;
-								}else if (current_layer == 1) {
+												resetBeforeSendingTimeMachineRequest();
 
-									resetToLightReadings();
-									
-									last_layer = 1;
-								} else if (current_layer == 2) {
+												$('#datePicker').show(0);
 
-									resetToNoiseReadings();
-									last_layer = 2;
-								}
-								changeSocketToRealTime();
+											}
+										},
+										{
+											stateName : 'timeMachine',
+											icon : 'fa-history fa-lg',
+											title : 'Time-Machine',
+											onClick : function(control) {
+												if (DEBUG) {
+													console
+															.log("******LOG*******Inside onClick timeMachine button");
+												}
+												control.state("realTime");
 
-								$('#datePicker').hide(0);
-							}
-						} ],
-						position : "topright"
-							
-					});
+												if (current_layer == 0) {
+
+													resetToMessagesOverlay();
+													last_layer = 0;
+												} else if (current_layer == 1) {
+
+													resetToLightReadings();
+
+													last_layer = 1;
+												} else if (current_layer == 2) {
+
+													resetToNoiseReadings();
+													last_layer = 2;
+												}
+												changeSocketToRealTime();
+
+												$('#datePicker').hide(0);
+											}
+										} ],
+								position : "topright"
+
+							});
 
 					realTimeButton.addTo(map);
 					realTimeButton.state('realTime');
 
-					
 					/** *************************** */
-					
 
 					/** ****************************** */
 					var infoButton = L.easyButton({
@@ -322,53 +324,61 @@ $(document)
 					/** ********** */
 
 					mapStandard.addTo(map);
-					
 
-					map.on('overlayadd', function(a) {
-					
-						if (a.name == "Light" && current_layer != 1) {
-							
-							resetToLightReadings();
-							last_layer = 1;
-							
-							
-							hideSpinner();
-							if(current_state == 0){
+					map
+							.on(
+									'overlayadd',
+									function(a) {
 
-								initialReq = true;
-								makeInitialRequest();
-							}
-							$('#statusmsgs').html('<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">LIGHT</span></p>');
+										if (a.name == "Light"
+												&& current_layer != 1) {
 
-							
-						} else if (a.name == "Sound" && current_layer != 2) {
+											resetToLightReadings();
+											last_layer = 1;
 
-							
-							resetToNoiseReadings();
-							last_layer = 2;
-							$('#statusmsgs').html('<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">SOUND</span></p>');
+											hideSpinner();
+											if (current_state == 0) {
 
-							hideSpinner();
-							if(current_state == 0){
+												initialReq = true;
+												makeInitialRequest();
+											}
+											$('#statusmsgs')
+													.html(
+															'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">LIGHT</span></p>');
 
-								initialReq = true;
-								makeInitialRequest();
-							}
-						} else if (a.name == "Messages" && current_layer != 0) {
+										} else if (a.name == "Sound"
+												&& current_layer != 2) {
 
-//							current_layer = 2;
-							resetToMessagesOverlay();
-							last_layer = 0;
-							$('#statusmsgs').html('<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MESSAGES</span></p>');
-							hideSpinner();
-							if(current_state == 0){
+											resetToNoiseReadings();
+											last_layer = 2;
+											$('#statusmsgs')
+													.html(
+															'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">SOUND</span></p>');
 
-								initialReq = true;
-								makeInitialRequest();
-							}
-						
-						}
-					});
+											hideSpinner();
+											if (current_state == 0) {
+
+												initialReq = true;
+												makeInitialRequest();
+											}
+										} else if (a.name == "Messages"
+												&& current_layer != 0) {
+
+											// current_layer = 2;
+											resetToMessagesOverlay();
+											last_layer = 0;
+											$('#statusmsgs')
+													.html(
+															'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MESSAGES</span></p>');
+											hideSpinner();
+											if (current_state == 0) {
+
+												initialReq = true;
+												makeInitialRequest();
+											}
+
+										}
+									});
 
 					function resetToLightReadings() {
 						removeAllMarkers();
@@ -376,21 +386,21 @@ $(document)
 							legendLight.addTo(map);
 						if (last_layer == 2)
 							legendSound.removeFrom(map);
-						
+
 						current_layer = 1;
 						lightMarkers.addLayer(pruneCluster);
 						map.addLayer(lightMarkers);
-					
+
 					}
 
 					function resetToNoiseReadings() {
 						removeAllMarkers();
 						if (current_layer != 2)
 							legendSound.addTo(map);
-						
+
 						if (last_layer == 1)
 							legendLight.removeFrom(map);
-						
+
 						current_layer = 2;
 
 						noiseMarkers.addLayer(pruneCluster);
@@ -399,7 +409,7 @@ $(document)
 
 					function resetToMessagesOverlay() {
 						removeAllMarkers();
-						
+
 						if (last_layer == 2)
 							legendSound.removeFrom(map);
 						else if (last_layer == 1)
@@ -411,8 +421,9 @@ $(document)
 					}
 
 					function removeAllMarkers() {
-						if(DEBUG){
-							console.log("*****LOG***** inside removeAllMarkers ");
+						if (DEBUG) {
+							console
+									.log("*****LOG***** inside removeAllMarkers ");
 						}
 						markerArray = [];
 
@@ -424,56 +435,47 @@ $(document)
 						map.removeLayer(noiseMarkers);
 						map.removeLayer(msgMarkers);
 						counter = 0;
-						if(DEBUG){
-							console.log("*****LOG***** end of  removeAllMarkers ");
+						if (DEBUG) {
+							console
+									.log("*****LOG***** end of  removeAllMarkers ");
 						}
-					
+
 					}
 
-				/** *********************************** */
-					
+					/** *********************************** */
+
 					function getIcon(category, weight) {
-						
-						
-							return "images/marker_"+category+"_"+weight+".png";
-						
+
+						return "images/marker_" + category + "_" + weight
+								+ ".png";
+
 					}
-					
+
 					function getRetinaIcon(category, weight) {
-						
-						
-						return "images/marker_"+category+"_"+weight+".png";
-					
-				    }
+
+						return "images/marker_" + category + "_" + weight
+								+ ".png";
+
+					}
 
 					function getLightId(d) {
-						return d > 100000 ? 7 : d > 10000 ? 6
-								: d > 1000 ? 5 : d > 100 ? 4
-										: d > 10 ? 3
-												: d > 5 ? 2
-														: d > 0 ? 1
-																: 0;
+						return d > 100000 ? 7 : d > 10000 ? 6 : d > 1000 ? 5
+								: d > 100 ? 4 : d > 10 ? 3 : d > 5 ? 2
+										: d > 0 ? 1 : 0;
 					}
-					
+
 					function getNoiseId(d) {
-						return d > 140 ? 7 : d > 120 ? 6
-								: d > 100 ? 5 : d > 70 ? 4
-										: d > 50 ? 3
-												: d > 30 ? 2
-														: d > 10 ? 1
-																: 0;
+						return d > 140 ? 7 : d > 120 ? 6 : d > 100 ? 5
+								: d > 70 ? 4 : d > 50 ? 3 : d > 30 ? 2
+										: d > 10 ? 1 : 0;
 					}
 
 					function getLightId(d) {
-						return d > 100000 ? 7 : d > 10000 ? 6
-								: d > 1000 ? 5 : d > 100 ? 4
-										: d > 10 ? 3
-												: d > 5 ? 2
-														: d > 0 ? 1
-																: 0;
+						return d > 100000 ? 7 : d > 10000 ? 6 : d > 1000 ? 5
+								: d > 100 ? 4 : d > 10 ? 3 : d > 5 ? 2
+										: d > 0 ? 1 : 0;
 					}
-					
-					
+
 					function getNoiseColor(d) {
 						return d > 140 ? '#800026' : d > 120 ? '#BD0026'
 								: d > 100 ? '#E31A1C' : d > 70 ? '#FC4E2A'
@@ -491,15 +493,15 @@ $(document)
 														: d > 0 ? '#FED976'
 																: '#FFEDA0';
 					}
-					
-//					function getLightColor(d) {
-//						return d > 100000 ? '#FFFFFF' : d > 10000 ? '#DADFA2'
-//								: d > 1000 ? '#BBBF8C' : d > 100 ? '#9C9F77'
-//										: d > 10 ? '#7D8061'
-//												: d > 5 ? '#5E604C'
-//														: d > 0 ? '#3F4036'
-//																: '#212121';
-//					}
+
+					// function getLightColor(d) {
+					// return d > 100000 ? '#FFFFFF' : d > 10000 ? '#DADFA2'
+					// : d > 1000 ? '#BBBF8C' : d > 100 ? '#9C9F77'
+					// : d > 10 ? '#7D8061'
+					// : d > 5 ? '#5E604C'
+					// : d > 0 ? '#3F4036'
+					// : '#212121';
+					// }
 
 					function getInnerColor(type) {
 
@@ -512,58 +514,58 @@ $(document)
 						}
 					}
 					/** ******************************* */
-					var pruneCluster =  new PruneClusterForLeaflet();
-						
+					var pruneCluster = new PruneClusterForLeaflet();
 
-// var markersCluster = new L.MarkerClusterGroup(
-// {
-// iconCreateFunction : function(cluster) {
-//
-// var markers = cluster.getAllChildMarkers();
-// var markersCount = markers.length;
-// var width = 0;
-// var height = 0;
-//
-// if (markersCount < 10) {
-// width = 15;
-// height = 15;
-// } else if (markersCount < 1000) {
-// width = 20;
-// height = 20;
-// } else if (markersCount < 10000) {
-// width = 25;
-// height = 25;
-// } else {
-// width = 30;
-// height = 30;
-// }
-//
-// var bgColor = getMarkerClusterColor(cluster
-// .getAllChildMarkers());
-//
-// return new L.DivIcon(
-// {
-// html : '<div style = "width:'
-// + width
-// + 'px; height:'
-// + height
-// + 'px; border-radius:50%; font-size:10px; color:#000; line-height: '
-// + height
-// + 'px; text-align:center; background:'
-// + bgColor
-// + '">'
-// + cluster
-// .getChildCount()
-// + '</div>',
-//
-// className : 'cluster',
-// iconSize : L.point(0, 0)
-// });
-// },
-// disableClusteringAtZoom : 10,
-// maxClusterRadius : 50,
-// showCoverageOnHover : true
-// });
+					// var markersCluster = new L.MarkerClusterGroup(
+					// {
+					// iconCreateFunction : function(cluster) {
+					//
+					// var markers = cluster.getAllChildMarkers();
+					// var markersCount = markers.length;
+					// var width = 0;
+					// var height = 0;
+					//
+					// if (markersCount < 10) {
+					// width = 15;
+					// height = 15;
+					// } else if (markersCount < 1000) {
+					// width = 20;
+					// height = 20;
+					// } else if (markersCount < 10000) {
+					// width = 25;
+					// height = 25;
+					// } else {
+					// width = 30;
+					// height = 30;
+					// }
+					//
+					// var bgColor = getMarkerClusterColor(cluster
+					// .getAllChildMarkers());
+					//
+					// return new L.DivIcon(
+					// {
+					// html : '<div style = "width:'
+					// + width
+					// + 'px; height:'
+					// + height
+					// + 'px; border-radius:50%; font-size:10px; color:#000;
+					// line-height: '
+					// + height
+					// + 'px; text-align:center; background:'
+					// + bgColor
+					// + '">'
+					// + cluster
+					// .getChildCount()
+					// + '</div>',
+					//
+					// className : 'cluster',
+					// iconSize : L.point(0, 0)
+					// });
+					// },
+					// disableClusteringAtZoom : 10,
+					// maxClusterRadius : 50,
+					// showCoverageOnHover : true
+					// });
 
 					function getMarkerClusterColor(markers) {
 						var sum;
@@ -580,173 +582,186 @@ $(document)
 						}
 						var avg = sum / markers.length;
 
-//						if (lightLayerFlag)
-//							return getLightColor(avg);
-//						else
-							return getNoiseColor(avg);
+						// if (lightLayerFlag)
+						// return getLightColor(avg);
+						// else
+						return getNoiseColor(avg);
 					}
 					;
 
 					lightMarkers.addLayer(pruneCluster);
 
 					function addMarker(msg) {
-						
-						if(DEBUG){
-							console.log("*****LOG***** inside method addMarker -- lat = "+msg.geometry.coordinates[0]+", long = "+msg.geometry.coordinates[1])
-							
+
+						if (DEBUG) {
+							console
+									.log("*****LOG***** inside method addMarker -- lat = "
+											+ msg.geometry.coordinates[0]
+											+ ", long = "
+											+ msg.geometry.coordinates[1])
+
 						}
-						
-						if((msg.geometry.coordinates[0] == 0 &&  msg.geometry.coordinates[1] == 0 )|| (isNaN(msg.geometry.coordinates[0])) || isNaN(msg.geometry.coordinates[1])){
-							if(DEBUG){
-								console.log("*****WARNING***** coordinates are null");
+
+						if ((msg.geometry.coordinates[0] == 0 && msg.geometry.coordinates[1] == 0)
+								|| (isNaN(msg.geometry.coordinates[0]))
+								|| isNaN(msg.geometry.coordinates[1])) {
+							if (DEBUG) {
+								console
+										.log("*****WARNING***** coordinates are null");
 							}
-							
+
 							hideSpinner();
-							
+
 							return false;
-							
-						}else {
-							if(DEBUG){
+
+						} else {
+							if (DEBUG) {
 								console.log("*****LOG***** ADDING MARKER");
 							}
 							counter++;
 							if (msg.properties.readingType == 0
 									&& current_layer == 1) {
-								
-								
-								var lightMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
+
+								var lightMarker = new PruneCluster.Marker(
+										msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]);
 								lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
-												+ msg.properties.level
-												+ '</strong> lux<br>';
-//												+msg.geometry.coordinates[0]+', '+msg.geometry.coordinates[1];
-								
-								
-								//TODO --- BUg here since lightMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
-								if(msg.properties.recordTime === undefined){
-									lightMarker.data.name = new Date().getTime();
-								}else
+										+ msg.properties.level
+										+ '</strong> lux<br>';
+								// +msg.geometry.coordinates[0]+',
+								// '+msg.geometry.coordinates[1];
+
+								// TODO --- BUg here since lightMarker.data.name
+								// is undefined, set it to current time. This
+								// might cause problem with Time-machine
+								// feature.
+								if (msg.properties.recordTime === undefined) {
+									lightMarker.data.name = new Date()
+											.getTime();
+								} else
 									lightMarker.data.name = msg.properties.recordTime;
-			
-								
-								
-								
-								// lightMarker.data.id = msg.properties.readingType;
+
+								// lightMarker.data.id =
+								// msg.properties.readingType;
 								lightMarker.data.weight = getLightId(msg.properties.level); // Weight
-																							// is
-																							// the
-																							// level
-																							// of
-																							// Light
-																							// or
-																							// Noise
+								// is
+								// the
+								// level
+								// of
+								// Light
+								// or
+								// Noise
 								lightMarker.data.category = msg.properties.readingType; // Category
-																						// is
-																						// readingType
+								// is
+								// readingType
 								lightMarker.weight = getLightId(msg.properties.level);
 
 								markerArray.push(lightMarker);
 								pruneCluster.RegisterMarker(lightMarker);
-							
-								
+
 							} else if (msg.properties.readingType == 1
 									&& current_layer == 2) {
-								var noiseMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
-								noiseMarker.data.popup ='<p style="color:black"  ><strong>'
-									+ msg.properties.level
-									+ '</strong> db<br>';
-//									+msg.geometry.coordinates[0]+', '+msg.geometry.coordinates[1];
-								
-								
-								
-								//TODO --- required for initial request coz timemachine data does not send time.
-								//BUg here since NoiseMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
-								if(msg.properties.recordTime === undefined){
-									noiseMarker.data.name = new Date().getTime();
-								}else
+								var noiseMarker = new PruneCluster.Marker(
+										msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]);
+								noiseMarker.data.popup = '<p style="color:black"  ><strong>'
+										+ msg.properties.level
+										+ '</strong> db<br>';
+								// +msg.geometry.coordinates[0]+',
+								// '+msg.geometry.coordinates[1];
+
+								// TODO --- required for initial request coz
+								// timemachine data does not send time.
+								// BUg here since NoiseMarker.data.name is
+								// undefined, set it to current time. This might
+								// cause problem with Time-machine feature.
+								if (msg.properties.recordTime === undefined) {
+									noiseMarker.data.name = new Date()
+											.getTime();
+								} else
 									noiseMarker.data.name = msg.properties.recordTime;
 
 								noiseMarker.data.weight = getNoiseId(msg.properties.level); // Weight
-																							// is
-																							// the
-																							// level
-																							// of
-																							// Light
-																							// or
-																							// Noise
+								// is
+								// the
+								// level
+								// of
+								// Light
+								// or
+								// Noise
 								noiseMarker.data.category = msg.properties.readingType; // Category
-																						// is
-																						// readingType
+								// is
+								// readingType
 								noiseMarker.weight = getNoiseId(msg.properties.level);
 								markerArray.push(noiseMarker);
 								pruneCluster.RegisterMarker(noiseMarker);
 
 							} else if (msg.properties.readingType == 2
 									&& current_layer == 0) {
-								
-								var msgMarker = new PruneCluster.Marker(msg.geometry.coordinates[0], msg.geometry.coordinates[1]);
-								
-								if(containsURLWithHTMLLinks(msg.properties.message)){
+
+								var msgMarker = new PruneCluster.Marker(
+										msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]);
+
+								if (containsURLWithHTMLLinks(msg.properties.message)) {
 									msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
-										+ replaceURLWithHTMLLinks(msg.properties.message) 
-										+ '</strong>';
+											+ replaceURLWithHTMLLinks(msg.properties.message)
+											+ '</strong>';
 									msgMarker.data.weight = 1; // Weight is the
-																// level of Light or
-																// Noise
-									
-								}else {
+									// level of Light or
+									// Noise
+
+								} else {
 
 									msgMarker.data.popup = '<p style="color:black" align="center"><strong>'
-										+ (msg.properties.message)
-										+ '</strong>';
+											+ (msg.properties.message)
+											+ '</strong>';
 									msgMarker.data.weight = 0; // Weight is the
-																// level of Light or
-																// Noise
-									
+									// level of Light or
+									// Noise
+
 								}
-									
-									
-								//TODO --- required for initial request coz timemachine data does not send time.
-								//BUg here since msgMarker.data.name is undefined, set it to current time. This might cause problem with Time-machine feature.
-								if(msg.properties.recordTime === undefined){
+
+								// TODO --- required for initial request coz
+								// timemachine data does not send time.
+								// BUg here since msgMarker.data.name is
+								// undefined, set it to current time. This might
+								// cause problem with Time-machine feature.
+								if (msg.properties.recordTime === undefined) {
 									msgMarker.data.name = new Date().getTime();
-								}else
+								} else
 									msgMarker.data.name = msg.properties.recordTime;
 								msgMarker.data.volatility = msg.properties.volatility;
 								msgMarker.data.category = msg.properties.readingType; // Category
-																						// is
-																						// readingType
-								
+								// is
+								// readingType
+
 								markerArray.push(msgMarker);
 								pruneCluster.RegisterMarker(msgMarker);
 							}
-							
-							
+
 							return true;
 						}
-						
-						
-					}
-					
 
-					
+					}
+
 					function createIcon(data, category) {
-					    return L.Icon({
-					       
-					    });
+						return L.Icon({
+
+						});
 					}
-					
-					
+
 					function replaceURLWithHTMLLinks(text) {
-						
+
 						var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-						
-						
-						return text.replace(exp, "<a href='$1' target='_blank'>$1</a>");
+
+						return text.replace(exp,
+								"<a href='$1' target='_blank'>$1</a>");
 					}
-					
+
 					function containsURLWithHTMLLinks(text) {
 						var exp = /(\b(https?|ftp|file|http):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-						
+
 						return text.search(exp) >= 0;
 					}
 
@@ -774,54 +789,61 @@ $(document)
 
 					L.control.liveupdate({
 						update_map : function() {
-							if(current_state == 0)
+							if (current_state == 0)
 								updateMarkerArray();
-// box.show('Counter :' + counter);
+							// box.show('Counter :' + counter);
 						},
 						position : 'bottomright',
 						interval : 10000
 					}).addTo(map).startUpdating();
 
 					function updateMarkerArray() {
-						if(DEBUG){
-							console.log("*****LOG***** + inside updateMarkerArray()");
-							}
+						if (DEBUG) {
+							console
+									.log("*****LOG***** + inside updateMarkerArray()");
+						}
 						var currentTime = new Date().getTime();
 						showSpinner();
 						for (var i = 0; i < markerArray.length; i++) {
 							var marker = markerArray[i];
-							if(marker.data.volatility != -2) { 
-								if(DEBUG){
-									console.log("*****LOG***** + marker.data.volatility = "+marker.data.volatility);
+							if (marker.data.volatility != -2) {
+								if (DEBUG) {
+									console
+											.log("*****LOG***** + marker.data.volatility = "
+													+ marker.data.volatility);
+								}
+								if (currentTime - marker.data.name >= 60000 * 10) { // 10
+																					// minutes
+									if (DEBUG) {
+										console
+												.log("*****LOG***** + clear this marker");
 									}
-								if(currentTime - marker.data.name >= 60000 * 10){ // 10	minutes 
-									if(DEBUG){
-										console.log("*****LOG***** + clear this marker");
-										}
 									var myArray = [];
 									myArray.push(marker);
 									pruneCluster.RemoveMarkers(myArray);
 									pruneCluster.ProcessView();
 									markerArray.splice(i, 1);
 									counter--;
-								}else {
-									//Permanent marker.
-									if(DEBUG){
-										console.log("*****LOG***** + do not clear this marker, seconds alive = "+(currentTime - marker.data.name));
-										}
+								} else {
+									// Permanent marker.
+									if (DEBUG) {
+										console
+												.log("*****LOG***** + do not clear this marker, seconds alive = "
+														+ (currentTime - marker.data.name));
+									}
 									break;
 								}
-									
-							}else{
-								if(DEBUG){
-									console.log("*****LOG***** + Volatility is -2");
-									}
+
+							} else {
+								if (DEBUG) {
+									console
+											.log("*****LOG***** + Volatility is -2");
+								}
 							}
-							
-							
+
 						}
 						hideSpinner();
-						
+
 					}
 
 					/** *******Websocket************* */
@@ -865,18 +887,24 @@ $(document)
 						conButton.state('connected');
 						initialReq = true;
 						makeInitialRequest();
-						
+
 					}
-					
-					function makeInitialRequest(){
-						/******God knows why i agreed to do this. this might backfire**********/
-						if(initialReq){
+
+					function makeInitialRequest() {
+						/**
+						 * ****God knows why i agreed to do this. this might
+						 * backfire*********
+						 */
+						if (initialReq) {
 							changeSocketToTimeMachine();
 							var date = new Date();
-				        	sendTimeMachineRequest(current_layer == 0?2:current_layer == 1? 0: 1, date.getTime()- (60000 * 3000), date.getTime() );
-				        
+							sendTimeMachineRequest(current_layer == 0 ? 2
+									: current_layer == 1 ? 0 : 1, date
+									.getTime()
+									- (60000 * 3000), date.getTime());
+
 						}
-						/****************/
+						/** ************* */
 					}
 
 					function onClose(evt) {
@@ -885,45 +913,47 @@ $(document)
 					}
 
 					function onMessage(evt) {
-						if(DEBUG){
+						if (DEBUG) {
 							console.log("*****LOG***** inside onMessage");
-							console.log("Message received - "+evt.data);
+							console.log("Message received - " + evt.data);
 						}
-						
+
 						hideSpinner();
 						var msg = JSON.parse(evt.data);
 						var features = msg.features;
-						 if (Array.isArray(features)) {
-							 if(DEBUG){
-							 console.log("*****LOG***** Inside if condition checking if ArrayisArray true with length = "+features.length);
-							 }
-							 for(var i = 0; i < features.length; i++) {
-								    var feature = features[i];
-								    
-								    parseFeature(feature);
-								   
-								}
-							 pruneCluster.ProcessView();
-							 
-							 if(initialReq){
-								 if(DEBUG){
-									 console.log("*****LOG***** since it is initial req call changeSocketToRealTime");
-								 }
-								 changeSocketToRealTime();
-								 initialReq = false
-								 if(DEBUG){
-									 console.log("*****LOG***** Initial Request set to false");
-								 }
-								
-							 }
-							 
+						if (Array.isArray(features)) {
+							if (DEBUG) {
+								console
+										.log("*****LOG***** Inside if condition checking if ArrayisArray true with length = "
+												+ features.length);
+							}
+							for (var i = 0; i < features.length; i++) {
+								var feature = features[i];
 
-							
-						 } else {
-							    parseFeature(features);
-								pruneCluster.ProcessView();
-							
-						 }
+								parseFeature(feature);
+
+							}
+							pruneCluster.ProcessView();
+
+							if (initialReq) {
+								if (DEBUG) {
+									console
+											.log("*****LOG***** since it is initial req call changeSocketToRealTime");
+								}
+								changeSocketToRealTime();
+								initialReq = false
+								if (DEBUG) {
+									console
+											.log("*****LOG***** Initial Request set to false");
+								}
+
+							}
+
+						} else {
+							parseFeature(features);
+							pruneCluster.ProcessView();
+
+						}
 
 					}
 
@@ -942,73 +972,81 @@ $(document)
 					function closePopUp(e) {
 						L.popup().close;
 					}
-					
-					
-					function changeSocketToTimeMachine(){
+
+					function changeSocketToTimeMachine() {
 						current_state = 1;
 						websocket.send('type=1');
 					}
-					
-					function changeSocketToRealTime(){
+
+					function changeSocketToRealTime() {
 						current_state = 0;
 						websocket.send('type=0');
 					}
-					
-					function sendTimeMachineRequest(readingType, startTime, endTime){
+
+					function sendTimeMachineRequest(readingType, startTime,
+							endTime) {
 						showSpinner();
 						resetBeforeSendingTimeMachineRequest();
-						websocket.send('type=1,'+readingType+','+startTime+','+endTime);
+						websocket.send('type=1,' + readingType + ','
+								+ startTime + ',' + endTime);
 					}
-					
+
 					function resetBeforeSendingTimeMachineRequest() {
 						removeAllMarkers();
-						
-						if(current_layer == 1){
+
+						if (current_layer == 1) {
 							lightMarkers.addLayer(pruneCluster);
-							map.addLayer(lightMarkers)	
-						} else if(current_layer == 2){
+							map.addLayer(lightMarkers)
+						} else if (current_layer == 2) {
 							noiseMarkers.addLayer(pruneCluster);
-							map.addLayer(noiseMarkers)	
-						} else if(current_layer == 0){
+							map.addLayer(noiseMarkers)
+						} else if (current_layer == 0) {
 							msgMarkers.addLayer(pruneCluster);
 							map.addLayer(msgMarkers);
 						}
 					}
-					
-					window.prepareTimeMachineReq = function(){
-						
-						 var txtDate =document.getElementById('txtDate').value;
-						 var txtTime =document.getElementById('txtTime').value;
-						        if((txtDate.length>0) && (txtTime.length==0)) { 
-						        	showAlert("Please do set a Time.");
-						            return false;
-						        } else if((txtDate.length == 0) && (txtTime.length>0)) { 
-						        	showAlert("Please do set a Date");
-						            return false;
-						        } else if((txtDate.length == 0) && (txtTime.length == 0)) { 
-						        	showAlert("Please do set the Date and Time.");
-						            return false;
-						        } else {
-						        	var dateAsObject =  $('#txtDate').datepicker("getDate"); 
-						        	var timeAsObject =  $('#txtTime').timepicker('getTime', new Date(0));
-						        	var millisec = dateAsObject.getTime() + timeAsObject.getTime()
-						        	var date = new Date(millisec);
-						        	sendTimeMachineRequest(current_layer == 0?2:current_layer == 1? 0: 1, date.getTime(), date.getTime() + (60000 * 30));
-						        		
-						        }
-					
+
+					window.prepareTimeMachineReq = function() {
+
+						var txtDate = document.getElementById('txtDate').value;
+						var txtTime = document.getElementById('txtTime').value;
+						if ((txtDate.length > 0) && (txtTime.length == 0)) {
+							showAlert("Please do set a Time.");
+							return false;
+						} else if ((txtDate.length == 0)
+								&& (txtTime.length > 0)) {
+							showAlert("Please do set a Date");
+							return false;
+						} else if ((txtDate.length == 0)
+								&& (txtTime.length == 0)) {
+							showAlert("Please do set the Date and Time.");
+							return false;
+						} else {
+							var dateAsObject = $('#txtDate').datepicker(
+									"getDate");
+							var timeAsObject = $('#txtTime').timepicker(
+									'getTime', new Date(0));
+							var millisec = dateAsObject.getTime()
+									+ timeAsObject.getTime()
+							var date = new Date(millisec);
+							sendTimeMachineRequest(current_layer == 0 ? 2
+									: current_layer == 1 ? 0 : 1, date
+									.getTime(), date.getTime() + (60000 * 30));
+
+						}
+
 					}
-					
-					
-					function getStartTime(){
+
+					function getStartTime() {
 						return 
+
 					}
 
 					function showAlert(alertMsg) {
 						$('#alert').dialog(
 								// ...which upon when it's opened...
 								{
-									title: "Alert",
+									title : "Alert",
 									open : function(event, ui) {
 										$(".ui-dialog-titlebar-close",
 												ui.dialog | ui).hide();
@@ -1021,22 +1059,22 @@ $(document)
 										"class" : 'button',
 										click : function() {
 											// Save code here
-											 $(this).dialog('close');
+											$(this).dialog('close');
 
 										}
 									} ],
-									dialogClass: ' success-dialog'
+									dialogClass : ' success-dialog'
 								});
 
 						$("#alert").text(alertMsg);
 
 					}
-					
-					function showInfo(){
+
+					function showInfo() {
 
 						$('#info').dialog(
 								{
-									title: "About",
+									title : "About",
 									open : function(event, ui) {
 										$(".ui-dialog-titlebar-close",
 												ui.dialog | ui).hide();
@@ -1048,21 +1086,20 @@ $(document)
 										text : "OK",
 										"class" : 'button',
 										click : function() {
-											 $(this).dialog('close');
+											$(this).dialog('close');
 
 										}
-									}],
-									dialogClass: ' success-dialog'
+									} ],
+									dialogClass : ' success-dialog'
 								});
 
-					
 					}
-					
-					function showHelp(){
+
+					function showHelp() {
 
 						$('#help').dialog(
 								{
-									title: "Help",
+									title : "Help",
 									open : function(event, ui) {
 										$(".ui-dialog-titlebar-close",
 												ui.dialog | ui).hide();
@@ -1074,237 +1111,263 @@ $(document)
 										text : "OK",
 										"class" : 'button',
 										click : function() {
-											 $(this).dialog('close');
-
-										}
-									}],
-									minWidth: 400,
-									dialogClass: 'success-dialog'
-								});
-
-					
-					}
-					
-					function showDialog() {
-						$('#dialog').dialog(
-								{
-									title: "Select your mobile platform:",
-									open : function(event, ui) {
-										$(".ui-dialog-titlebar-close",
-												ui.dialog | ui).hide();
-									},
-									modal : true,
-									resizable : false,
-									closeOnEscape : true,
-									buttons : [ {
-										text : "Android",
-										"style" : '<i class="fa fa-android fa-lg"></i>',
-										click : function() {
-											window.open("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse");
-											 $(this).dialog('close');
-
-										}
-									}, {
-										text : "iOS",
-										"class" : 'button',
-										click : function() {
-											
-											window.open("https://itunes.apple.com/us/app/swarmpulse/id1053129873");
-											 $(this).dialog('close');
-
-										}
-									} , {
-										text : "Cancel",
-										"class" : 'button',
-										click : function() {
-											// Save code here
-											 $(this).dialog('close');
+											$(this).dialog('close');
 
 										}
 									} ],
-									dialogClass: ' success-dialog'
+									minWidth : 400,
+									dialogClass : 'success-dialog'
 								});
 
 					}
-					
-					function parseFeature(feature){
-								return addMarker(feature);
+
+					function showDialog() {
+						$('#dialog')
+								.dialog(
+										{
+											title : "Select your mobile platform:",
+											open : function(event, ui) {
+												$(".ui-dialog-titlebar-close",
+														ui.dialog | ui).hide();
+											},
+											modal : true,
+											resizable : false,
+											closeOnEscape : true,
+											buttons : [
+													{
+														text : "Android",
+														"style" : '<i class="fa fa-android fa-lg"></i>',
+														click : function() {
+															window
+																	.open("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervous.pulse");
+															$(this).dialog(
+																	'close');
+
+														}
+													},
+													{
+														text : "iOS",
+														"class" : 'button',
+														click : function() {
+
+															window
+																	.open("https://itunes.apple.com/us/app/swarmpulse/id1053129873");
+															$(this).dialog(
+																	'close');
+
+														}
+													},
+													{
+														text : "Cancel",
+														"class" : 'button',
+														click : function() {
+															// Save code here
+															$(this).dialog(
+																	'close');
+
+														}
+													} ],
+											dialogClass : ' success-dialog'
+										});
+
 					}
-					
+
+					function parseFeature(feature) {
+						return addMarker(feature);
+					}
+
 					function showSpinner() {
-						/** ********************SPINNER************************** */					
-						map.spin(true, {lines: 11 // The number of lines to
-													// draw
-							, length: 37 // The length of each line
-							, width: 10 // The line thickness
-							, radius: 22 // The radius of the inner circle
-							, scale: 0.5 // Scales overall size of the
-											// spinner
-							, corners: 1 // Corner roundness (0..1)
-							, color: '#FFF' // #rgb or #rrggbb or array of
-											// colors
-							, opacity: 0.25 // Opacity of the lines
-							, rotate: 0 // The rotation offset
-							, direction: 1 // 1: clockwise, -1:
-											// counterclockwise
-							, speed: 1 // Rounds per second
-							, trail: 60 // Afterglow percentage
-							, fps: 20 // Frames per second when using
-										// setTimeout() as a fallback for CSS
-							, zIndex: 2e9 // The z-index (defaults to
-											// 2000000000)
-							, className: 'spinner' // The CSS class to assign
-													// to the spinner
-							, top: '50%' // Top position relative to parent
-							, left: '50%' // Left position relative to parent
-							, shadow: true // Whether to render a shadow
-							, hwaccel: false // Whether to use hardware
-												// acceleration
-							, position: 'absolute' });
-						
-// setTimeout(function(){ map.spin(false); }, 3000);
+						/** ********************SPINNER************************** */
+						map.spin(true, {
+							lines : 11 // The number of lines to
+							// draw
+							,
+							length : 37 // The length of each line
+							,
+							width : 10 // The line thickness
+							,
+							radius : 22 // The radius of the inner circle
+							,
+							scale : 0.5 // Scales overall size of the
+							// spinner
+							,
+							corners : 1 // Corner roundness (0..1)
+							,
+							color : '#FFF' // #rgb or #rrggbb or array of
+							// colors
+							,
+							opacity : 0.25 // Opacity of the lines
+							,
+							rotate : 0 // The rotation offset
+							,
+							direction : 1 // 1: clockwise, -1:
+							// counterclockwise
+							,
+							speed : 1 // Rounds per second
+							,
+							trail : 60 // Afterglow percentage
+							,
+							fps : 20 // Frames per second when using
+							// setTimeout() as a fallback for CSS
+							,
+							zIndex : 2e9 // The z-index (defaults to
+							// 2000000000)
+							,
+							className : 'spinner' // The CSS class to assign
+							// to the spinner
+							,
+							top : '50%' // Top position relative to parent
+							,
+							left : '50%' // Left position relative to parent
+							,
+							shadow : true // Whether to render a shadow
+							,
+							hwaccel : false // Whether to use hardware
+							// acceleration
+							,
+							position : 'absolute'
+						});
+
+						// setTimeout(function(){ map.spin(false); }, 3000);
 						/** ********************SPINNER************************** */
 					}
-					
-					function hideSpinner(){
+
+					function hideSpinner() {
 						map.spin(false);
 					}
-					
-					
-// var hazardIcon = L.icon({
-// iconUrl: "test.png",
-// iconSize: [16, 16],
-// iconAnchor: [8, 8],
-// popupAnchor: [0, 0]
-// });
-					
-					
-					/** ********************************************* */
-				
-					
-					
-					
-					pruneCluster.BuildLeafletClusterIcon= function (cluster) {
-						 var c = 'prunecluster prunecluster-';
-					        var iconSize = 38;
-					        var maxPopulation = this.Cluster.GetPopulation();
-					         if (cluster.population < Math.max(10, maxPopulation * 0.01)) {
-					            c += 'small';
-					        }
-					        else if (cluster.population < Math.max(100, maxPopulation * 0.05)) {
-					            c += 'medium';
-					            iconSize = 40;
-					        }
-					        else {
-					            c += 'large';
-					            iconSize = 44;
-					        }
-					         
-					        if(current_layer == 0){
-						        	c += "-1-"; 
-						        	c += 1;
-						    }else 
-					        if(current_layer == 1){
-					        	c += "-1-"; //IMP - changing 0 to 1 as we want Light and noise color legends to be same.
-					        	c += ((cluster.totalWeight/cluster.population).toFixed());
-					        } else  if(current_layer == 2){
-								c += "-1-"
-								c += ((cluster.totalWeight/cluster.population).toFixed());
-							} 
-								
-	
-					     
-					        return new L.DivIcon({
-					            html: "<div><span>" + cluster.population + "</span></div>",
-					            className: c,
-					            iconSize: L.point(iconSize, iconSize)
-					        });
-					    }
-					
-					
-					pruneCluster.PrepareLeafletMarker = function (marker, data, category) {
-						marker.setIcon(L.icon({
-							    iconUrl: getIcon(data.category, data.weight),
-							    iconRetinaUrl: getRetinaIcon(data.category, data.weight),
-							    iconAnchor: [20,40]})); 
-					
-						
-						
-						  marker.on('mouseover', function(e){
-							    	generatePopup(e, data.popup);
-							    	
-							    });
-						  
-						marker.on('click', function(e){
-						    	generatePopup(e, data.popup);
-						    	
-						    });
 
-				    };
-				    
-					
-// pruneCluster.PrepareLeafletMarker = function(leafletMarker, data) {
-//						
-// leafletMarker.setIcon(L.icon({
-// iconUrl: getIcon(data.id),
-// iconAnchor: [20,40]})); // See http://leafletjs.com/reference.html#icon
-//					    
-// leafletMarker.on('mouseover', function(){
-// //do click event logic here
-// // alert("HELP");
-// });
-// leafletMarker.on('mouseout', function(){
-// //do click event logic here
-// // alert("HELP2");
-// });
-// // //listeners can be applied to markers in this function
-// leafletMarker.on('click', function(e){
-// //do click event logic here
-// // leafletMarker.openPopup();
-// // generatePopup(e, data.popup);
-//					    	
-// });
-//					    
-// // A popup can already be attached to the marker
-// // bindPopup can override it, but it's faster to update the content instead
-// if (leafletMarker.getPopup()) {
-// leafletMarker.setPopupContent(data.name);
-// } else {
-// leafletMarker.bindPopup(data.name);
-// }
-// };
-					
-					var generatePopup = function (e, popupContent) {
-						  var clickedPopup = e.target.getPopup();
-						  var newPopup = new L.popup({
-						    offset: new L.Point(0, -20),
-						    closeButton: false,
-						    autoPan: false,
-						    closeOnClick: true
-						  });
-						  // If a popup has not already been bound to the
-							// marker, create one
-						  // and bind it.
-						  if (!clickedPopup) {
-						    newPopup.setContent(popupContent)
-						      .setLatLng(e.latlng)
-						      .openOn(e.target._map);
-						    e.target.bindPopup(newPopup);
-						  }
-						  // We need to destroy and recreate the popup each
-							// time the marker is
-						  // clicked to refresh its position
-						  else if (!clickedPopup._isOpen) {
-						    var content = clickedPopup.getContent();
-						    e.target.unbindPopup(clickedPopup);
-						    newPopup.setContent(content)
-						      .setLatLng(e.latlng)
-						      .openOn(e.target._map);
-						    e.target.bindPopup(newPopup);
-						  }
-						};
+					// var hazardIcon = L.icon({
+					// iconUrl: "test.png",
+					// iconSize: [16, 16],
+					// iconAnchor: [8, 8],
+					// popupAnchor: [0, 0]
+					// });
+
+					/** ********************************************* */
+
+					pruneCluster.BuildLeafletClusterIcon = function(cluster) {
+						var c = 'prunecluster prunecluster-';
+						var iconSize = 38;
+						var maxPopulation = this.Cluster.GetPopulation();
+						if (cluster.population < Math.max(10,
+								maxPopulation * 0.01)) {
+							c += 'small';
+						} else if (cluster.population < Math.max(100,
+								maxPopulation * 0.05)) {
+							c += 'medium';
+							iconSize = 40;
+						} else {
+							c += 'large';
+							iconSize = 44;
+						}
+
+						if (current_layer == 0) {
+							c += "-1-";
+							c += 1;
+						} else if (current_layer == 1) {
+							c += "-1-"; // IMP - changing 0 to 1 as we want
+										// Light and noise color legends to be
+										// same.
+							c += ((cluster.totalWeight / cluster.population)
+									.toFixed());
+						} else if (current_layer == 2) {
+							c += "-1-"
+							c += ((cluster.totalWeight / cluster.population)
+									.toFixed());
+						}
+
+						return new L.DivIcon({
+							html : "<div><span>" + cluster.population
+									+ "</span></div>",
+							className : c,
+							iconSize : L.point(iconSize, iconSize)
+						});
+					}
+
+					pruneCluster.PrepareLeafletMarker = function(marker, data,
+							category) {
+						marker.setIcon(L.icon({
+							iconUrl : getIcon(data.category, data.weight),
+							iconRetinaUrl : getRetinaIcon(data.category,
+									data.weight),
+							iconAnchor : [ 20, 40 ]
+						}));
+
+						marker.on('mouseover', function(e) {
+							generatePopup(e, data.popup);
+
+						});
+
+						marker.on('click', function(e) {
+							generatePopup(e, data.popup);
+
+						});
+
+					};
+
+					// pruneCluster.PrepareLeafletMarker =
+					// function(leafletMarker, data) {
+					//						
+					// leafletMarker.setIcon(L.icon({
+					// iconUrl: getIcon(data.id),
+					// iconAnchor: [20,40]})); // See
+					// http://leafletjs.com/reference.html#icon
+					//					    
+					// leafletMarker.on('mouseover', function(){
+					// //do click event logic here
+					// // alert("HELP");
+					// });
+					// leafletMarker.on('mouseout', function(){
+					// //do click event logic here
+					// // alert("HELP2");
+					// });
+					// // //listeners can be applied to markers in this function
+					// leafletMarker.on('click', function(e){
+					// //do click event logic here
+					// // leafletMarker.openPopup();
+					// // generatePopup(e, data.popup);
+					//					    	
+					// });
+					//					    
+					// // A popup can already be attached to the marker
+					// // bindPopup can override it, but it's faster to update
+					// the content instead
+					// if (leafletMarker.getPopup()) {
+					// leafletMarker.setPopupContent(data.name);
+					// } else {
+					// leafletMarker.bindPopup(data.name);
+					// }
+					// };
+
+					var generatePopup = function(e, popupContent) {
+						var clickedPopup = e.target.getPopup();
+						var newPopup = new L.popup({
+							offset : new L.Point(0, -20),
+							closeButton : false,
+							autoPan : false,
+							closeOnClick : true
+						});
+						// If a popup has not already been bound to the
+						// marker, create one
+						// and bind it.
+						if (!clickedPopup) {
+							newPopup.setContent(popupContent).setLatLng(
+									e.latlng).openOn(e.target._map);
+							e.target.bindPopup(newPopup);
+						}
+						// We need to destroy and recreate the popup each
+						// time the marker is
+						// clicked to refresh its position
+						else if (!clickedPopup._isOpen) {
+							var content = clickedPopup.getContent();
+							e.target.unbindPopup(clickedPopup);
+							newPopup.setContent(content).setLatLng(e.latlng)
+									.openOn(e.target._map);
+							e.target.bindPopup(newPopup);
+						}
+					};
 					/** ********************************************** */
 					resetToMessagesOverlay();
 					$('#datePicker').hide(0);
-					
+
 				});
