@@ -37,7 +37,7 @@ public class SqlRequestWorker extends SqlFetchWorker {
 				try {
 
 					/***** SQL get ********/
-					// Insert data
+					// Fetch data
 					PreparedStatement datastmt = sqlse
 							.getSensorValuesFetchStatement(connection,
 									ptmRequest.readingType, ptmRequest.startTime, ptmRequest.endTime);
@@ -45,11 +45,15 @@ public class SqlRequestWorker extends SqlFetchWorker {
 					featureCollection = new JsonObject();
 					features = new JsonArray();
 					//System.out.println("SQL query result size = "+rs.getFetchSize());
+					long currentTimeMillis = System.currentTimeMillis();
 					while (rs.next()) {
 						long volatility = rs.getLong("Volatility");
 						
-						if(volatility == 0)
+						if(volatility == 0 || rs.getLong("RecordTime") + (volatility *1000) > currentTimeMillis){
+							
 							continue;
+						}
+							
 						
 						String lat = rs.getString("lat");
 						String lon = rs.getString("lon");
