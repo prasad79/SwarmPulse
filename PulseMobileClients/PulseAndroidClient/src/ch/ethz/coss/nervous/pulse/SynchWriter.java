@@ -111,7 +111,7 @@ public class SynchWriter {
 				for (Visual o : buffer) {
 					String json = new JSONSerializer().deepSerialize(o);
 
-					System.out.println("SENDING JSON -- " + json);
+//					System.out.println("SENDING JSON -- " + json);
 					byte[] jsonBytes = json.getBytes();
 					oos.write(jsonBytes, 0, jsonBytes.length);
 

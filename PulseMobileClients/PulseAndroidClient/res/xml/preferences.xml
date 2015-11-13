@@ -5,14 +5,14 @@
             android:key="data_rentention"
             android:switchTextOff="No"
             android:switchTextOn="Yes"
-            android:title="Store my data on the server" />
+            android:title="Store shared data on the server." />
 
         <ListPreference
             android:dependency="data_rentention"
             android:entries="@array/time_limit"
             android:entryValues="@array/time_limit_secs"
             android:key="time_limit_data_retention"
-            android:title="Maximum time data can be stored" android:summary="value comes here" android:defaultValue="-1"/>
+            android:title="Store shared data for:" android:summary="*** days" android:defaultValue="-1"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

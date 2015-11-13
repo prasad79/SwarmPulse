@@ -94,9 +94,7 @@ public class LightSensorReadingActivity extends SensorReadingActivity {
 										submitButton.setText("Share sensor data");
 										submitButton.setEnabled(true);
 										buttonTimer.cancel();
-										System.out.println("timer cancelled");
 									} else {
-										System.out.println("timer running");
 										submitButton.setText("Please wait for " + counter + " seconds.");
 										counter--;
 									}
