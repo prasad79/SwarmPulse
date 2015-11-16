@@ -61,3 +61,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.<br>
 
 *******************************************************************************/
+
+Contributors:
+*  Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation for Server, Website and Android Client
