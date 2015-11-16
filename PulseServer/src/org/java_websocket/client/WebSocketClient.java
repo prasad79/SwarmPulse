@@ -32,8 +32,7 @@ import org.java_websocket.handshake.ServerHandshake;
  * {@link #onMessage(String)} via the overloaded methods and to
  * {@link #send(String)} data to the server.
  */
-public abstract class WebSocketClient extends WebSocketAdapter implements
-		Runnable, WebSocket {
+public abstract class WebSocketClient extends WebSocketAdapter implements Runnable, WebSocket {
 
 	/**
 	 * The URI this channel is supposed to connect to.
@@ -76,13 +75,11 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 		this(serverUri, draft, null, 0);
 	}
 
-	public WebSocketClient(URI serverUri, Draft protocolDraft,
-			Map<String, String> httpHeaders, int connectTimeout) {
+	public WebSocketClient(URI serverUri, Draft protocolDraft, Map<String, String> httpHeaders, int connectTimeout) {
 		if (serverUri == null) {
 			throw new IllegalArgumentException();
 		} else if (protocolDraft == null) {
-			throw new IllegalArgumentException(
-					"null as draft is permitted for `WebSocketServer` only!");
+			throw new IllegalArgumentException("null as draft is permitted for `WebSocketServer` only!");
 		}
 		this.uri = serverUri;
 		this.draft = protocolDraft;
@@ -113,8 +110,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	 */
 	public void connect() {
 		if (writeThread != null)
-			throw new IllegalStateException(
-					"WebSocketClient objects are not reuseable");
+			throw new IllegalStateException("WebSocketClient objects are not reuseable");
 		writeThread = new Thread(this);
 		writeThread.start();
 	}
@@ -178,17 +174,16 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 				throw new IOException();
 			}
 			if (!socket.isBound())
-				socket.connect(new InetSocketAddress(uri.getHost(), getPort()),
-						connectTimeout);
+				socket.connect(new InetSocketAddress(uri.getHost(), getPort()), connectTimeout);
 			istream = socket.getInputStream();
 			ostream = socket.getOutputStream();
 
 			sendHandshake();
 		} catch ( /*
-				 * IOException | SecurityException | UnresolvedAddressException
-				 * | InvalidHandshakeException | ClosedByInterruptException |
-				 * SocketTimeoutException
-				 */Exception e) {
+					 * IOException | SecurityException |
+					 * UnresolvedAddressException | InvalidHandshakeException |
+					 * ClosedByInterruptException | SocketTimeoutException
+					 */Exception e) {
 			onWebsocketError(engine, e);
 			engine.closeConnection(CloseFrame.NEVER_CONNECTED, e.getMessage());
 			return;
@@ -213,7 +208,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 			onError(e);
 			engine.closeConnection(CloseFrame.ABNORMAL_CLOSE, e.getMessage());
 		}
-		assert (socket.isClosed());
+		assert(socket.isClosed());
 	}
 
 	private int getPort() {
@@ -242,8 +237,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 		if (part2 != null)
 			path += "?" + part2;
 		int port = getPort();
-		String host = uri.getHost()
-				+ (port != WebSocket.DEFAULT_PORT ? ":" + port : "");
+		String host = uri.getHost() + (port != WebSocket.DEFAULT_PORT ? ":" + port : "");
 
 		HandshakeImpl1Client handshake = new HandshakeImpl1Client();
 		handshake.setResourceDescriptor(path);
@@ -295,8 +289,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	 * Calls subclass' implementation of <var>onClose</var>.
 	 */
 	@Override
-	public final void onWebsocketClose(WebSocket conn, int code, String reason,
-			boolean remote) {
+	public final void onWebsocketClose(WebSocket conn, int code, String reason, boolean remote) {
 		connectLatch.countDown();
 		closeLatch.countDown();
 		if (writeThread != null)
@@ -324,14 +317,12 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	}
 
 	@Override
-	public void onWebsocketCloseInitiated(WebSocket conn, int code,
-			String reason) {
+	public void onWebsocketCloseInitiated(WebSocket conn, int code, String reason) {
 		onCloseInitiated(code, reason);
 	}
 
 	@Override
-	public void onWebsocketClosing(WebSocket conn, int code, String reason,
-			boolean remote) {
+	public void onWebsocketClosing(WebSocket conn, int code, String reason, boolean remote) {
 		onClosing(code, reason, remote);
 	}
 
@@ -462,8 +453,7 @@ public abstract class WebSocketClient extends WebSocketAdapter implements
 	}
 
 	@Override
-	public void send(ByteBuffer bytes) throws IllegalArgumentException,
-			NotYetConnectedException {
+	public void send(ByteBuffer bytes) throws IllegalArgumentException, NotYetConnectedException {
 		engine.send(bytes);
 	}
 

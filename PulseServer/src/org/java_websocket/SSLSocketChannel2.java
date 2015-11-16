@@ -52,7 +52,9 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 
 	/** the underlying channel */
 	protected SocketChannel socketChannel;
-	/** used to set interestOP SelectionKey.OP_WRITE for the underlying channel */
+	/**
+	 * used to set interestOP SelectionKey.OP_WRITE for the underlying channel
+	 */
 	protected SelectionKey selectionKey;
 
 	protected SSLEngine sslEngine;
@@ -67,8 +69,8 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 	 **/
 	protected int bufferallocations = 0;
 
-	public SSLSocketChannel2(SocketChannel channel, SSLEngine sslEngine,
-			ExecutorService exec, SelectionKey key) throws IOException {
+	public SSLSocketChannel2(SocketChannel channel, SSLEngine sslEngine, ExecutorService exec, SelectionKey key)
+			throws IOException {
 		if (channel == null || sslEngine == null || exec == null)
 			throw new IllegalArgumentException("parameter must not be null");
 
@@ -76,11 +78,11 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 		this.sslEngine = sslEngine;
 		this.exec = exec;
 
-		readEngineResult = writeEngineResult = new SSLEngineResult(
-				Status.BUFFER_UNDERFLOW, sslEngine.getHandshakeStatus(), 0, 0); // init
-																				// to
-																				// prevent
-																				// NPEs
+		readEngineResult = writeEngineResult = new SSLEngineResult(Status.BUFFER_UNDERFLOW,
+				sslEngine.getHandshakeStatus(), 0, 0); // init
+														// to
+														// prevent
+														// NPEs
 
 		tasks = new ArrayList<Future<?>>(3);
 		if (key != null) {
@@ -136,13 +138,11 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 		}
 
 		if (sslEngine.getHandshakeStatus() == SSLEngineResult.HandshakeStatus.NEED_UNWRAP) {
-			if (!isBlocking()
-					|| readEngineResult.getStatus() == Status.BUFFER_UNDERFLOW) {
+			if (!isBlocking() || readEngineResult.getStatus() == Status.BUFFER_UNDERFLOW) {
 				inCrypt.compact();
 				int read = socketChannel.read(inCrypt);
 				if (read == -1) {
-					throw new IOException(
-							"connection closed unexpectedly by peer");
+					throw new IOException("connection closed unexpectedly by peer");
 				}
 				inCrypt.flip();
 			}
@@ -154,15 +154,14 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 			}
 		}
 		consumeDelegatedTasks();
-		if (tasks.isEmpty()
-				|| sslEngine.getHandshakeStatus() == SSLEngineResult.HandshakeStatus.NEED_WRAP) {
+		if (tasks.isEmpty() || sslEngine.getHandshakeStatus() == SSLEngineResult.HandshakeStatus.NEED_WRAP) {
 			socketChannel.write(wrap(emptybuffer));
 			if (writeEngineResult.getHandshakeStatus() == HandshakeStatus.FINISHED) {
 				createBuffers(sslEngine.getSession());
 				return;
 			}
 		}
-		assert (sslEngine.getHandshakeStatus() != HandshakeStatus.NOT_HANDSHAKING);// this
+		assert(sslEngine.getHandshakeStatus() != HandshakeStatus.NOT_HANDSHAKING);// this
 																					// function
 																					// could
 																					// only
@@ -222,8 +221,7 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 
 	protected void createBuffers(SSLSession session) {
 		int netBufferMax = session.getPacketBufferSize();
-		int appBufferMax = Math.max(session.getApplicationBufferSize(),
-				netBufferMax);
+		int appBufferMax = Math.max(session.getApplicationBufferSize(), netBufferMax);
 
 		if (inData == null) {
 			inData = ByteBuffer.allocate(appBufferMax);
@@ -265,7 +263,8 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 	}
 
 	/**
-	 * Blocks when in blocking mode until at least one byte has been decoded.<br>
+	 * Blocks when in blocking mode until at least one byte has been decoded.
+	 * <br>
 	 * When not in blocking mode 0 may be returned.
 	 * 
 	 * @return the number of bytes read.
@@ -305,7 +304,7 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 		 * Thats the case if inData is empty or inCrypt holds to less data than
 		 * necessary for decryption
 		 */
-		assert (inData.position() == 0);
+		assert(inData.position() == 0);
 		inData.clear();
 
 		if (!inCrypt.hasRemaining())
@@ -313,8 +312,7 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 		else
 			inCrypt.compact();
 
-		if (isBlocking()
-				|| readEngineResult.getStatus() == Status.BUFFER_UNDERFLOW)
+		if (isBlocking() || readEngineResult.getStatus() == Status.BUFFER_UNDERFLOW)
 			if (socketChannel.read(inCrypt) == -1) {
 				return -1;
 			}
@@ -420,9 +418,8 @@ public class SSLSocketChannel2 implements ByteChannel, WrappedByteChannel {
 	@Override
 	public boolean isNeedRead() {
 		return inData.hasRemaining()
-				|| (inCrypt.hasRemaining()
-						&& readEngineResult.getStatus() != Status.BUFFER_UNDERFLOW && readEngineResult
-						.getStatus() != Status.CLOSED);
+				|| (inCrypt.hasRemaining() && readEngineResult.getStatus() != Status.BUFFER_UNDERFLOW
+						&& readEngineResult.getStatus() != Status.CLOSED);
 	}
 
 	@Override

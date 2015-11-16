@@ -1,3 +1,34 @@
+/*******************************************************************************
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 ETH Zurich.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ *
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ *
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * Contributors:
+ *     Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation
+ *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.socket;
 
 import java.io.IOException;
@@ -20,8 +51,7 @@ public class PulseConcurrentServer implements Runnable {
 	private ExecutorService threadPool;
 	private ConcurrentSocketWorkerFactory factory;
 
-	public PulseConcurrentServer(int port,
-			PulseWebSocketServer pWebSocketServer, int numThreads,
+	public PulseConcurrentServer(int port, PulseWebSocketServer pWebSocketServer, int numThreads,
 			ConcurrentSocketWorkerFactory factory) {
 		this.sport = port;
 		this.pWebSocketServer = pWebSocketServer;
@@ -48,37 +78,30 @@ public class PulseConcurrentServer implements Runnable {
 				success = true;
 			} catch (IOException e) {
 				if (isStopped()) {
-					Log.getInstance().append(Log.FLAG_INFO,
-							"Connection refused: server is closing");
+					Log.getInstance().append(Log.FLAG_INFO, "Connection refused: server is closing");
 				} else {
-					Log.getInstance().append(Log.FLAG_ERROR,
-							"Connection refused: error accepting");
+					Log.getInstance().append(Log.FLAG_ERROR, "Connection refused: error accepting");
 				}
 				success = false;
 			} catch (Exception e) {
 				e.printStackTrace();
 				if (isStopped()) {
-					Log.getInstance().append(Log.FLAG_INFO,
-							"Connection refused: server is closing");
+					Log.getInstance().append(Log.FLAG_INFO, "Connection refused: server is closing");
 				} else {
-					Log.getInstance().append(Log.FLAG_ERROR,
-							"Connection refused: error accepting");
+					Log.getInstance().append(Log.FLAG_ERROR, "Connection refused: error accepting");
 				}
 				success = false;
 			}
 			if (success) {
 				try {
-					this.threadPool.execute(factory.createWorker(csocket,
-							pWebSocketServer));
+					this.threadPool.execute(factory.createWorker(csocket, pWebSocketServer));
 				} catch (Exception e) {
-					Log.getInstance().append(Log.FLAG_ERROR,
-							"Threadpool execution failure");
+					Log.getInstance().append(Log.FLAG_ERROR, "Threadpool execution failure");
 				}
 			}
 		}
 		threadPool.shutdown();
-		Log.getInstance().append(Log.FLAG_INFO,
-				"Server threading pool is shut down");
+		Log.getInstance().append(Log.FLAG_INFO, "Server threading pool is shut down");
 	}
 
 	private synchronized boolean isStopped() {
@@ -91,8 +114,7 @@ public class PulseConcurrentServer implements Runnable {
 			ssocket.close();
 
 		} catch (IOException e) {
-			Log.getInstance().append(Log.FLAG_ERROR,
-					"Can't close the server on port: " + String.valueOf(sport));
+			Log.getInstance().append(Log.FLAG_ERROR, "Can't close the server on port: " + String.valueOf(sport));
 		}
 
 		// try {
@@ -107,13 +129,11 @@ public class PulseConcurrentServer implements Runnable {
 		try {
 			ssocket = new ServerSocket(sport);
 			System.out.println("Socket port = " + sport);
-			System.out.println("Pulse Server started on ip: "
-					+ ssocket.getLocalSocketAddress() + " and port: "
+			System.out.println("Pulse Server started on ip: " + ssocket.getLocalSocketAddress() + " and port: "
 					+ ssocket.getLocalPort());
 		} catch (IOException e) {
 			stopped = true;
-			Log.getInstance().append(Log.FLAG_ERROR,
-					"Can't open the server on port: " + String.valueOf(sport));
+			Log.getInstance().append(Log.FLAG_ERROR, "Can't open the server on port: " + String.valueOf(sport));
 		}
 	}
 
@@ -123,7 +143,7 @@ public class PulseConcurrentServer implements Runnable {
 	// pWebSocketServer = new PulseWebSocketServer(webSocketPort);
 	// } catch (UnknownHostException e) {
 	// Log.getInstance().append(Log.FLAG_ERROR,
-	// "Pulse WebSocketServer Error:  "+e.getMessage());
+	// "Pulse WebSocketServer Error: "+e.getMessage());
 	// }
 	// }
 

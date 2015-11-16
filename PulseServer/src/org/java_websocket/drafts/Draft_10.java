@@ -69,10 +69,9 @@ public class Draft_10 extends Draft {
 	private final Random reuseableRandom = new Random();
 
 	@Override
-	public HandshakeState acceptHandshakeAsClient(ClientHandshake request,
-			ServerHandshake response) throws InvalidHandshakeException {
-		if (!request.hasFieldValue("Sec-WebSocket-Key")
-				|| !response.hasFieldValue("Sec-WebSocket-Accept"))
+	public HandshakeState acceptHandshakeAsClient(ClientHandshake request, ServerHandshake response)
+			throws InvalidHandshakeException {
+		if (!request.hasFieldValue("Sec-WebSocket-Key") || !response.hasFieldValue("Sec-WebSocket-Accept"))
 			return HandshakeState.NOT_MATCHED;
 
 		String seckey_answere = response.getFieldValue("Sec-WebSocket-Accept");
@@ -85,14 +84,12 @@ public class Draft_10 extends Draft {
 	}
 
 	@Override
-	public HandshakeState acceptHandshakeAsServer(ClientHandshake handshakedata)
-			throws InvalidHandshakeException {
+	public HandshakeState acceptHandshakeAsServer(ClientHandshake handshakedata) throws InvalidHandshakeException {
 		// Sec-WebSocket-Origin is only required for browser clients
 		int v = readVersion(handshakedata);
 		System.out.println("acceptHandshakeAsServer - version " + v);
-		if (v == 7 || v == 8)// g
-			return basicAccept(handshakedata) ? HandshakeState.MATCHED
-					: HandshakeState.NOT_MATCHED;
+		if (v == 7 || v == 8) // g
+			return basicAccept(handshakedata) ? HandshakeState.MATCHED : HandshakeState.NOT_MATCHED;
 		return HandshakeState.NOT_MATCHED;
 	}
 
@@ -100,21 +97,18 @@ public class Draft_10 extends Draft {
 	public ByteBuffer createBinaryFrame(Framedata framedata) {
 		ByteBuffer mes = framedata.getPayloadData();
 		boolean mask = role == Role.CLIENT; // framedata.getTransfereMasked();
-		int sizebytes = mes.remaining() <= 125 ? 1
-				: mes.remaining() <= 65535 ? 2 : 8;
-		ByteBuffer buf = ByteBuffer.allocate(1
-				+ (sizebytes > 1 ? sizebytes + 1 : sizebytes) + (mask ? 4 : 0)
-				+ mes.remaining());
+		int sizebytes = mes.remaining() <= 125 ? 1 : mes.remaining() <= 65535 ? 2 : 8;
+		ByteBuffer buf = ByteBuffer
+				.allocate(1 + (sizebytes > 1 ? sizebytes + 1 : sizebytes) + (mask ? 4 : 0) + mes.remaining());
 		byte optcode = fromOpcode(framedata.getOpcode());
 		byte one = (byte) (framedata.isFin() ? -128 : 0);
 		one |= optcode;
 		buf.put(one);
 		byte[] payloadlengthbytes = toByteArray(mes.remaining(), sizebytes);
-		assert (payloadlengthbytes.length == sizebytes);
+		assert(payloadlengthbytes.length == sizebytes);
 
 		if (sizebytes == 1) {
-			buf.put((byte) (payloadlengthbytes[0] | (mask ? (byte) -128
-					: 0)));
+			buf.put((byte) (payloadlengthbytes[0] | (mask ? (byte) -128 : 0)));
 		} else if (sizebytes == 2) {
 			buf.put((byte) ((byte) 126 | (mask ? (byte) -128 : 0)));
 			buf.put(payloadlengthbytes);
@@ -122,8 +116,7 @@ public class Draft_10 extends Draft {
 			buf.put((byte) ((byte) 127 | (mask ? (byte) -128 : 0)));
 			buf.put(payloadlengthbytes);
 		} else
-			throw new RuntimeException(
-					"Size representation not supported/specified");
+			throw new RuntimeException("Size representation not supported/specified");
 
 		if (mask) {
 			ByteBuffer maskkey = ByteBuffer.allocate(4);
@@ -135,7 +128,7 @@ public class Draft_10 extends Draft {
 		} else
 			buf.put(mes);
 		// translateFrame ( buf.array () , buf.array ().length );
-		assert (buf.remaining() == 0) : buf.remaining();
+		assert(buf.remaining() == 0) : buf.remaining();
 		buf.flip();
 
 		return buf;
@@ -159,8 +152,7 @@ public class Draft_10 extends Draft {
 	public List<Framedata> createFrames(String text, boolean mask) {
 		FrameBuilder curframe = new FramedataImpl1();
 		try {
-			curframe.setPayload(ByteBuffer.wrap(Charsetfunctions
-					.utf8Bytes(text)));
+			curframe.setPayload(ByteBuffer.wrap(Charsetfunctions.utf8Bytes(text)));
 		} catch (InvalidDataException e) {
 			throw new NotSendableException(e);
 		}
@@ -183,8 +175,7 @@ public class Draft_10 extends Draft {
 			return 9;
 		else if (opcode == Opcode.PONG)
 			return 10;
-		throw new RuntimeException("Don't know how to handle "
-				+ opcode.toString());
+		throw new RuntimeException("Don't know how to handle " + opcode.toString());
 	}
 
 	private String generateFinalKey(String in) {
@@ -200,8 +191,7 @@ public class Draft_10 extends Draft {
 	}
 
 	@Override
-	public ClientHandshakeBuilder postProcessHandshakeRequestAsClient(
-			ClientHandshakeBuilder request) {
+	public ClientHandshakeBuilder postProcessHandshakeRequestAsClient(ClientHandshakeBuilder request) {
 		request.put("Upgrade", "websocket");
 		request.put("Connection", "Upgrade"); // to respond to a Connection keep
 												// alives
@@ -215,9 +205,8 @@ public class Draft_10 extends Draft {
 	}
 
 	@Override
-	public HandshakeBuilder postProcessHandshakeResponseAsServer(
-			ClientHandshake request, ServerHandshakeBuilder response)
-			throws InvalidHandshakeException {
+	public HandshakeBuilder postProcessHandshakeResponseAsServer(ClientHandshake request,
+			ServerHandshakeBuilder response) throws InvalidHandshakeException {
 		response.put("Upgrade", "websocket");
 		response.put("Connection", request.getFieldValue("Connection")); // to
 																			// respond
@@ -251,22 +240,21 @@ public class Draft_10 extends Draft {
 			return Opcode.TEXT;
 		case 2:
 			return Opcode.BINARY;
-			// 3-7 are not yet defined
+		// 3-7 are not yet defined
 		case 8:
 			return Opcode.CLOSING;
 		case 9:
 			return Opcode.PING;
 		case 10:
 			return Opcode.PONG;
-			// 11-15 are not yet defined
+		// 11-15 are not yet defined
 		default:
 			throw new InvalidFrameException("unknow optcode " + (short) opcode);
 		}
 	}
 
 	@Override
-	public List<Framedata> translateFrame(ByteBuffer buffer)
-			throws LimitExedeedException, InvalidDataException {
+	public List<Framedata> translateFrame(ByteBuffer buffer) throws LimitExedeedException, InvalidDataException {
 		List<Framedata> frames = new LinkedList<Framedata>();
 		Framedata cur;
 
@@ -292,28 +280,22 @@ public class Draft_10 extends Draft {
 
 					if (expected_next_byte_count > available_next_byte_count) {
 						// did not receive enough bytes to complete the frame
-						incompleteframe.put(buffer.array(), buffer.position(),
-								available_next_byte_count);
-						buffer.position(buffer.position()
-								+ available_next_byte_count);
+						incompleteframe.put(buffer.array(), buffer.position(), available_next_byte_count);
+						buffer.position(buffer.position() + available_next_byte_count);
 						return Collections.emptyList();
 					}
-					incompleteframe.put(buffer.array(), buffer.position(),
-							expected_next_byte_count);
-					buffer.position(buffer.position()
-							+ expected_next_byte_count);
+					incompleteframe.put(buffer.array(), buffer.position(), expected_next_byte_count);
+					buffer.position(buffer.position() + expected_next_byte_count);
 
-					cur = translateSingleFrame((ByteBuffer) incompleteframe
-							.duplicate().position(0));
+					cur = translateSingleFrame((ByteBuffer) incompleteframe.duplicate().position(0));
 					frames.add(cur);
 					incompleteframe = null;
 					break; // go on with the normal frame receival
 				} catch (IncompleteException e) {
 					// extending as much as suggested
 					int oldsize = incompleteframe.limit();
-					ByteBuffer extendedframe = ByteBuffer.allocate(checkAlloc(e
-							.getPreferedSize()));
-					assert (extendedframe.limit() > incompleteframe.limit());
+					ByteBuffer extendedframe = ByteBuffer.allocate(checkAlloc(e.getPreferedSize()));
+					assert(extendedframe.limit() > incompleteframe.limit());
 					incompleteframe.rewind();
 					extendedframe.put(incompleteframe);
 					incompleteframe = extendedframe;
@@ -340,8 +322,7 @@ public class Draft_10 extends Draft {
 		return frames;
 	}
 
-	public Framedata translateSingleFrame(ByteBuffer buffer)
-			throws IncompleteException, InvalidDataException {
+	public Framedata translateSingleFrame(ByteBuffer buffer) throws IncompleteException, InvalidDataException {
 		int maxpacketsize = buffer.remaining();
 		int realpacketsize = 2;
 		if (maxpacketsize < realpacketsize)
@@ -357,17 +338,14 @@ public class Draft_10 extends Draft {
 		Opcode optcode = toOpcode((byte) (b1 & 15));
 
 		if (!FIN) {
-			if (optcode == Opcode.PING || optcode == Opcode.PONG
-					|| optcode == Opcode.CLOSING) {
-				throw new InvalidFrameException(
-						"control frames may no be fragmented");
+			if (optcode == Opcode.PING || optcode == Opcode.PONG || optcode == Opcode.CLOSING) {
+				throw new InvalidFrameException("control frames may no be fragmented");
 			}
 		}
 
 		if (payloadlength >= 0 && payloadlength <= 125) {
 		} else {
-			if (optcode == Opcode.PING || optcode == Opcode.PONG
-					|| optcode == Opcode.CLOSING) {
+			if (optcode == Opcode.PING || optcode == Opcode.PONG || optcode == Opcode.CLOSING) {
 				throw new InvalidFrameException("more than 125 octets");
 			}
 			if (payloadlength == 126) {

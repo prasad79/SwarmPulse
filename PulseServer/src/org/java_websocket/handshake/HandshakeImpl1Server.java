@@ -1,7 +1,6 @@
 package org.java_websocket.handshake;
 
-public class HandshakeImpl1Server extends HandshakedataImpl1 implements
-		ServerHandshakeBuilder {
+public class HandshakeImpl1Server extends HandshakedataImpl1 implements ServerHandshakeBuilder {
 	private short httpstatus;
 	private String httpstatusmessage;
 

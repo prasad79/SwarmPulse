@@ -20,6 +20,5 @@ public interface Framedata {
 										// data and the extension data is yet to
 										// be done
 
-	public abstract void append(Framedata nextframe)
-			throws InvalidFrameException;
+	public abstract void append(Framedata nextframe) throws InvalidFrameException;
 }

@@ -34,8 +34,7 @@ public abstract class Draft {
 
 	public enum HandshakeState {
 		/** Handshake matched this Draft successfully */
-		MATCHED,
-		/** Handshake is does not match this Draft */
+		MATCHED, /** Handshake is does not match this Draft */
 		NOT_MATCHED
 	}
 
@@ -46,8 +45,7 @@ public abstract class Draft {
 	public static int MAX_FAME_SIZE = 1000 * 1;
 	public static int INITIAL_FAMESIZE = 64;
 
-	public static final byte[] FLASH_POLICY_REQUEST = Charsetfunctions
-			.utf8Bytes("<policy-file-request/>\0");
+	public static final byte[] FLASH_POLICY_REQUEST = Charsetfunctions.utf8Bytes("<policy-file-request/>\0");
 
 	/**
 	 * In some cases the handshake will be parsed different depending on whether
@@ -78,13 +76,11 @@ public abstract class Draft {
 
 	public static String readStringLine(ByteBuffer buf) {
 		ByteBuffer b = readLine(buf);
-		return b == null ? null : Charsetfunctions.stringAscii(b.array(), 0,
-				b.limit());
+		return b == null ? null : Charsetfunctions.stringAscii(b.array(), 0, b.limit());
 	}
 
-	public static HandshakeBuilder translateHandshakeHttp(ByteBuffer buf,
-			Role role) throws InvalidHandshakeException,
-			IncompleteHandshakeException {
+	public static HandshakeBuilder translateHandshakeHttp(ByteBuffer buf, Role role)
+			throws InvalidHandshakeException, IncompleteHandshakeException {
 		HandshakeBuilder handshake;
 
 		String line = readStringLine(buf);
@@ -124,18 +120,15 @@ public abstract class Draft {
 		return handshake;
 	}
 
-	public abstract HandshakeState acceptHandshakeAsClient(
-			ClientHandshake request, ServerHandshake response)
+	public abstract HandshakeState acceptHandshakeAsClient(ClientHandshake request, ServerHandshake response)
 			throws InvalidHandshakeException;
 
-	public abstract HandshakeState acceptHandshakeAsServer(
-			ClientHandshake handshakedata) throws InvalidHandshakeException;
+	public abstract HandshakeState acceptHandshakeAsServer(ClientHandshake handshakedata)
+			throws InvalidHandshakeException;
 
 	protected boolean basicAccept(Handshakedata handshakedata) {
-		return handshakedata.getFieldValue("Upgrade").equalsIgnoreCase(
-				"websocket")
-				&& handshakedata.getFieldValue("Connection")
-						.toLowerCase(Locale.ENGLISH).contains("upgrade");
+		return handshakedata.getFieldValue("Upgrade").equalsIgnoreCase("websocket")
+				&& handshakedata.getFieldValue("Connection").toLowerCase(Locale.ENGLISH).contains("upgrade");
 	}
 
 	public abstract ByteBuffer createBinaryFrame(Framedata framedata); // TODO
@@ -155,11 +148,9 @@ public abstract class Draft {
 
 	public abstract List<Framedata> createFrames(String text, boolean mask);
 
-	public List<Framedata> continuousFrame(Opcode op, ByteBuffer buffer,
-			boolean fin) {
+	public List<Framedata> continuousFrame(Opcode op, ByteBuffer buffer, boolean fin) {
 		if (op != Opcode.BINARY && op != Opcode.TEXT && op != Opcode.TEXT) {
-			throw new IllegalArgumentException(
-					"Only Opcode.BINARY or  Opcode.TEXT are allowed");
+			throw new IllegalArgumentException("Only Opcode.BINARY or  Opcode.TEXT are allowed");
 		}
 
 		if (continuousFrameType != null) {
@@ -186,22 +177,18 @@ public abstract class Draft {
 
 	public abstract void reset();
 
-	public List<ByteBuffer> createHandshake(Handshakedata handshakedata,
-			Role ownrole) {
+	public List<ByteBuffer> createHandshake(Handshakedata handshakedata, Role ownrole) {
 		return createHandshake(handshakedata, ownrole, true);
 	}
 
-	public List<ByteBuffer> createHandshake(Handshakedata handshakedata,
-			Role ownrole, boolean withcontent) {
+	public List<ByteBuffer> createHandshake(Handshakedata handshakedata, Role ownrole, boolean withcontent) {
 		StringBuilder bui = new StringBuilder(100);
 		if (handshakedata instanceof ClientHandshake) {
 			bui.append("GET ");
-			bui.append(((ClientHandshake) handshakedata)
-					.getResourceDescriptor());
+			bui.append(((ClientHandshake) handshakedata).getResourceDescriptor());
 			bui.append(" HTTP/1.1");
 		} else if (handshakedata instanceof ServerHandshake) {
-			bui.append("HTTP/1.1 101 "
-					+ ((ServerHandshake) handshakedata).getHttpStatusMessage());
+			bui.append("HTTP/1.1 101 " + ((ServerHandshake) handshakedata).getHttpStatusMessage());
 		} else {
 			throw new RuntimeException("unknow role");
 		}
@@ -219,8 +206,7 @@ public abstract class Draft {
 		byte[] httpheader = Charsetfunctions.asciiBytes(bui.toString());
 
 		byte[] content = withcontent ? handshakedata.getContent() : null;
-		ByteBuffer bytebuffer = ByteBuffer.allocate((content == null ? 0
-				: content.length) + httpheader.length);
+		ByteBuffer bytebuffer = ByteBuffer.allocate((content == null ? 0 : content.length) + httpheader.length);
 		bytebuffer.put(httpheader);
 		if (content != null)
 			bytebuffer.put(content);
@@ -228,15 +214,13 @@ public abstract class Draft {
 		return Collections.singletonList(bytebuffer);
 	}
 
-	public abstract ClientHandshakeBuilder postProcessHandshakeRequestAsClient(
-			ClientHandshakeBuilder request) throws InvalidHandshakeException;
-
-	public abstract HandshakeBuilder postProcessHandshakeResponseAsServer(
-			ClientHandshake request, ServerHandshakeBuilder response)
+	public abstract ClientHandshakeBuilder postProcessHandshakeRequestAsClient(ClientHandshakeBuilder request)
 			throws InvalidHandshakeException;
 
-	public abstract List<Framedata> translateFrame(ByteBuffer buffer)
-			throws InvalidDataException;
+	public abstract HandshakeBuilder postProcessHandshakeResponseAsServer(ClientHandshake request,
+			ServerHandshakeBuilder response) throws InvalidHandshakeException;
+
+	public abstract List<Framedata> translateFrame(ByteBuffer buffer) throws InvalidDataException;
 
 	public abstract CloseHandshakeType getCloseHandshakeType();
 
@@ -246,19 +230,16 @@ public abstract class Draft {
 	 * order to create a new usable version of a given draft instance.<br>
 	 * The copy can be safely used in conjunction with a new websocket
 	 * connection.
-	 * */
+	 */
 	public abstract Draft copyInstance();
 
-	public Handshakedata translateHandshake(ByteBuffer buf)
-			throws InvalidHandshakeException {
+	public Handshakedata translateHandshake(ByteBuffer buf) throws InvalidHandshakeException {
 		return translateHandshakeHttp(buf, role);
 	}
 
-	public int checkAlloc(int bytecount) throws LimitExedeedException,
-			InvalidDataException {
+	public int checkAlloc(int bytecount) throws LimitExedeedException, InvalidDataException {
 		if (bytecount < 0)
-			throw new InvalidDataException(CloseFrame.PROTOCOL_ERROR,
-					"Negative count");
+			throw new InvalidDataException(CloseFrame.PROTOCOL_ERROR, "Negative count");
 		return bytecount;
 	}
 

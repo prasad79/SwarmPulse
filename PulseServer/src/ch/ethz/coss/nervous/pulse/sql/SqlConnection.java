@@ -1,3 +1,32 @@
+/*******************************************************************************
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 ETH Zurich.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ *
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ *
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.sql;
 
 import java.sql.Connection;
@@ -31,15 +60,14 @@ public final class SqlConnection {
 			return source.getConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			Log.getInstance().append(Log.FLAG_ERROR,
-					"Can't get a connection from the data source");
+			Log.getInstance().append(Log.FLAG_ERROR, "Can't get a connection from the data source");
 			return null;
 		}
 	}
 
 	/**
-	 * Connection will be set up this way:
-	 * [jdbc:mysql://" + hostname + ":" + port + "/" + database]
+	 * Connection will be set up this way: [jdbc:mysql://" + hostname + ":
+	 * " + port + "/" + database]
 	 * 
 	 * @param hostname
 	 * @param username
@@ -47,8 +75,7 @@ public final class SqlConnection {
 	 * @param port
 	 * @param database
 	 */
-	public SqlConnection(String hostname, String username, String password,
-			int port, String database) {
+	public SqlConnection(String hostname, String username, String password, int port, String database) {
 		this.username = username;
 		this.password = password;
 		this.hostname = hostname;
@@ -65,29 +92,26 @@ public final class SqlConnection {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.getInstance().append(Log.FLAG_ERROR,
-					"Error loading the SQL driver");
+			Log.getInstance().append(Log.FLAG_ERROR, "Error loading the SQL driver");
 			return null;
 		}
 
 		ConnectionFactory cf = null;
 		try {
-			cf = new DriverManagerConnectionFactory("jdbc:mysql://" + hostname
-					+ ":" + port + "/" + database, username, password);
-			//System.out.println("CF - " + cf.toString());
+			cf = new DriverManagerConnectionFactory("jdbc:mysql://" + hostname + ":" + port + "/" + database, username,
+					password);
+			// System.out.println("CF - " + cf.toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		PoolableConnectionFactory pcf = new PoolableConnectionFactory(cf, null);
 
-		ObjectPool<PoolableConnection> connPool = new GenericObjectPool<PoolableConnection>(
-				pcf);
+		ObjectPool<PoolableConnection> connPool = new GenericObjectPool<PoolableConnection>(pcf);
 
 		pcf.setPool(connPool);
-		PoolingDataSource<PoolableConnection> dataSource = new PoolingDataSource<PoolableConnection>(
-				connPool);
-		//System.out.println("DataSource -- " + dataSource);
+		PoolingDataSource<PoolableConnection> dataSource = new PoolingDataSource<PoolableConnection>(connPool);
+		// System.out.println("DataSource -- " + dataSource);
 		return dataSource;
 	}
 

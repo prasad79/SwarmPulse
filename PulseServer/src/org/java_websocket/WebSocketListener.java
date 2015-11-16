@@ -36,9 +36,8 @@ public interface WebSocketListener {
 	 *             Throwing this exception will cause this handshake to be
 	 *             rejected
 	 */
-	public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(
-			WebSocket conn, Draft draft, ClientHandshake request)
-			throws InvalidDataException;
+	public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(WebSocket conn, Draft draft,
+			ClientHandshake request) throws InvalidDataException;
 
 	/**
 	 * Called on the client side when the socket connection is first
@@ -55,8 +54,7 @@ public interface WebSocketListener {
 	 *             Allows the client to reject the connection with the server in
 	 *             respect of its handshake response.
 	 */
-	public void onWebsocketHandshakeReceivedAsClient(WebSocket conn,
-			ClientHandshake request, ServerHandshake response)
+	public void onWebsocketHandshakeReceivedAsClient(WebSocket conn, ClientHandshake request, ServerHandshake response)
 			throws InvalidDataException;
 
 	/**
@@ -70,8 +68,7 @@ public interface WebSocketListener {
 	 * @throws InvalidDataException
 	 *             Allows the client to stop the connection from progressing
 	 */
-	public void onWebsocketHandshakeSentAsClient(WebSocket conn,
-			ClientHandshake request) throws InvalidDataException;
+	public void onWebsocketHandshakeSentAsClient(WebSocket conn, ClientHandshake request) throws InvalidDataException;
 
 	/**
 	 * Called when an entire text frame has been received. Do whatever you want
@@ -114,12 +111,10 @@ public interface WebSocketListener {
 	 * @param ws
 	 *            The <tt>WebSocket</tt> instance this event is occuring on.
 	 */
-	public void onWebsocketClose(WebSocket ws, int code, String reason,
-			boolean remote);
+	public void onWebsocketClose(WebSocket ws, int code, String reason, boolean remote);
 
 	/** called as soon as no further frames are accepted */
-	public void onWebsocketClosing(WebSocket ws, int code, String reason,
-			boolean remote);
+	public void onWebsocketClosing(WebSocket ws, int code, String reason, boolean remote);
 
 	/** send when this peer sends a close handshake */
 	public void onWebsocketCloseInitiated(WebSocket ws, int code, String reason);

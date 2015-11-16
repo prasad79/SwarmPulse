@@ -51,20 +51,16 @@ public class Draft_75 extends Draft {
 	private final Random reuseableRandom = new Random();
 
 	@Override
-	public HandshakeState acceptHandshakeAsClient(ClientHandshake request,
-			ServerHandshake response) {
-		return request.getFieldValue("WebSocket-Origin").equals(
-				response.getFieldValue("Origin"))
-				&& basicAccept(response) ? HandshakeState.MATCHED
-				: HandshakeState.NOT_MATCHED;
+	public HandshakeState acceptHandshakeAsClient(ClientHandshake request, ServerHandshake response) {
+		return request.getFieldValue("WebSocket-Origin").equals(response.getFieldValue("Origin"))
+				&& basicAccept(response) ? HandshakeState.MATCHED : HandshakeState.NOT_MATCHED;
 	}
 
 	int i = 0;
 
 	@Override
 	public HandshakeState acceptHandshakeAsServer(ClientHandshake handshakedata) {
-		System.out.println("acceptHandshakeAsServer  75 "
-				+ handshakedata.getResourceDescriptor());
+		System.out.println("acceptHandshakeAsServer  75 " + handshakedata.getResourceDescriptor());
 		if (handshakedata.hasFieldValue("Origin") && basicAccept(handshakedata)) {
 			if (i == 0) {
 				i++;
@@ -113,8 +109,8 @@ public class Draft_75 extends Draft {
 	}
 
 	@Override
-	public ClientHandshakeBuilder postProcessHandshakeRequestAsClient(
-			ClientHandshakeBuilder request) throws InvalidHandshakeException {
+	public ClientHandshakeBuilder postProcessHandshakeRequestAsClient(ClientHandshakeBuilder request)
+			throws InvalidHandshakeException {
 		request.put("Upgrade", "WebSocket");
 		request.put("Connection", "Upgrade");
 		if (!request.hasFieldValue("Origin")) {
@@ -125,9 +121,8 @@ public class Draft_75 extends Draft {
 	}
 
 	@Override
-	public HandshakeBuilder postProcessHandshakeResponseAsServer(
-			ClientHandshake request, ServerHandshakeBuilder response)
-			throws InvalidHandshakeException {
+	public HandshakeBuilder postProcessHandshakeResponseAsServer(ClientHandshake request,
+			ServerHandshakeBuilder response) throws InvalidHandshakeException {
 		response.setHttpStatusMessage("Web Socket Protocol Handshake");
 		response.put("Upgrade", "WebSocket");
 		response.put("Connection", request.getFieldValue("Connection")); // to
@@ -138,15 +133,13 @@ public class Draft_75 extends Draft {
 																			// keep
 																			// alive
 		response.put("WebSocket-Origin", request.getFieldValue("Origin"));
-		String location = "ws://" + request.getFieldValue("Host")
-				+ request.getResourceDescriptor();
+		String location = "ws://" + request.getFieldValue("Host") + request.getResourceDescriptor();
 		response.put("WebSocket-Location", location);
 		// TODO handle Sec-WebSocket-Protocol and Set-Cookie
 		return response;
 	}
 
-	protected List<Framedata> translateRegularFrame(ByteBuffer buffer)
-			throws InvalidDataException {
+	protected List<Framedata> translateRegularFrame(ByteBuffer buffer) throws InvalidDataException {
 
 		while (buffer.hasRemaining()) {
 			byte newestByte = buffer.get();
@@ -196,8 +189,7 @@ public class Draft_75 extends Draft {
 	}
 
 	@Override
-	public List<Framedata> translateFrame(ByteBuffer buffer)
-			throws InvalidDataException {
+	public List<Framedata> translateFrame(ByteBuffer buffer) throws InvalidDataException {
 		List<Framedata> frames = translateRegularFrame(buffer);
 		if (frames == null) {
 			throw new InvalidDataException(CloseFrame.PROTOCOL_ERROR);
@@ -220,11 +212,9 @@ public class Draft_75 extends Draft {
 		return ByteBuffer.allocate(INITIAL_FAMESIZE);
 	}
 
-	public ByteBuffer increaseBuffer(ByteBuffer full)
-			throws LimitExedeedException, InvalidDataException {
+	public ByteBuffer increaseBuffer(ByteBuffer full) throws LimitExedeedException, InvalidDataException {
 		full.flip();
-		ByteBuffer newbuffer = ByteBuffer
-				.allocate(checkAlloc(full.capacity() * 2));
+		ByteBuffer newbuffer = ByteBuffer.allocate(checkAlloc(full.capacity() * 2));
 		newbuffer.put(full);
 		return newbuffer;
 	}

@@ -1,3 +1,32 @@
+/*******************************************************************************
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 ETH Zurich.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ *
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ *
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.sql;
 
 import java.sql.Connection;
@@ -38,27 +67,22 @@ public class SqlSetup {
 		setupPulseTables();
 	}
 
-	public PreparedStatement getTransactionInsertStatement(Connection con)
-			throws SQLException {
-		return con
-				.prepareStatement("INSERT INTO `Transact` (`UUID`, `UploadTime`) VALUES (?,?);");
+	public PreparedStatement getTransactionInsertStatement(Connection con) throws SQLException {
+		return con.prepareStatement("INSERT INTO `Transact` (`UUID`, `UploadTime`) VALUES (?,?);");
 	}
 
 	public List<Integer> getArgumentExpectation(long sensorId) {
 		return elementsHash.get(sensorId);
 	}
 
-	public PreparedStatement getSensorInsertStatement(Connection con,
-			int readingType) throws SQLException {
-		//System.out.println("inside getSensorInsertStatement -  "+readingType);
-		//System.out.println("elementsHash -  "+elementsHash.size());
-		
-		
-		List<Integer> types = elementsHash.get((long)readingType);
+	public PreparedStatement getSensorInsertStatement(Connection con, int readingType) throws SQLException {
+		// System.out.println("inside getSensorInsertStatement - "+readingType);
+		// System.out.println("elementsHash - "+elementsHash.size());
+
+		List<Integer> types = elementsHash.get((long) readingType);
 		if (types != null) {
 			StringBuilder sb = new StringBuilder();
-			sb.append("INSERT INTO `ELEMENT_" + PulseConstants.getLabel(readingType)
-					+ "` VALUES (DEFAULT,?,?,?,");
+			sb.append("INSERT INTO `ELEMENT_" + PulseConstants.getLabel(readingType) + "` VALUES (DEFAULT,?,?,?,");
 			for (int i = 0; i < types.size() - 1; i++) {
 				sb.append("?,");
 			}
@@ -66,46 +90,42 @@ public class SqlSetup {
 				sb.append("?");
 			}
 			sb.append(");");
-			//System.out.println("inside after getSensorInsertStatement");
+			// System.out.println("inside after getSensorInsertStatement");
 			return con.prepareStatement(sb.toString());
 		} else {
-			//System.out.println("inside getSensorInsertStatement returning null");
+			// System.out.println("inside getSensorInsertStatement returning
+			// null");
 			return null;
 		}
-		
-		
+
 	}
-	
-	
-	
+
 	/**
 	 * 
-	 * SELECT * FROM `Element_` WHERE RecordTime  BETWEEN x and y
+	 * SELECT * FROM `Element_` WHERE RecordTime BETWEEN x and y
 	 */
-	
-	public PreparedStatement getSensorValuesFetchStatement(Connection con, int readingType, long startTime, long endTime) throws SQLException {
-			StringBuilder sb = new StringBuilder();
-			sb.append("SELECT * FROM `ELEMENT_" + PulseConstants.getLabel(readingType) 
-					+ "` WHERE RecordTime BETWEEN "+startTime+" AND "+endTime+";");
-			
-			//System.out.println(" ---- ---- "+sb.toString());
-			return con.prepareStatement(sb.toString());
-		
+
+	public PreparedStatement getSensorValuesFetchStatement(Connection con, int readingType, long startTime,
+			long endTime) throws SQLException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT * FROM `ELEMENT_" + PulseConstants.getLabel(readingType) + "` WHERE RecordTime BETWEEN "
+				+ startTime + " AND " + endTime + ";");
+
+		// System.out.println(" ---- ---- "+sb.toString());
+		return con.prepareStatement(sb.toString());
+
 	}
 
 	private void setupPulseTables() {
 		for (PulseElementConfiguration element : config.getSensors()) {
 
-			//System.out.println("SetUpPulseTables config.getSensor() size = "
-//					+ config.getSensors().size());
-			List<Integer> types = new ArrayList<Integer>(element
-					.getAttributes().size());
+			// System.out.println("SetUpPulseTables config.getSensor() size = "
+			// + config.getSensors().size());
+			List<Integer> types = new ArrayList<Integer>(element.getAttributes().size());
 			StringBuilder sb = new StringBuilder();
 
-
-			sb.append("CREATE TABLE IF NOT EXISTS `" + config.getSqlDatabase()
-					+ "`.`ELEMENT_" + PulseConstants.getLabel(element.getElementID().intValue())
-					+ "` (\n");
+			sb.append("CREATE TABLE IF NOT EXISTS `" + config.getSqlDatabase() + "`.`ELEMENT_"
+					+ PulseConstants.getLabel(element.getElementID().intValue()) + "` (\n");
 			sb.append("`RecordID` INT NOT NULL UNIQUE AUTO_INCREMENT,\n");
 			sb.append("`UUID` VARCHAR(38) NOT NULL,\n");
 			sb.append("`RecordTime` BIGINT UNSIGNED NOT NULL,\n");
@@ -141,24 +161,19 @@ public class SqlSetup {
 					sqlType = "VARCHAR(255)";
 					break;
 				}
-				sb.append("`" + attribute.getName() + "` " + sqlType
-						+ " NOT NULL,\n");
+				sb.append("`" + attribute.getName() + "` " + sqlType + " NOT NULL,\n");
 			}
 			sb.append("PRIMARY KEY (`RecordID`));");
 			try {
 				String command = sb.toString();
-				//System.out.println("SQL STATEMENT : " + command);
+				// System.out.println("SQL STATEMENT : " + command);
 				Statement stmt = con.createStatement();
 				stmt.execute(command);
 				stmt.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
-				Log.getInstance().append(
-						Log.FLAG_ERROR,
-						"Error setting up a sensor table ("
-								+ element.getElementName()
-								+ ") with SQL statement : (" + sb.toString()
-								+ ")");
+				Log.getInstance().append(Log.FLAG_ERROR, "Error setting up a sensor table (" + element.getElementName()
+						+ ") with SQL statement : (" + sb.toString() + ")");
 			}
 			// sb = new StringBuilder();
 			// sb.append("CREATE INDEX `idx_ELEMENT_"
@@ -176,7 +191,7 @@ public class SqlSetup {
 			// Log.FLAG_WARNING,
 			// "SQL Error setting up a sensor table ("
 			// + element.getElementName()
-			// + ") index. Index might already exist.  SQL statement : ("+
+			// + ") index. Index might already exist. SQL statement : ("+
 			// sb.toString()+")");
 			// } catch (Exception e) {
 			// e.printStackTrace();
@@ -210,8 +225,7 @@ public class SqlSetup {
 
 	private void setupTransactionTable() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("CREATE TABLE IF NOT EXISTS `" + config.getSqlDatabase()
-				+ "`.`Transact` (\n");
+		sb.append("CREATE TABLE IF NOT EXISTS `" + config.getSqlDatabase() + "`.`Transact` (\n");
 		sb.append("`RecordID` INT NOT NULL UNIQUE AUTO_INCREMENT,\n");
 		sb.append("`UUID` BINARY(16) NOT NULL,\n");
 		sb.append("`UploadTime` BIGINT UNSIGNED NOT NULL,\n");
@@ -222,34 +236,30 @@ public class SqlSetup {
 			stmt.execute(command);
 			stmt.close();
 		} catch (SQLException e) {
-			Log.getInstance().append(Log.FLAG_ERROR,
-					"Error setting up the transaction table");
+			Log.getInstance().append(Log.FLAG_ERROR, "Error setting up the transaction table");
 		}
 		sb = new StringBuilder();
-		sb.append("CREATE INDEX `idx_Transact_UUID` ON `"
-				+ config.getSqlDatabase() + "`.`Transact` (`UUID`);\n");
+		sb.append("CREATE INDEX `idx_Transact_UUID` ON `" + config.getSqlDatabase() + "`.`Transact` (`UUID`);\n");
 		try {
 			String command = sb.toString();
 			Statement stmt = con.createStatement();
 			stmt.execute(command);
 			stmt.close();
 		} catch (SQLException e) {
-			Log.getInstance()
-					.append(Log.FLAG_WARNING,
-							"Error setting up the transaction table index. Index might already exist.");
+			Log.getInstance().append(Log.FLAG_WARNING,
+					"Error setting up the transaction table index. Index might already exist.");
 		}
 		sb = new StringBuilder();
-		sb.append("CREATE INDEX `idx_Transact_UploadTime` ON `"
-				+ config.getSqlDatabase() + "`.`Transact` (`UploadTime`);");
+		sb.append("CREATE INDEX `idx_Transact_UploadTime` ON `" + config.getSqlDatabase()
+				+ "`.`Transact` (`UploadTime`);");
 		try {
 			String command = sb.toString();
 			Statement stmt = con.createStatement();
 			stmt.execute(command);
 			stmt.close();
 		} catch (SQLException e) {
-			Log.getInstance()
-					.append(Log.FLAG_WARNING,
-							"Error setting up the transaction table index. Index might already exist.");
+			Log.getInstance().append(Log.FLAG_WARNING,
+					"Error setting up the transaction table index. Index might already exist.");
 		}
 	}
 

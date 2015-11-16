@@ -8,8 +8,7 @@ import org.java_websocket.WebSocket.Role;
 
 public class SocketChannelIOHelper {
 
-	public static boolean read(final ByteBuffer buf, WebSocketImpl ws,
-			ByteChannel channel) throws IOException {
+	public static boolean read(final ByteBuffer buf, WebSocketImpl ws, ByteChannel channel) throws IOException {
 		buf.clear();
 		int read = channel.read(buf);
 		buf.flip();
@@ -26,8 +25,8 @@ public class SocketChannelIOHelper {
 	 * @return returns whether there is more data left which can be obtained via
 	 *         {@link #readMore(ByteBuffer, WebSocketImpl, WrappedByteChannel)}
 	 **/
-	public static boolean readMore(final ByteBuffer buf, WebSocketImpl ws,
-			WrappedByteChannel channel) throws IOException {
+	public static boolean readMore(final ByteBuffer buf, WebSocketImpl ws, WrappedByteChannel channel)
+			throws IOException {
 		buf.clear();
 		int read = channel.readMore(buf);
 		buf.flip();
@@ -40,8 +39,7 @@ public class SocketChannelIOHelper {
 	}
 
 	/** Returns whether the whole outQueue has been flushed */
-	public static boolean batch(WebSocketImpl ws, ByteChannel sockchannel)
-			throws IOException {
+	public static boolean batch(WebSocketImpl ws, ByteChannel sockchannel) throws IOException {
 		ByteBuffer buffer = ws.outQueue.peek();
 		WrappedByteChannel c = null;
 
@@ -53,7 +51,8 @@ public class SocketChannelIOHelper {
 				}
 			}
 		} else {
-			do {// FIXME writing as much as possible is unfair!!
+			do {
+				// FIXME writing as much as possible is unfair!!
 				/* int written = */sockchannel.write(buffer);
 				if (buffer.remaining() > 0) {
 					return false;
@@ -64,14 +63,12 @@ public class SocketChannelIOHelper {
 			} while (buffer != null);
 		}
 
-		if (ws != null && ws.outQueue.isEmpty() && ws.isFlushAndClose()
-				&& ws.getDraft() != null && ws.getDraft().getRole() != null
-				&& ws.getDraft().getRole() == Role.SERVER) {//
+		if (ws != null && ws.outQueue.isEmpty() && ws.isFlushAndClose() && ws.getDraft() != null
+				&& ws.getDraft().getRole() != null && ws.getDraft().getRole() == Role.SERVER) {//
 			synchronized (ws) {
 				ws.closeConnection();
 			}
 		}
-		return c != null ? !((WrappedByteChannel) sockchannel).isNeedWrite()
-				: true;
+		return c != null ? !((WrappedByteChannel) sockchannel).isNeedWrite() : true;
 	}
 }

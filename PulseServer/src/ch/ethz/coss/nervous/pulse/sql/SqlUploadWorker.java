@@ -1,3 +1,32 @@
+/*******************************************************************************
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 ETH Zurich.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ *
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ *
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ *  *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.sql;
 
 import java.io.BufferedInputStream;
@@ -34,8 +63,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 	Connection connection;
 	SqlSetup sqlse;
 
-	public SqlUploadWorker(Socket socket, PulseWebSocketServer ps,
-			Connection connection, SqlSetup sqlse) {
+	public SqlUploadWorker(Socket socket, PulseWebSocketServer ps, Connection connection, SqlSetup sqlse) {
 		super(socket, ps);
 		this.connection = connection;
 		this.sqlse = sqlse;
@@ -46,10 +74,9 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 	public void run() {
 		// InputStream is;
 		DataInputStream in = null;
-		 
+
 		try {
-			in = new DataInputStream(
-					socket.getInputStream());
+			in = new DataInputStream(socket.getInputStream());
 			boolean connected = true;
 			while (connected) {
 				connected &= !socket.isClosed();
@@ -58,38 +85,38 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 				JsonArray features = new JsonArray();
 				JsonObject feature = null;
 				try {
-//					String json =  in.readUTF();
-					
-//					StringBuffer json = new StringBuffer();
-//		            String tmp; 
+					// String json = in.readUTF();
+
+					// StringBuffer json = new StringBuffer();
+					// String tmp;
 					String json = null;
-		        	try {
-//		            while ((tmp = in.read()) != null) {
-//		            	json.append(tmp);
-//		            }
-		            
-		            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		            byte buffer[] = new byte[1024];
-		            for(int s; (s=in.read(buffer)) != -1; )
-		            {
-		              baos.write(buffer, 0, s);
-		            }
-		            byte result[] = baos.toByteArray();
-		           json = new String(result);
-		            
-		            //use inputLine.toString(); here it would have whole source
-		            in.close();
-		        	   } catch (MalformedURLException me) {
-		                   System.out.println("MalformedURLException: " + me);
-		               } catch (IOException ioe) {
-		                   System.out.println("IOException: " + ioe);
-		               }
-					System.out.println("JSON STRING = "+json);
-					System.out.println("JSON Length = "+json.length());
-					
-					if(json.length() <= 0)
+					try {
+						// while ((tmp = in.read()) != null) {
+						// json.append(tmp);
+						// }
+
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						byte buffer[] = new byte[1024];
+						for (int s; (s = in.read(buffer)) != -1;) {
+							baos.write(buffer, 0, s);
+						}
+						byte result[] = baos.toByteArray();
+						json = new String(result);
+
+						// use inputLine.toString(); here it would have whole
+						// source
+						in.close();
+					} catch (MalformedURLException me) {
+						System.out.println("MalformedURLException: " + me);
+					} catch (IOException ioe) {
+						System.out.println("IOException: " + ioe);
+					}
+					System.out.println("JSON STRING = " + json);
+					System.out.println("JSON Length = " + json.length());
+
+					if (json.length() <= 0)
 						continue;
-					reading = new JSONDeserializer<Visual>().deserialize(json, Visual.class);       
+					reading = new JSONDeserializer<Visual>().deserialize(json, Visual.class);
 					feature = new JsonObject();
 
 					feature.addProperty("type", "Feature");
@@ -103,78 +130,69 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					// construct a JSONArray from a string; can also use an
 					// array or list
 					JsonArray coord = new JsonArray();
-					if(reading == null || reading.location == null)
+					if (reading == null || reading.location == null)
 						continue;
-					else if(reading.location.latnLong[0] == 0 && reading.location.latnLong[1] == 0 )
+					else if (reading.location.latnLong[0] == 0 && reading.location.latnLong[1] == 0)
 						continue;
-								
-						
-					
-					
-					coord.add(new JsonPrimitive(new String(""+reading.location.latnLong[0])));
-					coord.add(new JsonPrimitive(new String(""+reading.location.latnLong[1])));
-					
+
+					coord.add(new JsonPrimitive(new String("" + reading.location.latnLong[0])));
+					coord.add(new JsonPrimitive(new String("" + reading.location.latnLong[1])));
+
 					point.add("coordinates", coord);
 					feature.add("geometry", point);
-					
+
 					JsonObject properties = new JsonObject();
 					if (reading.type == 0) {
-						//System.out.println("Reading instance of light");
+						// System.out.println("Reading instance of light");
 						properties.addProperty("readingType", "" + 0);
-						properties.addProperty("level", ""
-								+ ((LightReading) reading).lightVal);
+						properties.addProperty("level", "" + ((LightReading) reading).lightVal);
 					} else if (reading.type == 1) {
 						properties.addProperty("readingType", "" + 1);
-						properties.addProperty("level", ""
-								+ ((NoiseReading) reading).soundVal);
+						properties.addProperty("level", "" + ((NoiseReading) reading).soundVal);
 					} else if (reading.type == 2) {
 						properties.addProperty("readingType", "" + 2);
-						properties.addProperty("message", ""
-								+ ((TextVisual) reading).textMsg);
+						properties.addProperty("message", "" + ((TextVisual) reading).textMsg);
 					} else {
-						//System.out.println("Reading instance not known");
+						// System.out.println("Reading instance not known");
 					}
 					properties.addProperty("recordTime", reading.timestamp);
 					properties.addProperty("volatility", reading.volatility);
 					feature.add("properties", properties);
 					features.add(feature);
 					featureCollection.add("features", features);
-					
-					if(reading.volatility != 0){
+
+					if (reading.volatility != 0) {
 						/***** SQL insert ********/
 						// Insert data
-						//System.out.println("before uploading SQL - reading uuid = "+reading.uuid);
-						PreparedStatement datastmt = sqlse
-								.getSensorInsertStatement(connection,reading.type);
+						// System.out.println("before uploading SQL - reading
+						// uuid = "+reading.uuid);
+						PreparedStatement datastmt = sqlse.getSensorInsertStatement(connection, reading.type);
 						if (datastmt != null) {
-							//System.out.println("datastmt - " + datastmt.toString());
-							List<Integer> types = sqlse
-									.getArgumentExpectation((long)reading.type);
+							// System.out.println("datastmt - " +
+							// datastmt.toString());
+							List<Integer> types = sqlse.getArgumentExpectation((long) reading.type);
 							datastmt.setString(1, reading.uuid);
 							if (reading.type == 0) {
 								datastmt.setLong(2, reading.timestamp);
 								datastmt.setLong(3, reading.volatility);
-								datastmt.setDouble(4,
-										((LightReading) reading).lightVal);
+								datastmt.setDouble(4, ((LightReading) reading).lightVal);
 								datastmt.setDouble(5, reading.location.latnLong[0]);
 								datastmt.setDouble(6, reading.location.latnLong[1]);
 							} else if (reading.type == 1) {
 								datastmt.setLong(2, reading.timestamp);
 								datastmt.setLong(3, reading.volatility);
-								datastmt.setDouble(4,
-										((NoiseReading) reading).soundVal);
+								datastmt.setDouble(4, ((NoiseReading) reading).soundVal);
 								datastmt.setDouble(5, reading.location.latnLong[0]);
 								datastmt.setDouble(6, reading.location.latnLong[1]);
 							} else if (reading.type == 2) {
 								datastmt.setLong(2, reading.timestamp);
 								datastmt.setLong(3, reading.volatility);
-								datastmt.setString(4,
-										((TextVisual) reading).textMsg);
+								datastmt.setString(4, ((TextVisual) reading).textMsg);
 								datastmt.setDouble(5, reading.location.latnLong[0]);
 								datastmt.setDouble(6, reading.location.latnLong[1]);
 							}
-							//System.out.println("datastmt after populating - "
-//									+ datastmt.toString());
+							// System.out.println("datastmt after populating - "
+							// + datastmt.toString());
 
 							datastmt.addBatch();
 							datastmt.executeBatch();
@@ -183,13 +201,13 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 						/*************/
 
 					}
-					
+
 				} catch (JsonParseException e) {
-					System.out.println("can't save json object: "
-							+ e.toString());
+					System.out.println("can't save json object: " + e.toString());
 				}
 				// output the result
-				//System.out.println("featureCollection=" + featureCollection.toString());
+				// System.out.println("featureCollection=" +
+				// featureCollection.toString());
 
 				String message = featureCollection.toString();
 				pSocketServer.sendToAll(message);
@@ -197,13 +215,11 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 			}
 
 		} catch (EOFException e) {
-			 e.printStackTrace();
-			Log.getInstance().append(Log.FLAG_WARNING,
-					"EOFException occurred, but ignored it for now.");
+			e.printStackTrace();
+			Log.getInstance().append(Log.FLAG_WARNING, "EOFException occurred, but ignored it for now.");
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.getInstance().append(Log.FLAG_WARNING,
-					"Opening data stream from socket failed");
+			Log.getInstance().append(Log.FLAG_WARNING, "Opening data stream from socket failed");
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.getInstance().append(Log.FLAG_WARNING, "Generic error");
@@ -226,8 +242,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			Log.getInstance().append(Log.FLAG_ERROR,
-					" Error in closing connection.");
+			Log.getInstance().append(Log.FLAG_ERROR, " Error in closing connection.");
 		}
 	}
 }

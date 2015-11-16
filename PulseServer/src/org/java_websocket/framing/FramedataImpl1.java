@@ -87,8 +87,7 @@ public class FramedataImpl1 implements FrameBuilder {
 			unmaskedpayload.limit(unmaskedpayload.capacity());
 
 			if (b.remaining() > unmaskedpayload.remaining()) {
-				ByteBuffer tmp = ByteBuffer.allocate(b.remaining()
-						+ unmaskedpayload.capacity());
+				ByteBuffer tmp = ByteBuffer.allocate(b.remaining() + unmaskedpayload.capacity());
 				unmaskedpayload.flip();
 				tmp.put(unmaskedpayload);
 				tmp.put(b);
@@ -105,17 +104,9 @@ public class FramedataImpl1 implements FrameBuilder {
 
 	@Override
 	public String toString() {
-		return "Framedata{ optcode:"
-				+ getOpcode()
-				+ ", fin:"
-				+ isFin()
-				+ ", payloadlength:[pos:"
-				+ unmaskedpayload.position()
-				+ ", len:"
-				+ unmaskedpayload.remaining()
-				+ "], payload:"
-				+ Arrays.toString(Charsetfunctions.utf8Bytes(new String(
-						unmaskedpayload.array()))) + "}";
+		return "Framedata{ optcode:" + getOpcode() + ", fin:" + isFin() + ", payloadlength:[pos:"
+				+ unmaskedpayload.position() + ", len:" + unmaskedpayload.remaining() + "], payload:"
+				+ Arrays.toString(Charsetfunctions.utf8Bytes(new String(unmaskedpayload.array()))) + "}";
 	}
 
 }

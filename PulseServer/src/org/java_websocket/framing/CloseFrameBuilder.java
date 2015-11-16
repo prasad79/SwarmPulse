@@ -30,8 +30,7 @@ public class CloseFrameBuilder extends FramedataImpl1 implements CloseFrame {
 		setCodeAndMessage(code, m);
 	}
 
-	private void setCodeAndMessage(int code, String m)
-			throws InvalidDataException {
+	private void setCodeAndMessage(int code, String m) throws InvalidDataException {
 		if (m == null) {
 			m = "";
 		}
@@ -70,12 +69,9 @@ public class CloseFrameBuilder extends FramedataImpl1 implements CloseFrame {
 			bb.position(0);
 			code = bb.getInt();
 
-			if (code == CloseFrame.ABNORMAL_CLOSE
-					|| code == CloseFrame.TLS_ERROR
-					|| code == CloseFrame.NOCODE || code > 4999 || code < 1000
-					|| code == 1004) {
-				throw new InvalidFrameException(
-						"closecode must not be sent over the wire: " + code);
+			if (code == CloseFrame.ABNORMAL_CLOSE || code == CloseFrame.TLS_ERROR || code == CloseFrame.NOCODE
+					|| code > 4999 || code < 1000 || code == 1004) {
+				throw new InvalidFrameException("closecode must not be sent over the wire: " + code);
 			}
 		}
 		payload.reset();

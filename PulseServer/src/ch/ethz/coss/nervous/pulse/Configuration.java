@@ -1,3 +1,32 @@
+/*******************************************************************************
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 ETH Zurich.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ *
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ *
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * *******************************************************************************/
 package ch.ethz.coss.nervous.pulse;
 
 import java.io.File;
@@ -52,13 +81,13 @@ public class Configuration {
 	@XmlElementWrapper(name = "sqlsensors")
 	@XmlElement(name = "sensor")
 	public List<PulseElementConfiguration> getSensors() {
-		//System.out.println("Sensors size - " + sensors.size());
+		// System.out.println("Sensors size - " + sensors.size());
 		return sensors;
 	}
 
 	public void setSensors(List<PulseElementConfiguration> sensors) {
 
-		//System.out.println("Set Sensors called - " + sensors.size());
+		// System.out.println("Set Sensors called - " + sensors.size());
 		this.sensors = sensors;
 	}
 
@@ -215,8 +244,7 @@ public class Configuration {
 
 			m.marshal(config, new File(config.getConfigPath()));
 		} catch (JAXBException jbe) {
-			Log.getInstance().append(Log.FLAG_WARNING,
-					"Couldn't write the configuration file");
+			Log.getInstance().append(Log.FLAG_WARNING, "Couldn't write the configuration file");
 		}
 	}
 
@@ -224,8 +252,8 @@ public class Configuration {
 		try {
 			JAXBContext context = JAXBContext.newInstance(Configuration.class);
 			Unmarshaller um = context.createUnmarshaller();
-			//System.out.println("Config path --"
-//					+ Configuration.config.getConfigPath());
+			// System.out.println("Config path --"
+			// + Configuration.config.getConfigPath());
 
 			InputStream in = Configuration.class.getClassLoader()
 					.getResourceAsStream(Configuration.config.getConfigPath());
@@ -240,19 +268,16 @@ public class Configuration {
 			return;
 		} catch (JAXBException jbe) {
 			jbe.printStackTrace();
-			Log.getInstance().append(Log.FLAG_ERROR,
-					"Error parsing the configuration file");
+			Log.getInstance().append(Log.FLAG_ERROR, "Error parsing the configuration file");
 		} catch (Exception ioe) {
 			ioe.printStackTrace();
-			Log.getInstance().append(Log.FLAG_WARNING,
-					"Couldn't read the configuration file");
+			Log.getInstance().append(Log.FLAG_WARNING, "Couldn't read the configuration file");
 		}
 		// Error reading the configuration, write current configuration after
 		// backing up
 		try {
-			FileOperations.copyFile(
-					new File(Configuration.config.getConfigPath()), new File(
-							Configuration.config.getConfigPath() + ".back"));
+			FileOperations.copyFile(new File(Configuration.config.getConfigPath()),
+					new File(Configuration.config.getConfigPath() + ".back"));
 		} catch (IOException e) {
 		}
 		// marshal();

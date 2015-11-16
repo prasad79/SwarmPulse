@@ -6,8 +6,7 @@ import org.java_websocket.handshake.ClientHandshakeBuilder;
 
 public class Draft_17 extends Draft_10 {
 	@Override
-	public HandshakeState acceptHandshakeAsServer(ClientHandshake handshakedata)
-			throws InvalidHandshakeException {
+	public HandshakeState acceptHandshakeAsServer(ClientHandshake handshakedata) throws InvalidHandshakeException {
 		int v = readVersion(handshakedata);
 		System.out.println("acceptHandshakeAsServer 17 - version " + v);
 		if (v == 13)
@@ -16,8 +15,7 @@ public class Draft_17 extends Draft_10 {
 	}
 
 	@Override
-	public ClientHandshakeBuilder postProcessHandshakeRequestAsClient(
-			ClientHandshakeBuilder request) {
+	public ClientHandshakeBuilder postProcessHandshakeRequestAsClient(ClientHandshakeBuilder request) {
 		super.postProcessHandshakeRequestAsClient(request);
 		request.put("Sec-WebSocket-Version", "13");// overwriting the previous
 		return request;

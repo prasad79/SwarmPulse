@@ -27,15 +27,13 @@ public abstract class WebSocketAdapter implements WebSocketListener {
 	 *      Draft, ClientHandshake)
 	 */
 	@Override
-	public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(
-			WebSocket conn, Draft draft, ClientHandshake request)
-			throws InvalidDataException {
+	public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(WebSocket conn, Draft draft,
+			ClientHandshake request) throws InvalidDataException {
 		return new HandshakeImpl1Server();
 	}
 
 	@Override
-	public void onWebsocketHandshakeReceivedAsClient(WebSocket conn,
-			ClientHandshake request, ServerHandshake response)
+	public void onWebsocketHandshakeReceivedAsClient(WebSocket conn, ClientHandshake request, ServerHandshake response)
 			throws InvalidDataException {
 	}
 
@@ -47,8 +45,7 @@ public abstract class WebSocketAdapter implements WebSocketListener {
 	 *      ClientHandshake)
 	 */
 	@Override
-	public void onWebsocketHandshakeSentAsClient(WebSocket conn,
-			ClientHandshake request) throws InvalidDataException {
+	public void onWebsocketHandshakeSentAsClient(WebSocket conn, ClientHandshake request) throws InvalidDataException {
 	}
 
 	/**

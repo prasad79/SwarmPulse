@@ -1,3 +1,34 @@
+/*******************************************************************************
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 ETH Zurich.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ *
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ *
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * Contributors:
+ *     Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation
+ *******************************************************************************/
 package ch.ethz.coss.nervous.pulse;
 
 import java.io.IOException;
@@ -32,8 +63,7 @@ public class WriteJSON {
 			String message2 = new Gson().toJson(o2[0]);
 			String message3 = new Gson().toJson(o2[1]);
 			String message4 = new Gson().toJson(type);
-			String bothJson = "[" + message + "," + message2 + "," + message3
-					+ "," + message4 + "]";
+			String bothJson = "[" + message + "," + message2 + "," + message3 + "," + message4 + "]";
 			out.println("HTTP/1.0 200 OK");
 			out.println("Content-Type: text/json");
 			out.printf("Content-Length: %d%n", bothJson.length());
@@ -105,30 +135,28 @@ public class WriteJSON {
 				feature.add("geometry", point);
 				JsonObject properties = new JsonObject();
 				if (reading.type == 0) {
-					//System.out.println("Reading instance of light");
+					// System.out.println("Reading instance of light");
 					properties.addProperty("readingType", "" + 0);
-					properties.addProperty("lightLevel", ""
-							+ ((LightReading) reading).lightVal);
+					properties.addProperty("lightLevel", "" + ((LightReading) reading).lightVal);
 				} else if (reading.type == 1) {
 					properties.addProperty("readingType", "" + 1);
-					properties.addProperty("noiseLevel", ""
-							+ ((NoiseReading) reading).soundVal);
+					properties.addProperty("noiseLevel", "" + ((NoiseReading) reading).soundVal);
 				} else if (reading.type == 2) {
 					properties.addProperty("readingType", "" + 2);
-					properties.addProperty("message", ""
-							+ ((TextVisual) reading).textMsg);
+					properties.addProperty("message", "" + ((TextVisual) reading).textMsg);
 				} else {
-					//System.out.println("Reading instance not known");
+					// System.out.println("Reading instance not known");
 				}
 
 				feature.add("properties", properties);
 
 				// }
 			} catch (JsonParseException e) {
-				//System.out.println("can't save json object: " + e.toString());
+				// System.out.println("can't save json object: " +
+				// e.toString());
 			}
 			// output the result
-			//System.out.println("featureCollection=" + feature.toString());
+			// System.out.println("featureCollection=" + feature.toString());
 
 			String message = feature.toString();
 

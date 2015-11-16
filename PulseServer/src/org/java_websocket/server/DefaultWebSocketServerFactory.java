@@ -17,8 +17,7 @@ public class DefaultWebSocketServerFactory implements WebSocketServerFactory {
 	}
 
 	@Override
-	public WebSocketImpl createWebSocket(WebSocketAdapter a, List<Draft> d,
-			Socket s) {
+	public WebSocketImpl createWebSocket(WebSocketAdapter a, List<Draft> d, Socket s) {
 		return new WebSocketImpl(a, d);
 	}
 

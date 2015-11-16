@@ -17,8 +17,7 @@ import org.java_websocket.WebSocketAdapter;
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.drafts.Draft;
 
-public class DefaultSSLWebSocketServerFactory implements
-		WebSocketServer.WebSocketServerFactory {
+public class DefaultSSLWebSocketServerFactory implements WebSocketServer.WebSocketServerFactory {
 	protected SSLContext sslcontext;
 	protected ExecutorService exec;
 
@@ -26,8 +25,7 @@ public class DefaultSSLWebSocketServerFactory implements
 		this(sslContext, Executors.newSingleThreadScheduledExecutor());
 	}
 
-	public DefaultSSLWebSocketServerFactory(SSLContext sslContext,
-			ExecutorService exec) {
+	public DefaultSSLWebSocketServerFactory(SSLContext sslContext, ExecutorService exec) {
 		if (sslContext == null || exec == null)
 			throw new IllegalArgumentException();
 		this.sslcontext = sslContext;
@@ -35,8 +33,7 @@ public class DefaultSSLWebSocketServerFactory implements
 	}
 
 	@Override
-	public ByteChannel wrapChannel(SocketChannel channel, SelectionKey key)
-			throws IOException {
+	public ByteChannel wrapChannel(SocketChannel channel, SelectionKey key) throws IOException {
 		SSLEngine e = sslcontext.createSSLEngine();
 		e.setUseClientMode(false);
 		return new SSLSocketChannel2(channel, e, exec, key);
@@ -48,8 +45,7 @@ public class DefaultSSLWebSocketServerFactory implements
 	}
 
 	@Override
-	public WebSocketImpl createWebSocket(WebSocketAdapter a, List<Draft> d,
-			Socket s) {
+	public WebSocketImpl createWebSocket(WebSocketAdapter a, List<Draft> d, Socket s) {
 		return new WebSocketImpl(a, d);
 	}
 }

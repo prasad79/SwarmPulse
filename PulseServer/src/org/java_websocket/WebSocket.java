@@ -58,11 +58,9 @@ public interface WebSocket {
 	 * @throws IllegalArgumentException
 	 * @throws NotYetConnectedException
 	 */
-	public abstract void send(ByteBuffer bytes)
-			throws IllegalArgumentException, NotYetConnectedException;
+	public abstract void send(ByteBuffer bytes) throws IllegalArgumentException, NotYetConnectedException;
 
-	public abstract void send(byte[] bytes) throws IllegalArgumentException,
-			NotYetConnectedException;
+	public abstract void send(byte[] bytes) throws IllegalArgumentException, NotYetConnectedException;
 
 	public abstract void sendFrame(Framedata framedata);
 
@@ -84,8 +82,7 @@ public interface WebSocket {
 	 * @param fin
 	 *            true means the current frame is the last in the sequence.
 	 **/
-	public abstract void sendFragmentedFrame(Opcode op, ByteBuffer buffer,
-			boolean fin);
+	public abstract void sendFragmentedFrame(Opcode op, ByteBuffer buffer, boolean fin);
 
 	public abstract boolean hasBufferedData();
 

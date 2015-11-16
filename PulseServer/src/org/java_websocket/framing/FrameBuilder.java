@@ -10,8 +10,7 @@ public interface FrameBuilder extends Framedata {
 
 	public abstract void setOptcode(Opcode optcode);
 
-	public abstract void setPayload(ByteBuffer payload)
-			throws InvalidDataException;
+	public abstract void setPayload(ByteBuffer payload) throws InvalidDataException;
 
 	public abstract void setTransferemasked(boolean transferemasked);
 

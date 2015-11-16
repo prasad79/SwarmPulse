@@ -62,8 +62,7 @@ public class Charsetfunctions {
 	 * InvalidDataException( CloseFrame.NO_UTF8, e ); } return s; }
 	 */
 
-	public static String stringUtf8(ByteBuffer bytes)
-			throws InvalidDataException {
+	public static String stringUtf8(ByteBuffer bytes) throws InvalidDataException {
 		CharsetDecoder decode = Charset.forName("UTF8").newDecoder();
 		decode.onMalformedInput(codingErrorAction);
 		decode.onUnmappableCharacter(codingErrorAction);

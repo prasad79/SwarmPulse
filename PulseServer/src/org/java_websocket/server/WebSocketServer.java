@@ -48,8 +48,7 @@ import org.java_websocket.handshake.ServerHandshakeBuilder;
  * functionality/purpose to the server.
  * 
  */
-public abstract class WebSocketServer extends WebSocketAdapter implements
-		Runnable {
+public abstract class WebSocketServer extends WebSocketAdapter implements Runnable {
 
 	public static int DECODERS = Runtime.getRuntime().availableProcessors();
 
@@ -131,8 +130,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	 * @see #WebSocketServer(InetSocketAddress, int, List, Collection) more
 	 *      details here
 	 */
-	public WebSocketServer(InetSocketAddress address, int decodercount,
-			List<Draft> drafts) {
+	public WebSocketServer(InetSocketAddress address, int decodercount, List<Draft> drafts) {
 		this(address, decodercount, drafts, new HashSet<WebSocket>());
 	}
 
@@ -168,8 +166,8 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	 * @see <a href="https://github.com/TooTallNate/Java-WebSocket/wiki/Drafts"
 	 *      > more about drafts</a>
 	 */
-	public WebSocketServer(InetSocketAddress address, int decodercount,
-			List<Draft> drafts, Collection<WebSocket> connectionscontainer) {
+	public WebSocketServer(InetSocketAddress address, int decodercount, List<Draft> drafts,
+			Collection<WebSocket> connectionscontainer) {
 		if (address == null || decodercount < 1 || connectionscontainer == null) {
 			throw new IllegalArgumentException(
 					"address and connectionscontainer must not be null and you need at least 1 decoder");
@@ -206,8 +204,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	 */
 	public void start() {
 		if (selectorthread != null)
-			throw new IllegalStateException(getClass().getName()
-					+ " can only be started once.");
+			throw new IllegalStateException(getClass().getName() + " can only be started once.");
 		new Thread(this).start();
 	}
 
@@ -306,8 +303,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	public void run() {
 		synchronized (this) {
 			if (selectorthread != null)
-				throw new IllegalStateException(getClass().getName()
-						+ " can only be started once.");
+				throw new IllegalStateException(getClass().getName() + " can only be started once.");
 			selectorthread = Thread.currentThread();
 			if (isclosed.get()) {
 				return;
@@ -351,10 +347,8 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 
 							SocketChannel channel = server.accept();
 							channel.configureBlocking(false);
-							WebSocketImpl w = wsf.createWebSocket(this, drafts,
-									channel.socket());
-							w.key = channel.register(selector,
-									SelectionKey.OP_READ, w);
+							WebSocketImpl w = wsf.createWebSocket(this, drafts, channel.socket());
+							w.key = channel.register(selector, SelectionKey.OP_READ, w);
 							w.channel = wsf.wrapChannel(channel, w.key);
 							i.remove();
 							allocateBuffers(w);
@@ -365,15 +359,13 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 							conn = (WebSocketImpl) key.attachment();
 							ByteBuffer buf = takeBuffer();
 							try {
-								if (SocketChannelIOHelper.read(buf, conn,
-										conn.channel)) {
+								if (SocketChannelIOHelper.read(buf, conn, conn.channel)) {
 									if (buf.hasRemaining()) {
 										conn.inQueue.put(buf);
 										queue(conn);
 										i.remove();
 										if (conn.channel instanceof WrappedByteChannel) {
-											if (((WrappedByteChannel) conn.channel)
-													.isNeedRead()) {
+											if (((WrappedByteChannel) conn.channel).isNeedRead()) {
 												iqueue.add(conn);
 											}
 										}
@@ -483,8 +475,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 		buffers.put(buf);
 	}
 
-	private void handleIOException(SelectionKey key, WebSocket conn,
-			IOException ex) {
+	private void handleIOException(SelectionKey key, WebSocket conn, IOException ex) {
 		// onWebsocketError( conn, ex );// conn may be null here
 		if (conn != null) {
 			conn.closeConnection(CloseFrame.ABNORMAL_CLOSE, ex.getMessage());
@@ -531,8 +522,8 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	 *         automatically.
 	 */
 	protected String getFlashSecurityPolicy() {
-		return "<cross-domain-policy><allow-access-from domain=\"*\" to-ports=\""
-				+ getPort() + "\" /></cross-domain-policy>";
+		return "<cross-domain-policy><allow-access-from domain=\"*\" to-ports=\"" + getPort()
+				+ "\" /></cross-domain-policy>";
 	}
 
 	@Override
@@ -542,8 +533,11 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 
 	@Override
 	@Deprecated
-	public/* final */void onWebsocketMessageFragment(WebSocket conn,
-			Framedata frame) {// onFragment should be overloaded instead
+	public/* final */void onWebsocketMessageFragment(WebSocket conn, Framedata frame) {// onFragment
+																						// should
+																						// be
+																						// overloaded
+																						// instead
 		onFragment(conn, frame);
 	}
 
@@ -560,8 +554,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	}
 
 	@Override
-	public final void onWebsocketClose(WebSocket conn, int code, String reason,
-			boolean remote) {
+	public final void onWebsocketClose(WebSocket conn, int code, String reason, boolean remote) {
 		selector.wakeup();
 		try {
 			if (removeConnection(conn)) {
@@ -591,7 +584,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 		boolean removed;
 		synchronized (connections) {
 			removed = this.connections.remove(ws);
-			assert (removed);
+			assert(removed);
 		}
 		if (isclosed.get() && connections.size() == 0) {
 			selectorthread.interrupt();
@@ -600,18 +593,19 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	}
 
 	@Override
-	public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(
-			WebSocket conn, Draft draft, ClientHandshake request)
-			throws InvalidDataException {
+	public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(WebSocket conn, Draft draft,
+			ClientHandshake request) throws InvalidDataException {
 		return super.onWebsocketHandshakeReceivedAsServer(conn, draft, request);
 	}
 
-	/** @see #removeConnection(WebSocket) */
+	/**
+	 * @see #removeConnection(WebSocket)
+	 */
 	protected boolean addConnection(WebSocket ws) {
 		if (!isclosed.get()) {
 			synchronized (connections) {
 				boolean succ = this.connections.add(ws);
-				assert (succ);
+				assert(succ);
 				return succ;
 			}
 		} else {
@@ -646,14 +640,12 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	}
 
 	@Override
-	public void onWebsocketCloseInitiated(WebSocket conn, int code,
-			String reason) {
+	public void onWebsocketCloseInitiated(WebSocket conn, int code, String reason) {
 		onCloseInitiated(conn, code, reason);
 	}
 
 	@Override
-	public void onWebsocketClosing(WebSocket conn, int code, String reason,
-			boolean remote) {
+	public void onWebsocketClosing(WebSocket conn, int code, String reason, boolean remote) {
 		onClosing(conn, code, reason, remote);
 
 	}
@@ -661,8 +653,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	public void onCloseInitiated(WebSocket conn, int code, String reason) {
 	}
 
-	public void onClosing(WebSocket conn, int code, String reason,
-			boolean remote) {
+	public void onClosing(WebSocket conn, int code, String reason, boolean remote) {
 
 	}
 
@@ -719,8 +710,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	 *            Returns whether or not the closing of the connection was
 	 *            initiated by the remote host.
 	 **/
-	public abstract void onClose(WebSocket conn, int code, String reason,
-			boolean remote);
+	public abstract void onClose(WebSocket conn, int code, String reason, boolean remote);
 
 	/**
 	 * Callback for string messages received from the remote host
@@ -733,7 +723,8 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 	 * Called when errors occurs. If an error causes the websocket connection to
 	 * fail {@link #onClose(WebSocket, int, String, boolean)} will be called
 	 * additionally.<br>
-	 * This method will be called primarily because of IO or protocol errors.<br>
+	 * This method will be called primarily because of IO or protocol errors.
+	 * <br>
 	 * If the given exception is an RuntimeException that probably means that
 	 * you encountered a bug.<br>
 	 * 
@@ -768,8 +759,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 			setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 				@Override
 				public void uncaughtException(Thread t, Throwable e) {
-					getDefaultUncaughtExceptionHandler()
-							.uncaughtException(t, e);
+					getDefaultUncaughtExceptionHandler().uncaughtException(t, e);
 				}
 			});
 		}
@@ -786,13 +776,11 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 					ByteBuffer buf = null;
 					ws = iqueue.take();
 					buf = ws.inQueue.poll();
-					assert (buf != null);
+					assert(buf != null);
 					try {
 						ws.decode(buf);
 					} catch (Exception e) {
-						System.err
-								.println("Error while reading from remote connection: "
-										+ e);
+						System.err.println("Error while reading from remote connection: " + e);
 					}
 
 					finally {
@@ -808,12 +796,10 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 
 	public interface WebSocketServerFactory extends WebSocketFactory {
 		@Override
-		public WebSocketImpl createWebSocket(WebSocketAdapter a, Draft d,
-				Socket s);
+		public WebSocketImpl createWebSocket(WebSocketAdapter a, Draft d, Socket s);
 
 		@Override
-		public WebSocketImpl createWebSocket(WebSocketAdapter a,
-				List<Draft> drafts, Socket s);
+		public WebSocketImpl createWebSocket(WebSocketAdapter a, List<Draft> drafts, Socket s);
 
 		/**
 		 * Allows to wrap the Socketchannel( key.channel() ) to insert a
@@ -825,8 +811,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements
 		 * @return The channel on which the read and write operations will be
 		 *         performed.<br>
 		 */
-		public ByteChannel wrapChannel(SocketChannel channel, SelectionKey key)
-				throws IOException;
+		public ByteChannel wrapChannel(SocketChannel channel, SelectionKey key) throws IOException;
 	}
 
 }
