@@ -63,4 +63,4 @@ THE SOFTWARE.<br>
 *******************************************************************************/
 
 Contributors:
-*  Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation for Server, Website and Android Client
+*  Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial architecture design and implementation.
