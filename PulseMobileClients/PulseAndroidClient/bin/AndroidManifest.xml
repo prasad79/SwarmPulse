@@ -27,8 +27,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.ethz.coss.nervous.pulse"
-    android:versionCode="23"
-    android:versionName="0.3.2 - beta" >
+    android:versionCode="25"
+    android:versionName="0.3.4 - beta" >
 
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

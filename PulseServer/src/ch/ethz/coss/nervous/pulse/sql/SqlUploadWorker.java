@@ -160,8 +160,8 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					if (reading.volatility != 0) {
 						/***** SQL insert ********/
 						// Insert data
-						// System.out.println("before uploading SQL - reading
-						// uuid = "+reading.uuid);
+						 System.out.println("before uploading SQL - reading uuid = "+reading.uuid);
+						 System.out.println("Reading volatility = "+reading.volatility);
 						PreparedStatement datastmt = sqlse.getSensorInsertStatement(connection, reading.type);
 						if (datastmt != null) {
 							// System.out.println("datastmt - " +

@@ -66,6 +66,12 @@ public class GPSLocation {
 	// Declaring a Location Manager
 	protected LocationManager locationManager;
 
+	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
+
+	// The minimum time between updates in milliseconds
+	private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+	
+	
 	public static GPSLocation getInstance(Context context) {
 		if (_instance == null || !GPS_AVAILABLE) {
 
@@ -80,7 +86,7 @@ public class GPSLocation {
 
 		locationManager = (LocationManager) mContext.getSystemService(mContext.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, mLocationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, mLocationListener);
 
 		if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 			showLocationAlert();
@@ -145,8 +151,7 @@ public class GPSLocation {
 			if (!loc_initialized) {
 				loc_initialized = true;
 				locationManager.removeUpdates(mLocationListener);
-				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 100, mLocationListener);
-
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, 10, mLocationListener);
 			}
 
 			// System.out.println("onLocationChanged called - lat =

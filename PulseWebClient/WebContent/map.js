@@ -53,7 +53,7 @@ $(document)
 									'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; OpenStreetMap contributors, CC-BY-SA',
-										maxZoom : 19
+										maxZoom : 11
 									});
 
 					mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
@@ -67,7 +67,7 @@ $(document)
 										attribution : '&copy; ' + mapLink
 												+ '. Tiles courtesy of '
 												+ mapquestLink + mapquestPic,
-										maxZoom : 19,
+										maxZoom : 11,
 										subdomains : '1234',
 									});
 
@@ -76,7 +76,7 @@ $(document)
 									'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 19
+										maxZoom : 11
 									});
 
 					var mapWithLabels = L
@@ -84,7 +84,7 @@ $(document)
 									'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 19
+										maxZoom : 11
 									});
 
 					/** ****Pulse Logo****** */
@@ -926,7 +926,7 @@ $(document)
 							sendTimeMachineRequest(current_layer == 0 ? 2
 									: current_layer == 1 ? 0 : 1, date
 									.getTime()
-									- (60000 * 7000), date.getTime());
+									- (60000 * 12000), date.getTime());
 
 						}
 						/** ************* */

@@ -75,11 +75,12 @@ public class SqlRequestWorker extends SqlFetchWorker {
 					long volatility = rs.getLong("Volatility");
 					long recordTime = rs.getLong("RecordTime");
 
-					System.out.println("Volatility = " + volatility);
-					System.out.println("currentTimeMillis = " + currentTimeMillis);
-					System.out.println("total time = " + (recordTime + (volatility * 1000)));
-					if (volatility == 0 || (recordTime + (volatility * 1000) > currentTimeMillis)) {
-
+//					System.out.println("Volatility = " + volatility);
+//					System.out.println("currentTimeMillis = " + currentTimeMillis);
+//					System.out.println("left time = " + (currentTimeMillis - (recordTime + (volatility * 1000))));
+					if(volatility != -1)
+					if (volatility == 0 || currentTimeMillis > (recordTime + (volatility * 1000) )) {
+//						System.out.println("Continue");
 						continue;
 					}
 

@@ -96,7 +96,7 @@ public class LightSensorReadingActivity extends SensorReadingActivity {
 
 					SharedPreferences prefs = PreferenceManager
 							.getDefaultSharedPreferences(LightSensorReadingActivity.this);
-					if (prefs.getBoolean("data_rentention", true)) {
+					if (prefs.getBoolean("data_rentention", false)) {
 						reading.volatility = Long.parseLong(prefs.getString("time_limit_data_retention", "-1"));
 					} else
 						reading.volatility = 0;

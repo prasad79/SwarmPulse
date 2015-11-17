@@ -88,8 +88,8 @@ public class NoiseSensorReadingActivity extends SensorReadingActivity {
 
 					SharedPreferences prefs = PreferenceManager
 							.getDefaultSharedPreferences(NoiseSensorReadingActivity.this);
-					if (prefs.getBoolean("data_rentention", true)) {
-						reading.volatility = -1;
+					if (prefs.getBoolean("data_rentention", false)) {
+						reading.volatility = Long.parseLong(prefs.getString("time_limit_data_retention", "-1"));
 					} else
 						reading.volatility = 0;
 

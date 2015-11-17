@@ -100,7 +100,7 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 
 					SharedPreferences prefs = PreferenceManager
 							.getDefaultSharedPreferences(TextMessageUploadActivity.this);
-					boolean volatility = prefs.getBoolean("data_rentention", true);
+					boolean volatility = prefs.getBoolean("data_rentention", false);
 
 					TextVisual txtMsg = new TextVisual(Application.uuid.toString(), Utils.University_links[counter],
 							System.currentTimeMillis(), volatility ? -1 : 0, Utils.University_link_coords[counter]);
@@ -110,8 +110,11 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 				} else {
 					message = message.trim();
 					if (message.length() >= 2) {
+						SharedPreferences prefs = PreferenceManager
+								.getDefaultSharedPreferences(TextMessageUploadActivity.this);
+						
 						TextVisual txtMsg = new TextVisual(Application.uuid.toString(), message,
-								System.currentTimeMillis(), -1, new VisualLocation(
+								System.currentTimeMillis(), prefs.getBoolean("data_rentention", false) ? Long.parseLong(prefs.getString("time_limit_data_retention", "-1")) : 0, new VisualLocation(
 										GPSLocation.getInstance(TextMessageUploadActivity.this).getLocation()));
 						if (txtMsg != null) {
 							Utils.showProgress(TextMessageUploadActivity.this);
