@@ -153,7 +153,7 @@ public class SensorService extends Service implements SensorEventListener, Noise
 				public void run() {
 
 					noiseReading = new NoiseReading(Application.uuid.toString(),
-							Double.parseDouble(String.format("%.2f", spl)), recordTime, -1,
+							Double.parseDouble(String.format("%.2f", spl).replaceAll(",",".")), recordTime, -1,
 							new VisualLocation(Utils.generateRandomCitiesGPSCoords()));
 					Application.pushReadingToServer(noiseReading, context);
 					intent.putExtra("NoiseReading", noiseReading);
@@ -163,7 +163,7 @@ public class SensorService extends Service implements SensorEventListener, Noise
 
 			}.start();
 		} else {
-			noiseReading = new NoiseReading(Application.uuid.toString(), Double.parseDouble(String.format("%.2f", spl)),
+			noiseReading = new NoiseReading(Application.uuid.toString(), Double.parseDouble(String.format("%.2f", spl).replaceAll(",",".")),
 					recordTime, -1, new VisualLocation(GPSLocation.getInstance(context).getLocation()));
 			Log.d(DEBUG_TAG, "Noise data collected - " + noiseReading.toString());
 

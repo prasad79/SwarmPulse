@@ -69,9 +69,11 @@ public class Utils {
 
 	public static double[] addNoiseToLocation(double latitude, double longitude) {
 		int decimalLength = 2 + new Random().nextInt(4);
+		
+		
 
-		return new double[] { Double.parseDouble(String.format("%." + decimalLength + "f", latitude)),
-				Double.parseDouble(String.format("%." + decimalLength + "f", longitude)) };
+		return new double[] { Double.parseDouble(String.format("%." + decimalLength + "f", latitude).replaceAll(",",".")),
+				Double.parseDouble(String.format("%." + decimalLength + "f", longitude).replaceAll(",",".")) };
 
 	}
 
