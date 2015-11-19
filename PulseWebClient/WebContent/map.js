@@ -138,6 +138,7 @@ $(document)
 							groupedOverlays, options);
 
 					map.addControl(layerControl);
+				
 					/** ***************Layer Control********************* */
 
 					/** ********************************************************************* */
@@ -306,7 +307,7 @@ $(document)
 
 												$('#datePicker').hide(0);
 											}
-										} ],
+										} ],	
 								position : "topright"
 
 							});
@@ -315,6 +316,34 @@ $(document)
 					realTimeButton.state('realTime');
 
 					/** *************************** */
+					
+					/** ****************************** */
+					var daylightLayer = L.terminator();
+					var daylightButton = L.easyButton({
+						states : [ {
+							stateName : 'showDaylightLayer',
+							icon : 'fa-moon-o fa-lg',
+							title : 'Show Daylight layer',
+							onClick : function(control) {
+								daylightLayer.addTo(map);
+								control.state("hideDaylightLayerTime");
+							}
+						}, {
+							stateName : 'hideDaylightLayerTime',
+							icon : 'fa-moon-o',
+							title : 'Hide Daylight layer',
+							onClick : function(control) {
+//								L.terminator().addTo(map);
+								map.removeLayer(daylightLayer);
+								control.state("showDaylightLayer");
+							}
+						}  ],
+						position : "topright"
+					});
+
+					daylightButton.addTo(map);
+					/** ****************************** */
+				
 
 					/** ****************************** */
 					var infoButton = L.easyButton({
