@@ -444,6 +444,7 @@ $(document)
 						current_layer = 1;
 						lightMarkers.addLayer(pruneCluster);
 						map.addLayer(lightMarkers);
+						
 
 					}
 
@@ -462,6 +463,7 @@ $(document)
 					}
 
 					function resetToMessagesOverlay() {
+					
 						removeAllMarkers();
 
 						if (last_layer == 2)
@@ -480,7 +482,7 @@ $(document)
 									.log("*****LOG***** inside removeAllMarkers ");
 						}
 						markerArray = [];
-
+						hidePopup();
 						pruneCluster.RemoveMarkers();
 						lightMarkers.clearLayers();
 						noiseMarkers.clearLayers();
@@ -569,6 +571,8 @@ $(document)
 					}
 					/** ******************************* */
 					var pruneCluster = new PruneClusterForLeaflet();
+					pruneCluster.Cluster.Size = 40;
+					pruneCluster.Cluster.ENABLE_MARKERS_LIST = true
 
 					// var markersCluster = new L.MarkerClusterGroup(
 					// {
@@ -712,6 +716,8 @@ $(document)
 
 								markerArray.push(lightMarker);
 								pruneCluster.RegisterMarker(lightMarker);
+								
+								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), lightMarker.data.popup);
 
 							} else if (msg.properties.readingType == 1
 									&& current_layer == 2) {
@@ -749,6 +755,7 @@ $(document)
 								noiseMarker.weight = getNoiseId(msg.properties.level);
 								markerArray.push(noiseMarker);
 								pruneCluster.RegisterMarker(noiseMarker);
+								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), noiseMarker.data.popup);
 
 							} else if (msg.properties.readingType == 2
 									&& current_layer == 0) {
@@ -792,6 +799,7 @@ $(document)
 
 								markerArray.push(msgMarker);
 								pruneCluster.RegisterMarker(msgMarker);
+								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), msgMarker.data.popup);
 							}
 
 							return true;
@@ -1348,79 +1356,103 @@ $(document)
 						}));
 
 						marker.on('mouseover', function(e) {
-							generatePopup(e, data.popup);
-
+//							generatePopup(e, data.popup);
+							showPopup(marker.getLatLng(), data.popup);
 						});
 
 						marker.on('click', function(e) {
-							generatePopup(e, data.popup);
-
+//							generatePopup(e, data.popup);
+							showPopup(marker.getLatLng(), data.popup);
 						});
+						
+					
 
 					};
 
-					// pruneCluster.PrepareLeafletMarker =
-					// function(leafletMarker, data) {
-					//						
-					// leafletMarker.setIcon(L.icon({
-					// iconUrl: getIcon(data.id),
-					// iconAnchor: [20,40]})); // See
-					// http://leafletjs.com/reference.html#icon
-					//					    
-					// leafletMarker.on('mouseover', function(){
-					// //do click event logic here
-					// // alert("HELP");
-					// });
-					// leafletMarker.on('mouseout', function(){
-					// //do click event logic here
-					// // alert("HELP2");
-					// });
-					// // //listeners can be applied to markers in this function
-					// leafletMarker.on('click', function(e){
-					// //do click event logic here
-					// // leafletMarker.openPopup();
-					// // generatePopup(e, data.popup);
-					//					    	
-					// });
-					//					    
-					// // A popup can already be attached to the marker
-					// // bindPopup can override it, but it's faster to update
-					// the content instead
-					// if (leafletMarker.getPopup()) {
-					// leafletMarker.setPopupContent(data.name);
-					// } else {
-					// leafletMarker.bindPopup(data.name);
-					// }
-					// };
 
-					var generatePopup = function(e, popupContent) {
-						var clickedPopup = e.target.getPopup();
-						var newPopup = new L.popup({
-							offset : new L.Point(0, -20),
-							closeButton : false,
-							autoPan : false,
-							closeOnClick : true
-						});
-						// If a popup has not already been bound to the
-						// marker, create one
-						// and bind it.
-						if (!clickedPopup) {
-							newPopup.setContent(popupContent).setLatLng(
-									e.latlng).openOn(e.target._map);
-							e.target.bindPopup(newPopup);
-						}
-						// We need to destroy and recreate the popup each
-						// time the marker is
-						// clicked to refresh its position
-						else if (!clickedPopup._isOpen) {
-							var content = clickedPopup.getContent();
-							e.target.unbindPopup(clickedPopup);
-							newPopup.setContent(content).setLatLng(e.latlng)
-									.openOn(e.target._map);
-							e.target.bindPopup(newPopup);
-						}
-					};
+//					var generatePopup = function(e, popupContent) {
+//						var clickedPopup = e.target.getPopup();
+//						var newPopup = new L.popup({
+//							offset : new L.Point(0, -20),
+//							closeButton : false,
+//							autoPan : false,
+//							closeOnClick : true
+//						});
+//						// If a popup has not already been bound to the
+//						// marker, create one
+//						// and bind it.
+//						if (!clickedPopup) {
+//							newPopup.setContent(popupContent).setLatLng(
+//									e.latlng).openOn(e.target._map);
+//							e.target.bindPopup(newPopup);
+//						}
+//						// We need to destroy and recreate the popup each
+//						// time the marker is
+//						// clicked to refresh its position
+//						else if (!clickedPopup._isOpen) {
+//							var content = clickedPopup.getContent();
+//							e.target.unbindPopup(clickedPopup);
+//							newPopup.setContent(content).setLatLng(e.latlng)
+//									.openOn(e.target._map);
+//							e.target.bindPopup(newPopup);
+//						}
+//					};
+					
+					
+					//L.latLng(50.5, 30.5)
+					var popup;
+					function showPopup(latlng, content)   {
+						var options = {
+								  offset:  new L.Point(0, -20),
+						closeButton : false,
+						autoPan : false,
+						closeOnClick : true
+								};
+						 popup = L.popup(options)
+					    .setLatLng(latlng)
+					    .setContent(content)
+						.openOn(map);
+					}
+					
+					function hidePopup() {
+						map.closePopup();
+					}
+					
 					/** ********************************************** */
+					
+//					
+//					var decluster = false;
+//					function clusterMarkers() {
+//					    if(pruneCluster){
+//					        pruneCluster.Cluster.Size = 2;
+//					        pruneCluster.Cluster.Margin = 10;
+//					        pruneCluster.ProcessView();
+//					    }
+//					}
+//					function declusterMarkers() {
+//					    if(pruneCluster){
+//					        pruneCluster.Cluster.Size = 35;
+//					        pruneCluster.Cluster.Margin = 10;
+//					        pruneCluster.ProcessView();
+//					    }
+//					}
+//
+//					map.on('zoomend', function () {
+//						console.log("map onzoomed called");
+////					    if (map.getZoom() > 10) {
+////					        if (decluster === false) {
+////					        	clusterMarkers()
+////					            decluster = true;
+////					        }
+////					    }else{
+////					        if (decluster === true) {
+////					            declusterMarkers()
+////					            decluster = false;
+////					        }
+////					    }
+//					});
+						
+						
 					resetToMessagesOverlay();
 					$('#datePicker').hide(0);
 
