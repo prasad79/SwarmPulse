@@ -103,7 +103,7 @@ public class TextMessageUploadActivity extends SensorReadingActivity {
 					boolean volatility = prefs.getBoolean("data_rentention", false);
 
 					TextVisual txtMsg = new TextVisual(Application.uuid.toString(), Utils.University_links[counter],
-							System.currentTimeMillis(), volatility ? -1 : 0, Utils.University_link_coords[counter]);
+							System.currentTimeMillis(), volatility ? -2 : 0, Utils.University_link_coords[counter]);
 
 					Application.pushReadingToServer(txtMsg, TextMessageUploadActivity.this);
 
