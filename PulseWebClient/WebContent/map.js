@@ -874,7 +874,7 @@ $(document)
 											.log("*****LOG***** + marker.data.volatility = "
 													+ marker.data.volatility);
 								}
-								if (currentTime - marker.data.name >= 60000 * 10) { // 10
+								if (currentTime - marker.data.name >= 60000 * 30) { // 10
 																					// minutes
 									if (DEBUG) {
 										console
