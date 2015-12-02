@@ -963,7 +963,7 @@ $(document)
 							sendTimeMachineRequest(current_layer == 0 ? 2
 									: current_layer == 1 ? 0 : 1, date
 									.getTime()
-									- (60000 * 12000), date.getTime());
+									- (60000 * 22000), date.getTime());
 
 						}
 						/** ************* */
