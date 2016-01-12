@@ -83,6 +83,8 @@ public class SqlRequestWorker extends SqlFetchWorker {
 //						System.out.println("Continue");
 						continue;
 					}
+					
+					
 
 					String lat = rs.getString("lat");
 					String lon = rs.getString("lon");
@@ -111,8 +113,13 @@ public class SqlRequestWorker extends SqlFetchWorker {
 						properties.addProperty("level", soundVal);
 					} else if (ptmRequest.readingType == 2) {
 						String message = rs.getString("Message");
+						message = message.trim();
 						properties.addProperty("readingType", "" + 2);
 						properties.addProperty("message", message);
+						
+						if(message.length() <= 0){
+							message = "***Empty Message***";
+						}
 					} else {
 						// System.out.println("Reading instance not known");
 					}
