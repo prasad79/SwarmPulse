@@ -115,11 +115,15 @@ public class SqlRequestWorker extends SqlFetchWorker {
 						String message = rs.getString("Message");
 						message = message.trim();
 						properties.addProperty("readingType", "" + 2);
-						properties.addProperty("message", message);
+						
 						
 						if(message.length() <= 0){
 							message = "***Empty Message***";
+							continue;
 						}
+						
+						properties.addProperty("message", message);
+						
 					} else {
 						// System.out.println("Reading instance not known");
 					}
