@@ -4,7 +4,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -12,8 +11,6 @@
 hs_err_pid*
 
 PulseServer/pulse_config.xml
-
-PulseServer/res/pulse_config.xml
 
 PulseServer/pulse_config.xml.back
 
