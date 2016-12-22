@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instant-run
+    abi="armeabi-v7a,armeabi"
+    api-level="22"
+    density="xhdpi"
+    format="7"
+    timestamp="431865607679524"
+    token="-7639970372311330392" >
+
+    <task
+        name="javac"
+        duration="535" />
+    <task
+        name="instant-run-dex"
+        duration="0" />
+    <task
+        name="instant-run-transform"
+        duration="202" />
+    <task
+        name="verifier"
+        duration="31" />
+
+    <artifact
+        location="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/outputs/apk/app-debug.apk"
+        type="MAIN" />
+
+    <build timestamp="431865607679524" >
+        <artifact
+            location="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/outputs/apk/app-debug.apk"
+            type="MAIN" />
+    </build>
+
+</instant-run>

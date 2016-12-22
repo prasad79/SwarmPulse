@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ent">
+        <item>Green</item>
+        <item>Red</item>
+    </string-array>
+    <string-array name="entvalues">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="sensorTypes">
+        <item>Accelerometer</item>
+        <item>Light</item>
+        <item>Noise</item>
+    </string-array>
+    <string-array name="sensorValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="time_limit">
+        <item>1 day</item>
+        <item>10 days</item>
+        <item>30 days</item>
+        <item>6 months</item>
+        <item>1 year</item>
+        <item>2 years</item>
+        <item>5 years</item>
+        <item>10 years</item>
+        <item>Forever</item>
+    </string-array>
+    <string-array name="time_limit_secs">
+        <item>86400</item>
+        <item>864000</item>
+        <item>2592000</item>
+        <item>15552000</item>
+        <item>31536000</item>
+        <item>63072000</item>
+        <item>157680000</item>
+        <item>315360000</item>
+        <item>-1</item>
+    </string-array>
+    <color name="black">#000000</color>
+    <color name="gray">#999999</color>
+    <color name="nnorange">#EF5F29</color>
+    <color name="nnorangel">#E3845F</color>
+    <color name="red">#DA0012</color>
+    <color name="white">#FFFFFF</color>
+    <dimen name="action_bar_subtitle_text_size">12sp</dimen>
+    <dimen name="action_bar_title_text_size">16sp</dimen>
+    <dimen name="activity_horizontal_margin">10dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
+    <dimen name="edit_text_size">14sp</dimen>
+    <dimen name="griditem_size">100dp</dimen>
+    <dimen name="listitem_horizontal_margin">5dp</dimen>
+    <dimen name="listitem_vertical_margin">5dp</dimen>
+    <dimen name="staff_view_griditem_size">200dp</dimen>
+    <dimen name="text_view_text_size">14sp</dimen>
+    <dimen name="text_view_txt_size">12sp</dimen>
+    <dimen name="transaction_griditem_size">200dp</dimen>
+    <dimen name="user_profile_height">14sp</dimen>
+    <dimen name="user_profile_width">14sp</dimen>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">SwarmPulse</string>
+    <string name="default_checkbox_data_retention"/>
+    <string name="label_sensors">Sensors</string>
+    <string name="label_settings">More</string>
+    <string name="label_share">Share</string>
+    <string name="license_label">License</string>
+    <string name="organization">ETH Zürich,\n Department of Humanities and Social Sciences (D-GESS)\n
+Professorship of Computational Social Science (COSS)\n
+Clausiusstrasse 50,\n 8092 Zürich,\n Switzerland\n</string>
+    <string name="rate_app_label">Rate App</string>
+    <string name="terms">Terms and Conditions</string>
+    <string name="title_data_privacy">Data Privacy</string>
+    <string name="title_data_retention">Data Retention</string>
+    <style name="ActionBar.Solid.pulse_theme" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:icon">@drawable/ic_launcher</item>
+        <item name="android:titleTextStyle">@style/ActionBar.TitleTextStyle.Host_theme</item>
+        <item name="android:subtitleTextStyle">@style/ActionBar.SubTitleTextStyle.Host_theme</item>
+        <item name="android:background">@drawable/ab_background_textured_pulse_theme</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_pulse_theme</item>
+        <item name="android:backgroundSplit">@drawable/ab_background_textured_pulse_theme</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.pulse_theme</item>
+    </style>
+    <style name="ActionBar.SubTitleTextStyle.Host_theme" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/action_bar_subtitle_text_size</item>
+    </style>
+    <style name="ActionBar.TitleTextStyle.Host_theme" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/action_bar_title_text_size</item>
+    </style>
+    <style name="ActionBar.Transparent.pulse_theme" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_pulse_theme</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.pulse_theme</item>
+    </style>
+    <style name="ActionBarTabStyle.pulse_theme" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_pulse_theme</item>
+    </style>
+    <style name="ActionButton.CloseMode.pulse_theme" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_pulse_theme</item>
+    </style>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <style name="Button.pulse_theme" parent="@android:style/Widget.Button">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">0.6</item>
+        <item name="android:background">@drawable/custom_button</item>
+        <item name="android:padding">@dimen/activity_vertical_margin</item>
+    </style>
+    <style name="DropDownListView.pulse_theme" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_pulse_theme</item>
+    </style>
+    <style name="DropDownNav.pulse_theme" parent="@android:style/Widget.Holo.Spinner">
+        <item name="android:background">@drawable/spinner_background_ab_pulse_theme</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_pulse_theme</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_pulse_theme</item>
+    </style>
+    <style name="EditText.pulse_theme" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/custom_edittext</item>
+        <item name="android:clickable">true</item>
+        <item name="android:enabled">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/edit_text_size</item>
+          <item name="android:padding">@dimen/activity_vertical_margin</item>
+    </style>
+    <style name="MyTheme" parent="@android:style/Theme.Dialog">
+  
+   	 <item name="android:textColorPrimary">#000000</item>
+	</style>
+    <style name="PopupMenu.pulse_theme" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_pulse_theme</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="ProgressBar.pulse_theme" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_pulse_theme</item>
+         <item name="android:textColor">@color/nnorange</item>
+    </style>
+    <style name="RadioButton.pulse_theme" parent="@android:style/Widget.CompoundButton.RadioButton"/>
+    <style name="TextView.pulse_theme" parent="android:Widget.TextView">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">@dimen/text_view_text_size</item>
+          <item name="android:padding">@dimen/activity_vertical_margin</item>
+    </style>
+    <style name="Theme.pulse_theme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_pulse_theme</item>
+        <item name="android:buttonStyle">@style/Button.pulse_theme</item>
+        <item name="android:imageButtonStyle">@style/Button.pulse_theme</item>
+        <item name="android:radioButtonStyle">@style/RadioButton.pulse_theme</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.pulse_theme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.pulse_theme</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.pulse_theme</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.pulse_theme</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.pulse_theme</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_pulse_theme</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_pulse_theme</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.pulse_theme</item>
+        <item name="android:textViewStyle">@style/TextView.pulse_theme</item>
+        <item name="android:editTextStyle">@style/EditText.pulse_theme</item>
+        <item name="android:spinnerStyle">@style/Widget.Spinner</item>
+        <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.pulse_theme.Widget</item>
+             <item name="android:progressBarStyle">@style/ProgressBar.pulse_theme</item>
+   
+    </style>
+    <style name="Theme.pulse_theme.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.pulse_theme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.pulse_theme</item>
+    </style>
+    <style name="Widget.Spinner" parent="android:Widget">
+        <item name="android:background">@drawable/btn_dropdown</item>
+        <item name="android:clickable">true</item>
+    </style>
+</resources>

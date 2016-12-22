@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/xml/preferences.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/xml/preferences.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/xml/prefs.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/xml/prefs.xml"
+    }
+]

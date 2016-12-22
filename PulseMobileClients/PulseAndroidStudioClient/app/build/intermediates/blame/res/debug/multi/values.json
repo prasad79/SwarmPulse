@@ -1,0 +1,1161 @@
+[
+    {
+        "outputFile": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 5,
+                    "endColumn": 19,
+                    "endOffset": 152
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/arrays.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 421,
+                        "endLine": 18,
+                        "endColumn": 19,
+                        "endOffset": 518
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 157,
+                    "endLine": 9,
+                    "endColumn": 19,
+                    "endOffset": 254
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/arrays.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 523,
+                        "endLine": 22,
+                        "endColumn": 19,
+                        "endOffset": 620
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 259,
+                    "endLine": 14,
+                    "endColumn": 19,
+                    "endOffset": 401
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/arrays.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 146,
+                        "endLine": 9,
+                        "endColumn": 19,
+                        "endOffset": 288
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 406,
+                    "endLine": 19,
+                    "endColumn": 19,
+                    "endOffset": 529
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/arrays.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 293,
+                        "endLine": 14,
+                        "endColumn": 19,
+                        "endOffset": 416
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 534,
+                    "endLine": 30,
+                    "endColumn": 19,
+                    "endOffset": 846
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/arrays.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 5,
+                        "startOffset": 631,
+                        "endLine": 35,
+                        "endColumn": 19,
+                        "endOffset": 951
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 31,
+                    "startColumn": 4,
+                    "startOffset": 851,
+                    "endLine": 41,
+                    "endColumn": 19,
+                    "endOffset": 1168
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/arrays.xml",
+                    "position": {
+                        "startLine": 37,
+                        "startColumn": 5,
+                        "startOffset": 962,
+                        "endLine": 48,
+                        "endColumn": 19,
+                        "endOffset": 1287
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 42,
+                    "startColumn": 4,
+                    "startOffset": 1173,
+                    "endColumn": 39,
+                    "endOffset": 1208
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/Color.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 96,
+                        "endColumn": 39,
+                        "endOffset": 131
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 43,
+                    "startColumn": 4,
+                    "startOffset": 1213,
+                    "endColumn": 38,
+                    "endOffset": 1247
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/Color.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 136,
+                        "endColumn": 38,
+                        "endOffset": 170
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 44,
+                    "startColumn": 4,
+                    "startOffset": 1252,
+                    "endColumn": 42,
+                    "endOffset": 1290
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/Color.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 213,
+                        "endColumn": 42,
+                        "endOffset": 251
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 45,
+                    "startColumn": 4,
+                    "startOffset": 1295,
+                    "endColumn": 43,
+                    "endOffset": 1334
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/Color.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 256,
+                        "endColumn": 43,
+                        "endOffset": 295
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 46,
+                    "startColumn": 4,
+                    "startOffset": 1339,
+                    "endColumn": 37,
+                    "endOffset": 1372
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/Color.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 175,
+                        "endColumn": 37,
+                        "endOffset": 208
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 47,
+                    "startColumn": 4,
+                    "startOffset": 1377,
+                    "endColumn": 39,
+                    "endOffset": 1412
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/Color.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 56,
+                        "endColumn": 39,
+                        "endOffset": 91
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 48,
+                    "startColumn": 4,
+                    "startOffset": 1417,
+                    "endColumn": 60,
+                    "endOffset": 1473
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 267,
+                        "endColumn": 60,
+                        "endOffset": 323
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 49,
+                    "startColumn": 4,
+                    "startOffset": 1478,
+                    "endColumn": 57,
+                    "endOffset": 1531
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 208,
+                        "endColumn": 57,
+                        "endOffset": 261
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 50,
+                    "startColumn": 4,
+                    "startOffset": 1536,
+                    "endColumn": 57,
+                    "endOffset": 1589
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 92,
+                        "endColumn": 57,
+                        "endOffset": 145
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 51,
+                    "startColumn": 4,
+                    "startOffset": 1594,
+                    "endColumn": 55,
+                    "endOffset": 1645
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 151,
+                        "endColumn": 55,
+                        "endOffset": 202
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 52,
+                    "startColumn": 4,
+                    "startOffset": 1650,
+                    "endColumn": 45,
+                    "endOffset": 1691
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 381,
+                        "endColumn": 45,
+                        "endOffset": 422
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 53,
+                    "startColumn": 4,
+                    "startOffset": 1696,
+                    "endColumn": 45,
+                    "endOffset": 1737
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 645,
+                        "endColumn": 45,
+                        "endOffset": 686
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 54,
+                    "startColumn": 4,
+                    "startOffset": 1742,
+                    "endColumn": 56,
+                    "endOffset": 1794
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 531,
+                        "endColumn": 56,
+                        "endOffset": 583
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 55,
+                    "startColumn": 4,
+                    "startOffset": 1799,
+                    "endColumn": 54,
+                    "endOffset": 1849
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 589,
+                        "endColumn": 54,
+                        "endOffset": 639
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 56,
+                    "startColumn": 4,
+                    "startOffset": 1854,
+                    "endColumn": 56,
+                    "endOffset": 1906
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 692,
+                        "endColumn": 56,
+                        "endOffset": 744
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 57,
+                    "startColumn": 4,
+                    "startOffset": 1911,
+                    "endColumn": 50,
+                    "endOffset": 1957
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 329,
+                        "endColumn": 50,
+                        "endOffset": 375
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 58,
+                    "startColumn": 4,
+                    "startOffset": 1962,
+                    "endColumn": 49,
+                    "endOffset": 2007
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 808,
+                        "endColumn": 49,
+                        "endOffset": 853
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 59,
+                    "startColumn": 4,
+                    "startOffset": 2012,
+                    "endColumn": 57,
+                    "endOffset": 2065
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 750,
+                        "endColumn": 57,
+                        "endOffset": 803
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 60,
+                    "startColumn": 4,
+                    "startOffset": 2070,
+                    "endColumn": 50,
+                    "endOffset": 2116
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 479,
+                        "endColumn": 50,
+                        "endOffset": 525
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 61,
+                    "startColumn": 4,
+                    "startOffset": 2121,
+                    "endColumn": 49,
+                    "endOffset": 2166
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/dimens.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 428,
+                        "endColumn": 49,
+                        "endOffset": 473
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 62,
+                    "startColumn": 4,
+                    "startOffset": 2171,
+                    "endColumn": 52,
+                    "endOffset": 2219
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 195,
+                        "endColumn": 52,
+                        "endOffset": 243
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 63,
+                    "startColumn": 4,
+                    "startOffset": 2224,
+                    "endColumn": 47,
+                    "endOffset": 2267
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 147,
+                        "endColumn": 47,
+                        "endOffset": 190
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 64,
+                    "startColumn": 4,
+                    "startOffset": 2272,
+                    "endColumn": 52,
+                    "endOffset": 2320
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 830,
+                        "endColumn": 60,
+                        "endOffset": 886
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 65,
+                    "startColumn": 4,
+                    "startOffset": 2325,
+                    "endColumn": 49,
+                    "endOffset": 2370
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 248,
+                        "endColumn": 49,
+                        "endOffset": 293
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 66,
+                    "startColumn": 4,
+                    "startOffset": 2375,
+                    "endColumn": 47,
+                    "endOffset": 2418
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 344,
+                        "endColumn": 47,
+                        "endOffset": 387
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 67,
+                    "startColumn": 4,
+                    "startOffset": 2423,
+                    "endColumn": 45,
+                    "endOffset": 2464
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 298,
+                        "endColumn": 45,
+                        "endOffset": 339
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 68,
+                    "startColumn": 4,
+                    "startOffset": 2469,
+                    "endColumn": 49,
+                    "endOffset": 2514
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 716,
+                        "endColumn": 49,
+                        "endOffset": 761
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 69,
+                    "startColumn": 4,
+                    "startOffset": 2519,
+                    "endLine": 71,
+                    "endColumn": 59,
+                    "endOffset": 2731
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 392,
+                        "endLine": 12,
+                        "endColumn": 59,
+                        "endOffset": 604
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 72,
+                    "startColumn": 4,
+                    "startOffset": 2736,
+                    "endColumn": 51,
+                    "endOffset": 2783
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 609,
+                        "endColumn": 51,
+                        "endOffset": 656
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 73,
+                    "startColumn": 4,
+                    "startOffset": 2788,
+                    "endColumn": 54,
+                    "endOffset": 2838
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 661,
+                        "endColumn": 54,
+                        "endOffset": 711
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 74,
+                    "startColumn": 4,
+                    "startOffset": 2843,
+                    "endColumn": 59,
+                    "endOffset": 2898
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 891,
+                        "endColumn": 59,
+                        "endOffset": 946
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 75,
+                    "startColumn": 4,
+                    "startOffset": 2903,
+                    "endColumn": 63,
+                    "endOffset": 2962
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/strings.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 766,
+                        "endColumn": 63,
+                        "endOffset": 825
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 76,
+                    "startColumn": 4,
+                    "startOffset": 2967,
+                    "endLine": 84,
+                    "endColumn": 12,
+                    "endOffset": 3711
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 49,
+                        "startColumn": 4,
+                        "startOffset": 2648,
+                        "endLine": 57,
+                        "endColumn": 12,
+                        "endOffset": 3392
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 85,
+                    "startColumn": 4,
+                    "startOffset": 3716,
+                    "endLine": 88,
+                    "endColumn": 12,
+                    "endOffset": 3993
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 64,
+                        "startColumn": 4,
+                        "startOffset": 3672,
+                        "endLine": 67,
+                        "endColumn": 12,
+                        "endOffset": 3949
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 89,
+                    "startColumn": 4,
+                    "startOffset": 3998,
+                    "endLine": 92,
+                    "endColumn": 12,
+                    "endOffset": 4266
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 59,
+                        "startColumn": 4,
+                        "startOffset": 3398,
+                        "endLine": 62,
+                        "endColumn": 12,
+                        "endOffset": 3666
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 93,
+                    "startColumn": 4,
+                    "startOffset": 4271,
+                    "endLine": 96,
+                    "endColumn": 12,
+                    "endOffset": 4546
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 69,
+                        "startColumn": 4,
+                        "startOffset": 3955,
+                        "endLine": 72,
+                        "endColumn": 12,
+                        "endOffset": 4230
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 97,
+                    "startColumn": 4,
+                    "startOffset": 4551,
+                    "endLine": 99,
+                    "endColumn": 12,
+                    "endOffset": 4748
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 102,
+                        "startColumn": 4,
+                        "startOffset": 5608,
+                        "endLine": 104,
+                        "endColumn": 12,
+                        "endOffset": 5805
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 100,
+                    "startColumn": 4,
+                    "startOffset": 4753,
+                    "endLine": 102,
+                    "endColumn": 12,
+                    "endOffset": 4956
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 117,
+                        "startColumn": 4,
+                        "startOffset": 6468,
+                        "endLine": 119,
+                        "endColumn": 12,
+                        "endOffset": 6671
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 103,
+                    "startColumn": 4,
+                    "startOffset": 4961,
+                    "endLine": 110,
+                    "endColumn": 12,
+                    "endOffset": 5248
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 192,
+                        "endLine": 14,
+                        "endColumn": 12,
+                        "endOffset": 483
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 111,
+                    "startColumn": 4,
+                    "startOffset": 5253,
+                    "endLine": 113,
+                    "endColumn": 12,
+                    "endOffset": 5408
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 524,
+                        "endLine": 19,
+                        "endColumn": 12,
+                        "endOffset": 681
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 114,
+                    "startColumn": 4,
+                    "startOffset": 5413,
+                    "endLine": 125,
+                    "endColumn": 12,
+                    "endOffset": 6053
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 78,
+                        "startColumn": 4,
+                        "startOffset": 4375,
+                        "endLine": 89,
+                        "endColumn": 12,
+                        "endOffset": 5015
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 126,
+                    "startColumn": 4,
+                    "startOffset": 6058,
+                    "endLine": 128,
+                    "endColumn": 12,
+                    "endOffset": 6261
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 98,
+                        "startColumn": 4,
+                        "startOffset": 5399,
+                        "endLine": 100,
+                        "endColumn": 12,
+                        "endOffset": 5602
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 129,
+                    "startColumn": 4,
+                    "startOffset": 6266,
+                    "endLine": 133,
+                    "endColumn": 12,
+                    "endOffset": 6643
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 106,
+                        "startColumn": 4,
+                        "startOffset": 5811,
+                        "endLine": 110,
+                        "endColumn": 12,
+                        "endOffset": 6188
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 134,
+                    "startColumn": 4,
+                    "startOffset": 6648,
+                    "endLine": 146,
+                    "endColumn": 12,
+                    "endOffset": 7373
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 133,
+                        "startColumn": 4,
+                        "startOffset": 7315,
+                        "endLine": 145,
+                        "endColumn": 12,
+                        "endOffset": 8040
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 147,
+                    "startColumn": 4,
+                    "startOffset": 7378,
+                    "endLine": 150,
+                    "endColumn": 9,
+                    "endOffset": 7508
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 74,
+                        "startColumn": 4,
+                        "startOffset": 4240,
+                        "endLine": 77,
+                        "endColumn": 9,
+                        "endOffset": 4370
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 151,
+                    "startColumn": 4,
+                    "startOffset": 7513,
+                    "endLine": 154,
+                    "endColumn": 12,
+                    "endOffset": 7775
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 93,
+                        "startColumn": 4,
+                        "startOffset": 5131,
+                        "endLine": 96,
+                        "endColumn": 12,
+                        "endOffset": 5393
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 155,
+                    "startColumn": 4,
+                    "startOffset": 7780,
+                    "endLine": 158,
+                    "endColumn": 12,
+                    "endOffset": 8048
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 112,
+                        "startColumn": 4,
+                        "startOffset": 6194,
+                        "endLine": 115,
+                        "endColumn": 12,
+                        "endOffset": 6462
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 159,
+                    "startColumn": 4,
+                    "startOffset": 8053,
+                    "endColumn": 101,
+                    "endOffset": 8150
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 91,
+                        "startColumn": 4,
+                        "startOffset": 5021,
+                        "endColumn": 108,
+                        "endOffset": 5125
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 160,
+                    "startColumn": 4,
+                    "startOffset": 8155,
+                    "endLine": 164,
+                    "endColumn": 12,
+                    "endOffset": 8440
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 127,
+                        "startColumn": 4,
+                        "startOffset": 7024,
+                        "endLine": 131,
+                        "endColumn": 12,
+                        "endOffset": 7309
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 165,
+                    "startColumn": 4,
+                    "startOffset": 8445,
+                    "endLine": 185,
+                    "endColumn": 12,
+                    "endOffset": 10088
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 806,
+                        "endLine": 42,
+                        "endColumn": 12,
+                        "endOffset": 2449
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 186,
+                    "startColumn": 4,
+                    "startOffset": 10093,
+                    "endLine": 189,
+                    "endColumn": 12,
+                    "endOffset": 10354
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 122,
+                        "startColumn": 4,
+                        "startOffset": 6757,
+                        "endLine": 125,
+                        "endColumn": 12,
+                        "endOffset": 7018
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 190,
+                    "startColumn": 4,
+                    "startOffset": 10359,
+                    "endLine": 193,
+                    "endColumn": 12,
+                    "endOffset": 10546
+                },
+                "from": {
+                    "file": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/values/styles_pulse_theme.xml",
+                    "position": {
+                        "startLine": 44,
+                        "startColumn": 4,
+                        "startOffset": 2455,
+                        "endLine": 47,
+                        "endColumn": 12,
+                        "endOffset": 2642
+                    }
+                }
+            }
+        ]
+    }
+]

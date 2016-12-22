@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/activity_sound.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/activity_sound.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/pref_reset_button.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/pref_reset_button.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/activity_light.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/activity_light.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/activity_about.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/activity_about.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/layout_reset_uuid_prefs.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/layout_reset_uuid_prefs.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/activity_settings.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/activity_settings.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/activity_msg_upload.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/activity_msg_upload.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/activity_main.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/res/merged/debug/layout/activity_help.xml",
+        "source": "/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/src/main/res/layout/activity_help.xml"
+    }
+]
