@@ -1,39 +1,38 @@
 /*******************************************************************************
- *     SwarmPulse - A service for collective visualization and sharing of mobile 
- *     sensor data, text messages and more.
- *
- *     Copyright (C) 2015 ETH Zürich, COSS
- *
- *     This file is part of SwarmPulse.
- *
- *     SwarmPulse is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     SwarmPulse is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with SwarmPulse. If not, see <http://www.gnu.org/licenses/>.
- *
- *
- * 	Author:
- * 	Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation
- *******************************************************************************/
+ * SwarmPulse - A service for collective visualization and sharing of mobile
+ * sensor data, text messages and more.
+ * 
+ * Copyright (C) 2015 ETH Zürich, COSS
+ * 
+ * This file is part of SwarmPulse.
+ * 
+ * SwarmPulse is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * SwarmPulse is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * SwarmPulse. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * 
+ * Author: Prasad Pulikal - prasad.pulikal@gess.ethz.ch - Initial design and
+ * implementation
+ ******************************************************************************/
 $(document)
 		.ready(
 				function() {
-					var DEBUG = false;
+					var DEBUG = true;
 					var websocket;
 					var counter = 0;
 					var current_state = 0; // 0 - Real-Time, 1 - Time-Machine
 					var current_layer = -1;
 					var last_layer = 0;
 					var initialReq = true;// jhkjhkhkhk marker not clearing
-											// check this initial implemnt
+					// check this initial implemnt
 
 					var markerArray = [];
 					var data = [];
@@ -42,8 +41,10 @@ $(document)
 					}).setView([ 47.379977, 8.545751 ], 2);
 					var lightMarkers = new L.LayerGroup();
 					var noiseMarkers = new L.LayerGroup();
+					var accelMarkers = new L.LayerGroup();
+					var tempMarkers = new L.LayerGroup();
 					var msgMarkers = new L.LayerGroup();
-
+					
 					new L.Control.Zoom({
 						position : 'topright'
 					}).addTo(map);
@@ -53,30 +54,50 @@ $(document)
 									'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; OpenStreetMap contributors, CC-BY-SA',
-										maxZoom : 11
+										maxZoom : 20
 									});
 
 					mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 					mapquestLink = '<a href="http://www.mapquest.com//">MapQuest</a>';
 					mapquestPic = '<img src="http://developer.mapquest.com/content/osm/mq_logo.png">';
 
-					var mapSatellite = L
+					// var mapSatellite = L.map('map-canvas', {
+					// zoomControl: false // disable zoomControl when
+					// initializing map (which is topleft by default)
+					// });
+					//
+					// MQ.mapLayer().addTo(map);
+					//
+					// map.setView(new L.LatLng(42.70, 12.08), 5);
+
+					var mapStandard2 = L
 							.tileLayer(
-									'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
+									'http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}',
 									{
-										attribution : '&copy; ' + mapLink
-												+ '. Tiles courtesy of '
-												+ mapquestLink + mapquestPic,
-										maxZoom : 11,
-										subdomains : '1234',
+										maxZoom : 20,
+										attribution : 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 									});
 
+					// L
+					// .tileLayer(
+					// 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
+					// {
+					// attribution : '&copy; ' + mapLink
+					// + '. Tiles courtesy of '
+					// + mapquestLink + mapquestPic,
+					// maxZoom : 11,
+					// subdomains : '1234',
+					// });
+
+					var mapSatellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+						attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+					});
 					var mapNoLabels = L
 							.tileLayer(
 									'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 11
+										maxZoom : 20
 									});
 
 					var mapWithLabels = L
@@ -84,7 +105,7 @@ $(document)
 									'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 11
+										maxZoom : 20
 									});
 
 					/** ****Pulse Logo****** */
@@ -113,23 +134,25 @@ $(document)
 					/** ***************Layer Control********************* */
 					var baseMaps = {
 						"Standard Map" : mapStandard,
-						"Standard Map 2" : mapSatellite,
+						"Satellite Map" : mapSatellite,
 						"Dark no labels Map" : mapNoLabels,
 						"Dark with labels Map" : mapWithLabels
 					};
 
 					var groupedOverlays = {
-						"Overlays" : {
+						"Sensors" : {
 
-							"Messages" : msgMarkers,
-							"Light" : lightMarkers,
-							"Sound" : noiseMarkers
+							"Light" : lightMarkers, //0
+							"Sound" : noiseMarkers,  //1
+							"Accelerometer" : accelMarkers,  //2 
+							"Temperature" : tempMarkers,    //3
+							"Messages" : msgMarkers  //4
 
 						}
 					};
 
 					var options = {
-						exclusiveGroups : [ "Overlays" ],
+						exclusiveGroups : [ "Sensors" ],
 						groupCheckboxes : true,
 						position : 'topleft'
 					};
@@ -138,7 +161,7 @@ $(document)
 							groupedOverlays, options);
 
 					map.addControl(layerControl);
-				
+
 					/** ***************Layer Control********************* */
 
 					/** ********************************************************************* */
@@ -204,6 +227,70 @@ $(document)
 						}
 						return div;
 					};
+					
+
+					/** *****Legend for showing Accelerometer label***** */
+					var legendAccel = L.control({
+						position : 'bottomleft'
+					});
+
+					legendAccel.onAdd = function(map) {
+
+						var div = L.DomUtil.create('div', 'label');
+						var mercalliScales = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+						var mercalliLabels = [ "I - Not Felt", "II - Weak", "III - Weak", "IV - Light", "V - Moderate", "VI - Strong", "VII - Very Strong", "VIII - Severe", "IX - Violent", "X - Extreme", "XI - Extreme", "XII - Extreme"];
+
+						div.style.border = "1px solid #ffffff";
+						div.style.borderRadius = "2px";
+						div.style.backgroundColor = "#2A2A2A";
+						div.style.color = "#ffffff";
+						div.style.fontSize = "80%";
+						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Mercalli intensity scale </p>  <br>';
+
+						for (var i = 0; i < mercalliScales.length; i++) {
+
+							div.innerHTML += '<img align = "left"  width=\'10px\' height=\'10px\' style="background-color:'
+									+ getAccelColor(mercalliScales[i] + 1)
+									+ '"> <p align: \'left\' style=\'color: #FFA500; display:inline-block; \'>'
+									+ mercalliLabels[i] + ' </p><br>';
+
+						}
+						return div;
+					};
+
+					/** *************************** */
+					
+
+					/** *****Legend for showing Temperature label***** */
+					var legendTemp = L.control({
+						position : 'bottomleft'
+					});
+
+					legendTemp.onAdd = function(map) {
+
+						var div = L.DomUtil.create('div', 'label');
+						var tempGrades = [ -100,-80, -60,-40, -20, 0, 20, 40, 60, 80, 100];
+						var tempLabels = [ "-100","-80", "-60", "-40", "-20", "0", "20", "40", "60", "80", "100"];
+
+						div.style.border = "1px solid #ffffff";
+						div.style.borderRadius = "2px";
+						div.style.backgroundColor = "#2A2A2A";
+						div.style.color = "#ffffff";
+						div.style.fontSize = "80%";
+						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Temperature Level (lux)</p>  <br>';
+
+						for (var i = 0; i < tempGrades.length; i++) {
+
+							div.innerHTML += '<img align = "left"  width=\'10px\' height=\'10px\' style="background-color:'
+									+ getTempColor(tempGrades[i] + 1)
+									+ '"> <p align: \'left\' style=\'color: #FFA500; display:inline-block; \'>'
+									+ tempLabels[i] + ' </p><br>';
+
+						}
+						return div;
+					};
+
+					/** *************************** */
 
 					/** *************************** */
 					/** ****************************** */
@@ -291,23 +378,31 @@ $(document)
 
 												if (current_layer == 0) {
 
-													resetToMessagesOverlay();
+													resetToLightReadings();
 													last_layer = 0;
 												} else if (current_layer == 1) {
 
-													resetToLightReadings();
-
+													resetToNoiseReadings();
 													last_layer = 1;
 												} else if (current_layer == 2) {
 
-													resetToNoiseReadings();
+													resetToAccelOverlay();
 													last_layer = 2;
+												} else if (current_layer == 3) {
+
+													resetToTempOverlay();
+													last_layer = 3;
+												}else if (current_layer == 4) {
+
+													resetToMessagesOverlay();
+													last_layer = 4;
 												}
+												
 												changeSocketToRealTime();
 
 												$('#datePicker').hide(0);
 											}
-										} ],	
+										} ],
 								position : "topright"
 
 							});
@@ -316,7 +411,7 @@ $(document)
 					realTimeButton.state('realTime');
 
 					/** *************************** */
-					
+
 					/** ****************************** */
 					var daylightLayer = L.terminator();
 					var daylightButton = L.easyButton({
@@ -333,17 +428,16 @@ $(document)
 							icon : 'fa-moon-o',
 							title : 'Hide Daylight layer',
 							onClick : function(control) {
-//								L.terminator().addTo(map);
+								// L.terminator().addTo(map);
 								map.removeLayer(daylightLayer);
 								control.state("showDaylightLayer");
 							}
-						}  ],
+						} ],
 						position : "topright"
 					});
 
 					daylightButton.addTo(map);
 					/** ****************************** */
-				
 
 					/** ****************************** */
 					var infoButton = L.easyButton({
@@ -385,10 +479,10 @@ $(document)
 									function(a) {
 
 										if (a.name == "Light"
-												&& current_layer != 1) {
+												&& current_layer != 0) {
 
 											resetToLightReadings();
-											last_layer = 1;
+											last_layer = 0;
 
 											hideSpinner();
 											if (current_state == 0) {
@@ -401,10 +495,10 @@ $(document)
 															'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">LIGHT</span></p>');
 
 										} else if (a.name == "Sound"
-												&& current_layer != 2) {
+												&& current_layer != 1) {
 
 											resetToNoiseReadings();
-											last_layer = 2;
+											last_layer = 1;
 											$('#statusmsgs')
 													.html(
 															'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">SOUND</span></p>');
@@ -415,12 +509,43 @@ $(document)
 												initialReq = true;
 												makeInitialRequest();
 											}
+										} else if (a.name == "Accelerometer"
+												&& current_layer != 2) {
+
+											resetToAccelOverlay();
+											last_layer = 2;
+											$('#statusmsgs')
+													.html(
+															'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">Mercalli Intensity Scale (using Accelerometer readings)</span></p>');
+											hideSpinner();
+											if (current_state == 0) {
+
+												initialReq = true;
+												makeInitialRequest();
+											}
+
+										} else if (a.name == "Temperature"
+												&& current_layer != 3) {
+
+											// current_layer = 2;
+											resetToTempOverlay();
+											last_layer = 3;
+											$('#statusmsgs')
+													.html(
+															'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">TEMPERATURE</span></p>');
+											hideSpinner();
+											if (current_state == 0) {
+
+												initialReq = true;
+												makeInitialRequest();
+											}
+
 										} else if (a.name == "Messages"
-												&& current_layer != 0) {
+												&& current_layer != 4) {
 
 											// current_layer = 2;
 											resetToMessagesOverlay();
-											last_layer = 0;
+											last_layer = 4;
 											$('#statusmsgs')
 													.html(
 															'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MESSAGES</span></p>');
@@ -436,41 +561,93 @@ $(document)
 
 					function resetToLightReadings() {
 						removeAllMarkers();
-						if (current_layer != 1)
+						if (current_layer != 0)
 							legendLight.addTo(map);
-						if (last_layer == 2)
+						if (last_layer == 1)
 							legendSound.removeFrom(map);
+						if(last_layer == 2)
+							legendAccel.removeFrom(map);
+						if(last_layer == 3)
+							legendTemp.removeFrom(map);
 
-						current_layer = 1;
+						current_layer = 0;
 						lightMarkers.addLayer(pruneCluster);
 						map.addLayer(lightMarkers);
-						
 
 					}
 
 					function resetToNoiseReadings() {
 						removeAllMarkers();
-						if (current_layer != 2)
+						if (current_layer != 1)
 							legendSound.addTo(map);
 
-						if (last_layer == 1)
+						if (last_layer == 0)
 							legendLight.removeFrom(map);
-
-						current_layer = 2;
+						if(last_layer == 2)
+							legendAccel.removeFrom(map);
+						if(last_layer == 3)
+							legendTemp.removeFrom(map);
+						
+						current_layer = 1;
 
 						noiseMarkers.addLayer(pruneCluster);
 						map.addLayer(noiseMarkers);
 					}
+					
+					function resetToAccelOverlay() {
+
+						removeAllMarkers();
+						if (current_layer != 2)
+							legendAccel.addTo(map);
+						
+						
+						if (last_layer == 1)
+							legendSound.removeFrom(map);
+						else if (last_layer == 0)
+							legendLight.removeFrom(map);
+						else if(last_layer == 3)
+							legendTemp.removeFrom(map);
+						
+						current_layer = 2;
+						accelMarkers.addLayer(pruneCluster);
+						map.addLayer(accelMarkers);
+
+					}
+					
+					function resetToTempOverlay() {
+
+						removeAllMarkers();
+						if (current_layer != 3)
+							legendTemp.addTo(map);
+						
+
+						 if (last_layer == 0)
+							legendLight.removeFrom(map);
+						else if (last_layer == 1) 
+							legendSound.removeFrom(map);
+						else if(last_layer == 2)
+							legendAccel.removeFrom(map);
+						
+						current_layer = 3;
+						tempMarkers.addLayer(pruneCluster);
+						map.addLayer(tempMarkers);
+
+					}
 
 					function resetToMessagesOverlay() {
-					
+
 						removeAllMarkers();
 
-						if (last_layer == 2)
+						if (last_layer == 1)
 							legendSound.removeFrom(map);
-						else if (last_layer == 1)
+						else if (last_layer == 0)
 							legendLight.removeFrom(map);
-						current_layer = 0;
+						else if(last_layer == 2)
+							legendAccel.removeFrom(map);
+						else if(last_layer == 3)
+							legendTemp.removeFrom(map);
+						
+						current_layer = 4;
 						msgMarkers.addLayer(pruneCluster);
 						map.addLayer(msgMarkers);
 
@@ -486,9 +663,13 @@ $(document)
 						pruneCluster.RemoveMarkers();
 						lightMarkers.clearLayers();
 						noiseMarkers.clearLayers();
+						accelMarkers.clearLayers();
+						tempMarkers.clearLayers();
 						msgMarkers.clearLayers();
 						map.removeLayer(lightMarkers);
 						map.removeLayer(noiseMarkers);
+						map.removeLayer(accelMarkers);
+						map.removeLayer(tempMarkers);
 						map.removeLayer(msgMarkers);
 						counter = 0;
 						if (DEBUG) {
@@ -519,6 +700,15 @@ $(document)
 								: d > 100 ? 4 : d > 10 ? 3 : d > 5 ? 2
 										: d > 0 ? 1 : 0;
 					}
+					
+					function getLightColor(d) {
+						return d > 100000 ? '#FFFF66' : d > 10000 ? '#DADFA2'
+								: d > 1000 ? '#BBBF8C' : d > 100 ? '#9C9F77'
+										: d > 10 ? '#7D8061'
+												: d > 5 ? '#5E604C'
+														: d > 0 ? '#3F4036'
+																: '#212121';
+					}
 
 					function getNoiseId(d) {
 						return d > 140 ? 7 : d > 120 ? 6 : d > 100 ? 5
@@ -526,11 +716,11 @@ $(document)
 										: d > 10 ? 1 : 0;
 					}
 
-					function getLightId(d) {
-						return d > 100000 ? 7 : d > 10000 ? 6 : d > 1000 ? 5
-								: d > 100 ? 4 : d > 10 ? 3 : d > 5 ? 2
-										: d > 0 ? 1 : 0;
-					}
+//					function getLightId(d) {
+//						return d > 100000 ? 7 : d > 10000 ? 6 : d > 1000 ? 5
+//								: d > 100 ? 4 : d > 10 ? 3 : d > 5 ? 2
+//										: d > 0 ? 1 : 0;
+//					}
 
 					function getNoiseColor(d) {
 						return d > 140 ? '#800026' : d > 120 ? '#BD0026'
@@ -540,24 +730,51 @@ $(document)
 														: d > 10 ? '#FED976'
 																: '#FFEDA0';
 					}
-
-					function getLightColor(d) {
-						return d > 100000 ? '#800026' : d > 10000 ? '#BD0026'
-								: d > 1000 ? '#E31A1C' : d > 100 ? '#FC4E2A'
-										: d > 10 ? '#FD8D3C'
-												: d > 5 ? '#FEB24C'
-														: d > 0 ? '#FED976'
+					
+					function getAccelId(d) {
+						return d
+					}
+					
+					function getAccelColor(d) {
+						return d > 12 ? '#800026' : d > 11 ? '#BD0026'
+								: d > 10 ? '#800026' : d > 9 ? '#BD0026'
+										:d > 8 ? '#800026' : d > 7 ? '#BD0026'
+								: d > 5 ? '#E31A1C' : d > 6 ? '#FC4E2A'
+										: d > 4 ? '#FD8D3C'
+												: d > 3 ? '#FEB24C'
+														: d > 2 ? '#FED976'
 																: '#FFEDA0';
 					}
+					
+					function getTempId(d) {
+						return  d > 100 ? 11
+								:  d > 80 ? 10 : d > 60 ? 9 : d > 40? 8
+										: d > 20 ? 7 : d > 0 ? 6 : d > -20? 5
+								: d > -40 ? 4 : d > -60 ? 3 : d > -80 ? 2
+										: d > -100 ? 1 : 0;
+					}
+					
+					function getTempColor(d) {
+						return d > 100 ? '#800026' : d > 80 ? '#BD0026'
+								: d > 60 ? '#800026' : d > 40 ? '#BD0026'
+										:d > 20 ? '#800026' : d > 0 ? '#BD0026'
+								: d > -20 ? '#E31A1C' : d > -40 ? '#FC4E2A'
+										: d > -60 ? '#FD8D3C'
+												: d > -80 ? '#FEB24C'
+														: d > -100 ? '#fff2f5'
+																: '#ffffff';
+					}
 
-					// function getLightColor(d) {
-					// return d > 100000 ? '#FFFFFF' : d > 10000 ? '#DADFA2'
-					// : d > 1000 ? '#BBBF8C' : d > 100 ? '#9C9F77'
-					// : d > 10 ? '#7D8061'
-					// : d > 5 ? '#5E604C'
-					// : d > 0 ? '#3F4036'
-					// : '#212121';
-					// }
+//					 function getLightColor(d) {
+//					 return d > 100000 ? '#800026' : d > 10000 ? '#BD0026'
+//					 : d > 1000 ? '#E31A1C' : d > 100 ? '#FC4E2A'
+//					 : d > 10 ? '#FD8D3C'
+//					 : d > 5 ? '#FEB24C'
+//					 : d > 0 ? '#FED976'
+//					 : '#FFEDA0';
+//					 }
+
+				
 
 					function getInnerColor(type) {
 
@@ -567,7 +784,7 @@ $(document)
 							return '#1A6A34';
 						} else if (type == 2) {
 							return '#3A6A34';
-						}
+						} 
 					}
 					/** ******************************* */
 					var pruneCluster = new PruneClusterForLeaflet();
@@ -640,10 +857,15 @@ $(document)
 						}
 						var avg = sum / markers.length;
 
-						// if (lightLayerFlag)
-						// return getLightColor(avg);
-						// else
-						return getNoiseColor(avg);
+						if(current_layer == 0)
+							return getLightColor(avg);
+						else if(current_layer == 1)
+							return getNoiseColor(avg);
+						else if(current_layer == 2)
+							return getAccelColor(avg);
+						else if(current_layer == 3)
+							return getTempColor(avg);
+						
 					}
 					;
 
@@ -678,7 +900,7 @@ $(document)
 							}
 							counter++;
 							if (msg.properties.readingType == 0
-									&& current_layer == 1) {
+									&& current_layer == 0) {
 
 								var lightMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
@@ -709,18 +931,18 @@ $(document)
 								// Light
 								// or
 								// Noise
-								lightMarker.data.category = msg.properties.readingType; // Category
-								// is
-								// readingType
+								lightMarker.data.category = msg.properties.readingType; // Category is readingType
 								lightMarker.weight = getLightId(msg.properties.level);
 
 								markerArray.push(lightMarker);
 								pruneCluster.RegisterMarker(lightMarker);
-								
-								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), lightMarker.data.popup);
+
+								showPopup(L.latLng(msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]),
+										lightMarker.data.popup);
 
 							} else if (msg.properties.readingType == 1
-									&& current_layer == 2) {
+									&& current_layer == 1) {
 								var noiseMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
@@ -755,10 +977,12 @@ $(document)
 								noiseMarker.weight = getNoiseId(msg.properties.level);
 								markerArray.push(noiseMarker);
 								pruneCluster.RegisterMarker(noiseMarker);
-								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), noiseMarker.data.popup);
+								showPopup(L.latLng(msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]),
+										noiseMarker.data.popup);
 
 							} else if (msg.properties.readingType == 2
-									&& current_layer == 0) {
+									&& current_layer == 4) {
 
 								var msgMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
@@ -799,7 +1023,77 @@ $(document)
 
 								markerArray.push(msgMarker);
 								pruneCluster.RegisterMarker(msgMarker);
-								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), msgMarker.data.popup);
+								showPopup(L.latLng(msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]),
+										msgMarker.data.popup);
+							} else if (msg.properties.readingType == 3
+									&& current_layer == 2) {
+
+								var accelMarker = new PruneCluster.Marker(
+										msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]);
+
+
+								accelMarker.data.popup = '<p style="color:black" align="center"><strong>'
+											+ (msg.properties.message)
+											+ '</strong>';
+								accelMarker.data.weight = getAccelId(msg.properties.level);
+
+							
+
+								// TODO --- required for initial request coz
+								// timemachine data does not send time.
+								// BUg here since msgMarker.data.name is
+								// undefined, set it to current time. This might
+								// cause problem with Time-machine feature.
+								if (msg.properties.recordTime === undefined) {
+									accelMarker.data.name = new Date().getTime();
+								} else
+									accelMarker.data.name = msg.properties.recordTime;
+								accelMarker.data.volatility = msg.properties.volatility;
+								accelMarker.data.category = msg.properties.readingType; // Category
+								// is
+								// readingType
+
+								markerArray.push(accelMarker);
+								pruneCluster.RegisterMarker(accelMarker);
+								showPopup(L.latLng(msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]),
+										msgMarker.data.popup);
+							} else if (msg.properties.readingType == 4
+									&& current_layer == 3) {
+
+								var tempMarker = new PruneCluster.Marker(
+										msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]);
+
+							
+								tempMarker.data.popup = '<p style="color:black" align="center"><strong>'
+											+ (msg.properties.message)
+											+ '</strong>';
+								tempMarker.data.weight = getTempId(msg.properties.level);
+
+							
+
+								// TODO --- required for initial request coz
+								// timemachine data does not send time.
+								// BUg here since msgMarker.data.name is
+								// undefined, set it to current time. This might
+								// cause problem with Time-machine feature.
+								if (msg.properties.recordTime === undefined) {
+									tempMarker.data.name = new Date().getTime();
+								} else
+									tempMarker.data.name = msg.properties.recordTime;
+								tempMarker.data.volatility = msg.properties.volatility;
+								tempMarker.data.category = msg.properties.readingType; // Category
+								// is
+								// readingType
+
+								markerArray.push(tempMarker);
+								pruneCluster.RegisterMarker(tempMarker);
+								showPopup(L.latLng(msg.geometry.coordinates[0],
+										msg.geometry.coordinates[1]),
+										msgMarker.data.popup);
 							}
 
 							return true;
@@ -874,8 +1168,7 @@ $(document)
 											.log("*****LOG***** + marker.data.volatility = "
 													+ marker.data.volatility);
 								}
-								if (currentTime - marker.data.name >= 60000 * 30) { // 10
-																					// minutes
+								if (currentTime - marker.data.name >= 10000) { // 10 seconds
 									if (DEBUG) {
 										console
 												.log("*****LOG***** + clear this marker");
@@ -960,8 +1253,8 @@ $(document)
 						if (initialReq) {
 							changeSocketToTimeMachine();
 							var date = new Date();
-							sendTimeMachineRequest(current_layer == 0 ? 2
-									: current_layer == 1 ? 0 : 1, date
+							sendTimeMachineRequest(current_layer == 2 ? 2
+									: current_layer == 1 ? 1 : 0, date
 									.getTime()
 									- (60000 * 300000), date.getTime());
 
@@ -1056,13 +1349,19 @@ $(document)
 					function resetBeforeSendingTimeMachineRequest() {
 						removeAllMarkers();
 
-						if (current_layer == 1) {
+						if (current_layer == 0) {
 							lightMarkers.addLayer(pruneCluster);
 							map.addLayer(lightMarkers)
-						} else if (current_layer == 2) {
+						} else if (current_layer == 1) {
 							noiseMarkers.addLayer(pruneCluster);
 							map.addLayer(noiseMarkers)
-						} else if (current_layer == 0) {
+						} else if (current_layer == 2) {
+							accelMarkers.addLayer(pruneCluster);
+							map.addLayer(accelMarkers);
+						} else if (current_layer == 3) {
+							tempMarkers.addLayer(pruneCluster);
+							map.addLayer(tempMarkers);
+						} else if (current_layer == 4) {
 							msgMarkers.addLayer(pruneCluster);
 							map.addLayer(msgMarkers);
 						}
@@ -1101,6 +1400,8 @@ $(document)
 
 					function getStartTime() {
 						return 
+
+						
 
 					}
 
@@ -1323,20 +1624,20 @@ $(document)
 							iconSize = 44;
 						}
 
-						if (current_layer == 0) {
-							c += "-1-";
-							c += 1;
-						} else if (current_layer == 1) {
-							c += "-1-"; // IMP - changing 0 to 1 as we want
-										// Light and noise color legends to be
-										// same.
+						 if (current_layer == 0) {
+							c += "-0-"; // IMP - changing 0 to 1 as we want
+							// Light and noise color legends to be
+							// same.
 							c += ((cluster.totalWeight / cluster.population)
 									.toFixed());
-						} else if (current_layer == 2) {
+						} else if (current_layer == 1) {
 							c += "-1-"
 							c += ((cluster.totalWeight / cluster.population)
 									.toFixed());
-						}
+						} else if (current_layer == 2) {
+							c += "-1-";
+							c += 1;
+						} 
 
 						return new L.DivIcon({
 							html : "<div><span>" + cluster.population
@@ -1356,104 +1657,97 @@ $(document)
 						}));
 
 						marker.on('mouseover', function(e) {
-//							generatePopup(e, data.popup);
+							// generatePopup(e, data.popup);
 							showPopup(marker.getLatLng(), data.popup);
 						});
 
 						marker.on('click', function(e) {
-//							generatePopup(e, data.popup);
+							// generatePopup(e, data.popup);
 							showPopup(marker.getLatLng(), data.popup);
 						});
-						
-					
 
 					};
 
+					// var generatePopup = function(e, popupContent) {
+					// var clickedPopup = e.target.getPopup();
+					// var newPopup = new L.popup({
+					// offset : new L.Point(0, -20),
+					// closeButton : false,
+					// autoPan : false,
+					// closeOnClick : true
+					// });
+					// // If a popup has not already been bound to the
+					// // marker, create one
+					// // and bind it.
+					// if (!clickedPopup) {
+					// newPopup.setContent(popupContent).setLatLng(
+					// e.latlng).openOn(e.target._map);
+					// e.target.bindPopup(newPopup);
+					// }
+					// // We need to destroy and recreate the popup each
+					// // time the marker is
+					// // clicked to refresh its position
+					// else if (!clickedPopup._isOpen) {
+					// var content = clickedPopup.getContent();
+					// e.target.unbindPopup(clickedPopup);
+					// newPopup.setContent(content).setLatLng(e.latlng)
+					// .openOn(e.target._map);
+					// e.target.bindPopup(newPopup);
+					// }
+					// };
 
-//					var generatePopup = function(e, popupContent) {
-//						var clickedPopup = e.target.getPopup();
-//						var newPopup = new L.popup({
-//							offset : new L.Point(0, -20),
-//							closeButton : false,
-//							autoPan : false,
-//							closeOnClick : true
-//						});
-//						// If a popup has not already been bound to the
-//						// marker, create one
-//						// and bind it.
-//						if (!clickedPopup) {
-//							newPopup.setContent(popupContent).setLatLng(
-//									e.latlng).openOn(e.target._map);
-//							e.target.bindPopup(newPopup);
-//						}
-//						// We need to destroy and recreate the popup each
-//						// time the marker is
-//						// clicked to refresh its position
-//						else if (!clickedPopup._isOpen) {
-//							var content = clickedPopup.getContent();
-//							e.target.unbindPopup(clickedPopup);
-//							newPopup.setContent(content).setLatLng(e.latlng)
-//									.openOn(e.target._map);
-//							e.target.bindPopup(newPopup);
-//						}
-//					};
-					
-					
-					//L.latLng(50.5, 30.5)
+					// L.latLng(50.5, 30.5)
 					var popup;
-					function showPopup(latlng, content)   {
+					function showPopup(latlng, content) {
 						var options = {
-								  offset:  new L.Point(0, -20),
-						closeButton : false,
-						autoPan : false,
-						closeOnClick : true
-								};
-						 popup = L.popup(options)
-					    .setLatLng(latlng)
-					    .setContent(content)
-						.openOn(map);
+							offset : new L.Point(0, -20),
+							closeButton : false,
+							autoPan : false,
+							closeOnClick : true
+						};
+						popup = L.popup(options).setLatLng(latlng).setContent(
+								content).openOn(map);
 					}
-					
+
 					function hidePopup() {
 						map.closePopup();
 					}
-					
+
 					/** ********************************************** */
-					
-//					
-//					var decluster = false;
-//					function clusterMarkers() {
-//					    if(pruneCluster){
-//					        pruneCluster.Cluster.Size = 2;
-//					        pruneCluster.Cluster.Margin = 10;
-//					        pruneCluster.ProcessView();
-//					    }
-//					}
-//					function declusterMarkers() {
-//					    if(pruneCluster){
-//					        pruneCluster.Cluster.Size = 35;
-//					        pruneCluster.Cluster.Margin = 10;
-//					        pruneCluster.ProcessView();
-//					    }
-//					}
-//
-//					map.on('zoomend', function () {
-//						console.log("map onzoomed called");
-////					    if (map.getZoom() > 10) {
-////					        if (decluster === false) {
-////					        	clusterMarkers()
-////					            decluster = true;
-////					        }
-////					    }else{
-////					        if (decluster === true) {
-////					            declusterMarkers()
-////					            decluster = false;
-////					        }
-////					    }
-//					});
-						
-						
-					resetToMessagesOverlay();
+
+					//					
+					// var decluster = false;
+					// function clusterMarkers() {
+					// if(pruneCluster){
+					// pruneCluster.Cluster.Size = 2;
+					// pruneCluster.Cluster.Margin = 10;
+					// pruneCluster.ProcessView();
+					// }
+					// }
+					// function declusterMarkers() {
+					// if(pruneCluster){
+					// pruneCluster.Cluster.Size = 35;
+					// pruneCluster.Cluster.Margin = 10;
+					// pruneCluster.ProcessView();
+					// }
+					// }
+					//
+					// map.on('zoomend', function () {
+					// console.log("map onzoomed called");
+					// // if (map.getZoom() > 10) {
+					// // if (decluster === false) {
+					// // clusterMarkers()
+					// // decluster = true;
+					// // }
+					// // }else{
+					// // if (decluster === true) {
+					// // declusterMarkers()
+					// // decluster = false;
+					// // }
+					// // }
+					// });
+
+					resetToLightReadings();
 					$('#datePicker').hide(0);
 
 				});
