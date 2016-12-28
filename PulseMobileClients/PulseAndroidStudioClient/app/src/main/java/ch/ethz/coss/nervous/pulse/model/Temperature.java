@@ -25,14 +25,46 @@
  *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.model;
 
-public class PhotoVisual extends Visual {
+import org.json.JSONException;
+import org.json.JSONObject;
 
-	public String textMsg = null;
+import java.io.Serializable;
+import java.util.Arrays;
 
-	public PhotoVisual() {
+public class Temperature extends Visual implements Serializable{
+
+	public double val;
+
+	public Temperature(String uuid, double value, long timestamp, VisualLocation location) {
+		type = 3;
+		this.uuid = uuid;
+		this.val = value;
+		this.timestamp = timestamp;
+		this.location = location;
+		serialVersionUID = 1L;
 	}
 
-	public PhotoVisual(String txtMsg) {
-		this.textMsg = txtMsg;
+	public  String getJsonString() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("uuid", uuid);
+			json.put("id", type);
+			json.put("celsius", val);
+			json.put("timestamp", timestamp);
+			json.put("lat", location.latnLong[0]);
+			json.put("long", location.latnLong[1]);
+			json.put("volatility", volatility);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return json.toString();
+
+	}
+
+	@Override
+	public String toString() {
+		return "Temperature = (" + "," + timestamp + ") -> " + "(" + val + ", GPS coordinates -> " + Arrays.toString(location.latnLong);
 	}
 }

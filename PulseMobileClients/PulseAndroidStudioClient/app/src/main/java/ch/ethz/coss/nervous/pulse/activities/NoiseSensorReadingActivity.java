@@ -52,7 +52,7 @@ import ch.ethz.coss.nervous.pulse.utils.Utils;
 @SuppressLint({ "Wakelock", "InlinedApi" })
 public class NoiseSensorReadingActivity extends SensorReadingActivity {
 
-	public static final String DEBUG_TAG = "NoiseSensorReadingActivityPulse";
+	public static final String DEBUG_TAG = "NoiseActivityPulse";
 
 	private Intent intent;
 

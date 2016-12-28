@@ -29,9 +29,12 @@ public class Constants {
 
 	public static boolean DUMMY_DATA_COLLECT = false;
 
-	protected static final int SENSOR_TYPE_ACCELEROMETER = 0;
-	protected static final int SENSOR_TYPE_LIGHT = 1;
-	protected static final int SENSOR_TYPE_NOISE = 2;
+	protected static final int SENSOR_TYPE_LIGHT = 0;
+	protected static final int SENSOR_TYPE_NOISE = 1;
+	protected static final int SENSOR_TYPE_ACCELEROMETER = 2;
+	protected static final int SENSOR_TYPE_TEMPERATURE = 3;
+	protected static final int SENSOR_TYPE_MESSAGES = 4;
+
 
 	protected static final int MEDIA_VISUAL_TYPE_TEXT = 0;
 	protected static final int MEDIA_VISUAL_TYPE_PHOTO = 1;

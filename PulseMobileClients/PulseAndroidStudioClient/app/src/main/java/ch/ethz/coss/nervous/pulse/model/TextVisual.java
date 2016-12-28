@@ -25,10 +25,13 @@
  *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class TextVisual extends Visual implements Serializable {
+public class TextVisual extends Visual implements Serializable{
 
 	public String textMsg = null;
 
@@ -36,7 +39,7 @@ public class TextVisual extends Visual implements Serializable {
 	}
 
 	public TextVisual(String uuid, String txtMsg, long timestamp, long volatility, VisualLocation loc) {
-		type = 2;
+		type = 4;
 		this.uuid = uuid;
 		this.textMsg = txtMsg;
 		this.timestamp = timestamp;
@@ -45,8 +48,27 @@ public class TextVisual extends Visual implements Serializable {
 		serialVersionUID = 4L;
 	}
 
+	public  String getJsonString() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("uuid", uuid);
+			json.put("id", type);
+			json.put("msg", textMsg);
+			json.put("timestamp", timestamp);
+			json.put("lat", location.latnLong[0]);
+			json.put("long", location.latnLong[1]);
+			json.put("volatility", volatility);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return json.toString();
+
+	}
+
 	@Override
 	public String toString() {
-		return "TextVisual = (" + timestamp + ") -> " + "(" + textMsg + ") @ " + Arrays.toString(location.latnLong);
+		return "TextVisual = (" + timestamp + ") -> " + "(" + textMsg + "), GPS coordinates -> " + Arrays.toString(location.latnLong);
 	}
 }

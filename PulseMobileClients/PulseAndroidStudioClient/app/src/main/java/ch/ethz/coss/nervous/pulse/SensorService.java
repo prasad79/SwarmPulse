@@ -92,8 +92,6 @@ public class SensorService extends Service implements SensorEventListener, Noise
 			Log.d(DEBUG_TAG, reading.toString());
 
 			if (intent == null)
-				// System.out.println("Intent is null");
-
 				intent.putExtra("AccReading", reading);
 			context.sendBroadcast(intent);
 

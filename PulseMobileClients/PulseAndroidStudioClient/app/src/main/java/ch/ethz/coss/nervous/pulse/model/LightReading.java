@@ -25,10 +25,13 @@
  *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class LightReading extends Visual implements Serializable {
+public class LightReading extends Visual implements Serializable{
 
 	public double lightVal;
 
@@ -37,7 +40,7 @@ public class LightReading extends Visual implements Serializable {
 	}
 
 	public LightReading(String uuid, double lightVal, long timestamp, long volatility, VisualLocation loc) {
-		type = 0;
+		type = 3;
 		this.uuid = uuid;
 		this.lightVal = lightVal;
 		this.timestamp = timestamp;
@@ -46,10 +49,32 @@ public class LightReading extends Visual implements Serializable {
 		serialVersionUID = 2L;
 	}
 
+
+	public  String getJsonString() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("uuid", uuid);
+			json.put("id", type);
+			json.put("lux", lightVal);
+			json.put("timestamp", timestamp);
+			json.put("lat", location.latnLong[0]);
+			json.put("long", location.latnLong[1]);
+			json.put("volatility", volatility);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return json.toString();
+
+	}
+
 	@Override
 	public String toString() {
 		return "LightReading = (" + "," + timestamp + ") -> " + "(" + lightVal + ")  @ "
 				+ Arrays.toString(location.latnLong);
 	}
+
+
 
 }
