@@ -29,17 +29,33 @@ public class PulseConstants {
 
 	public static String PULSE_LIGHT_LABEL = "Light";
 	public static String PULSE_NOISE_LABEL = "Noise";
+	public static String PULSE_ACCEL_LABEL = "Accel";
+	public static String PULSE_BATTERY_LABEL = "Battery";
+	public static String PULSE_GYRO_LABEL = "Gyro";
+	public static String PULSE_TEMP_LABEL = "Temperature";
+	public static String PULSE_PROX_LABEL = "Proximity";
 	public static String PULSE_TEXT_LABEL = "Message";
+	
 
 	public static String getLabel(int readingType) {
 
 		switch (readingType) {
-		case 0:
-		default:
-			return PULSE_LIGHT_LABEL;
 		case 1:
-			return PULSE_NOISE_LABEL;
+			return PULSE_ACCEL_LABEL;
 		case 2:
+			return PULSE_BATTERY_LABEL;
+		case 3:
+			return PULSE_LIGHT_LABEL;
+		case 4:
+			return PULSE_GYRO_LABEL;
+		case 5:
+			return PULSE_NOISE_LABEL;
+		case 6:
+			return PULSE_PROX_LABEL;
+		case 7:
+			return PULSE_TEMP_LABEL;
+		case 8:
+		default:
 			return PULSE_TEXT_LABEL;
 
 		}

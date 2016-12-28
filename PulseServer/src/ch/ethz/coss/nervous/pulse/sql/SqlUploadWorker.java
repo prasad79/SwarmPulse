@@ -39,19 +39,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 import ch.ethz.coss.nervous.pulse.PulseWebSocketServer;
-import ch.ethz.coss.nervous.pulse.model.LightReading;
-import ch.ethz.coss.nervous.pulse.model.NoiseReading;
-import ch.ethz.coss.nervous.pulse.model.TextVisual;
-import ch.ethz.coss.nervous.pulse.model.Visual;
-import ch.ethz.coss.nervous.pulse.model.VisualLocation;
 import ch.ethz.coss.nervous.pulse.socket.ConcurrentSocketWorker;
 import ch.ethz.coss.nervous.pulse.utils.Log;
-import flexjson.JSONDeserializer;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 public class SqlUploadWorker extends ConcurrentSocketWorker {
@@ -76,7 +71,6 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 			boolean connected = true;
 			while (connected) {
 				connected &= !socket.isClosed();
-				Visual reading = null;
 				JsonObject featureCollection = new JsonObject();
 				JsonArray features = new JsonArray();
 				JsonObject feature = null;
@@ -112,7 +106,15 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 
 					if (json.length() <= 0)
 						continue;
-					reading = new JSONDeserializer<Visual>().deserialize(json, Visual.class);
+					
+					
+					JsonObject jsonObj = null;
+					try {
+						jsonObj = new JsonParser().parse(json).getAsJsonObject();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					feature = new JsonObject();
 
 					feature.addProperty("type", "Feature");
@@ -126,66 +128,78 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					// construct a JSONArray from a string; can also use an
 					// array or list
 					JsonArray coord = new JsonArray();
-					if (reading == null || reading.location == null)
+//					if (reading == null || reading.location == null)
+//						continue;
+//					else if (reading.location.latnLong[0] == 0 && reading.location.latnLong[1] == 0)
+//						continue;
+					
+					
+					if(jsonObj == null)
 						continue;
-					else if (reading.location.latnLong[0] == 0 && reading.location.latnLong[1] == 0)
-						continue;
-
-					coord.add(new JsonPrimitive(new String("" + reading.location.latnLong[0])));
-					coord.add(new JsonPrimitive(new String("" + reading.location.latnLong[1])));
+					
+					coord.add(new JsonPrimitive(jsonObj.get("lat").toString()));
+					coord.add(new JsonPrimitive(jsonObj.get("long").toString()));
 
 					point.add("coordinates", coord);
 					feature.add("geometry", point);
 
 					JsonObject properties = new JsonObject();
-					if (reading.type == 0) {
-						// System.out.println("Reading instance of light");
-						properties.addProperty("readingType", "" + 0);
-						properties.addProperty("level", "" + ((LightReading) reading).lightVal);
-					} else if (reading.type == 1) {
-						properties.addProperty("readingType", "" + 1);
-						properties.addProperty("level", "" + ((NoiseReading) reading).soundVal);
-					} else if (reading.type == 2) {
-						properties.addProperty("readingType", "" + 2);
-						properties.addProperty("message", "" + ((TextVisual) reading).textMsg);
+					long id = Long.parseLong(jsonObj.get("id").toString());
+					long timestamp = Long.parseLong(jsonObj.get("timestamp").toString());
+					long volatility = Long.parseLong(jsonObj.get("volatility").toString());
+					String uuid = jsonObj.get("uuid").toString();
+					if (id == 1) { //Accelerometer
+						// System.out.println("Reading instance of Accelerometer");
+						properties.addProperty("readingType", "" + id);
+						properties.addProperty("level", "" + (Float.parseFloat(jsonObj.get("x").toString())+Float.parseFloat(jsonObj.get("y").toString())+ Float.parseFloat(jsonObj.get("z").toString())));
+					} else if (id == 3) { //Light
+						properties.addProperty("readingType", "" + id);
+						properties.addProperty("level", "" + Float.parseFloat(jsonObj.get("lux").toString()));
+					} else if (id == 5) { // Noise
+						properties.addProperty("readingType", "" + id);
+						properties.addProperty("message", "" + Float.parseFloat(jsonObj.get("Db").toString()));
+					} else if (id == 7) { // Temperature
+						properties.addProperty("readingType", "" + id);
+						properties.addProperty("message", "" + Float.parseFloat(jsonObj.get("Db").toString()));
 					} else {
 						// System.out.println("Reading instance not known");
 					}
-					properties.addProperty("recordTime", reading.timestamp);
-					properties.addProperty("volatility", reading.volatility);
+					properties.addProperty("recordTime", timestamp);
+					
+					properties.addProperty("volatility",  volatility);
 					feature.add("properties", properties);
 					features.add(feature);
 					featureCollection.add("features", features);
 
-					if (reading.volatility != 0) {
+					if (volatility != 0) {
 						/***** SQL insert ********/
 						// Insert data
-						 System.out.println("before uploading SQL - reading uuid = "+reading.uuid);
-						 System.out.println("Reading volatility = "+reading.volatility);
-						PreparedStatement datastmt = sqlse.getSensorInsertStatement(connection, reading.type);
+						 System.out.println("before uploading SQL - reading uuid = "+uuid);
+						 System.out.println("Reading volatility = "+volatility);
+						PreparedStatement datastmt = sqlse.getSensorInsertStatement(connection, id);
 						if (datastmt != null) {
 							// System.out.println("datastmt - " +
 							// datastmt.toString());
-							List<Integer> types = sqlse.getArgumentExpectation((long) reading.type);
-							datastmt.setString(1, reading.uuid);
-							if (reading.type == 0) {
-								datastmt.setLong(2, reading.timestamp);
-								datastmt.setLong(3, reading.volatility);
-								datastmt.setDouble(4, ((LightReading) reading).lightVal);
-								datastmt.setDouble(5, reading.location.latnLong[0]);
-								datastmt.setDouble(6, reading.location.latnLong[1]);
-							} else if (reading.type == 1) {
-								datastmt.setLong(2, reading.timestamp);
-								datastmt.setLong(3, reading.volatility);
-								datastmt.setDouble(4, ((NoiseReading) reading).soundVal);
-								datastmt.setDouble(5, reading.location.latnLong[0]);
-								datastmt.setDouble(6, reading.location.latnLong[1]);
-							} else if (reading.type == 2) {
-								datastmt.setLong(2, reading.timestamp);
-								datastmt.setLong(3, reading.volatility);
-								datastmt.setString(4, ((TextVisual) reading).textMsg);
-								datastmt.setDouble(5, reading.location.latnLong[0]);
-								datastmt.setDouble(6, reading.location.latnLong[1]);
+							List<Integer> types = sqlse.getArgumentExpectation(id);
+							datastmt.setString(1, uuid);
+							datastmt.setLong(2, timestamp);
+							datastmt.setLong(3, volatility);
+							datastmt.setDouble(4, Double.parseDouble(jsonObj.get("lat").toString()));
+							datastmt.setDouble(5, Double.parseDouble(jsonObj.get("long").toString()));
+							if (id == 1) {
+								datastmt.setDouble(6, Double.parseDouble(jsonObj.get("x").toString()));
+								datastmt.setDouble(7, Double.parseDouble(jsonObj.get("y").toString()));
+								datastmt.setDouble(8, Double.parseDouble(jsonObj.get("z").toString()));
+								datastmt.setDouble(9, Integer.parseInt(jsonObj.get("Mercalli").toString()));
+							}else 
+							if (id == 3) {
+								datastmt.setDouble(6, Double.parseDouble(jsonObj.get("lux").toString()));
+							} else if (id == 5) {
+								datastmt.setDouble(6, Double.parseDouble(jsonObj.get("Db").toString()));
+							} else if (id == 7) {
+								datastmt.setDouble(6, Double.parseDouble(jsonObj.get("celsius").toString()));
+							} else if (id == 8) {
+								datastmt.setDouble(6, Double.parseDouble(jsonObj.get("msg").toString()));
 							}
 							// System.out.println("datastmt after populating - "
 							// + datastmt.toString());
@@ -200,6 +214,8 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 
 				} catch (JsonParseException e) {
 					System.out.println("can't save json object: " + e.toString());
+				} catch (Exception e) {
+					System.out.println("General Exception: " + e.toString());
 				}
 				// output the result
 				// System.out.println("featureCollection=" +
@@ -227,7 +243,7 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				;
+				
 			}
 		}
 	}
