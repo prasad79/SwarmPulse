@@ -277,7 +277,7 @@ $(document)
 						div.style.backgroundColor = "#2A2A2A";
 						div.style.color = "#ffffff";
 						div.style.fontSize = "80%";
-						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Temperature Level (lux)</p>  <br>';
+						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Temperature Level (Celsius)</p>  <br>';
 
 						for (var i = 0; i < tempGrades.length; i++) {
 
@@ -899,14 +899,14 @@ $(document)
 								console.log("*****LOG***** ADDING MARKER");
 							}
 							counter++;
-							if (msg.properties.readingType == 0
+							if (msg.properties.readingType == 3
 									&& current_layer == 0) {
 
 								var lightMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
 								lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
-										+ msg.properties.level
+										+ msg.properties.message
 										+ '</strong> lux<br>';
 								// +msg.geometry.coordinates[0]+',
 								// '+msg.geometry.coordinates[1];
@@ -932,7 +932,7 @@ $(document)
 								// or
 								// Noise
 								lightMarker.data.category = msg.properties.readingType; // Category is readingType
-								lightMarker.weight = getLightId(msg.properties.level);
+								lightMarker.weight = getLightId(msg.properties.message);
 
 								markerArray.push(lightMarker);
 								pruneCluster.RegisterMarker(lightMarker);
@@ -941,13 +941,13 @@ $(document)
 										msg.geometry.coordinates[1]),
 										lightMarker.data.popup);
 
-							} else if (msg.properties.readingType == 1
+							} else if (msg.properties.readingType == 5
 									&& current_layer == 1) {
 								var noiseMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
 								noiseMarker.data.popup = '<p style="color:black"  ><strong>'
-										+ msg.properties.level
+										+ msg.properties.message
 										+ '</strong> db<br>';
 								// +msg.geometry.coordinates[0]+',
 								// '+msg.geometry.coordinates[1];
@@ -963,7 +963,7 @@ $(document)
 								} else
 									noiseMarker.data.name = msg.properties.recordTime;
 
-								noiseMarker.data.weight = getNoiseId(msg.properties.level); // Weight
+								noiseMarker.data.weight = getNoiseId(msg.properties.message); // Weight
 								// is
 								// the
 								// level
@@ -981,7 +981,7 @@ $(document)
 										msg.geometry.coordinates[1]),
 										noiseMarker.data.popup);
 
-							} else if (msg.properties.readingType == 2
+							} else if (msg.properties.readingType == 8
 									&& current_layer == 4) {
 
 								var msgMarker = new PruneCluster.Marker(
@@ -1026,7 +1026,7 @@ $(document)
 								showPopup(L.latLng(msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]),
 										msgMarker.data.popup);
-							} else if (msg.properties.readingType == 3
+							} else if (msg.properties.readingType == 1
 									&& current_layer == 2) {
 
 								var accelMarker = new PruneCluster.Marker(
@@ -1060,7 +1060,7 @@ $(document)
 								showPopup(L.latLng(msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]),
 										msgMarker.data.popup);
-							} else if (msg.properties.readingType == 4
+							} else if (msg.properties.readingType == 7
 									&& current_layer == 3) {
 
 								var tempMarker = new PruneCluster.Marker(
