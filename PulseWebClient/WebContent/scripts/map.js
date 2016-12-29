@@ -906,7 +906,7 @@ $(document)
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
 								lightMarker.data.popup = '<p style="color:black" align="center"><strong>'
-										+ msg.properties.message
+										+ msg.properties.level
 										+ '</strong> lux<br>';
 								// +msg.geometry.coordinates[0]+',
 								// '+msg.geometry.coordinates[1];
