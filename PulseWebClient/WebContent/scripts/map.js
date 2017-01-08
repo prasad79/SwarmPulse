@@ -42,10 +42,10 @@ $(document)
 					}).setView([ 47.379977, 8.545751 ], 2);
 					var lightMarkers = new L.LayerGroup();
 					var noiseMarkers = new L.LayerGroup();
-					var msgMarkers = new L.LayerGroup();
-					var temperatureMarkers = new L.LayerGroup();
-					var accelerometerMarkers = new L.LayerGroup();
+					var tempMarkers = new L.LayerGroup();
+					var accelMarkers = new L.LayerGroup();
 					var gyroMarkers = new L.LayerGroup();
+					var msgMarkers = new L.LayerGroup();
 
 					new L.Control.Zoom({
 						position : 'topright'
@@ -56,30 +56,45 @@ $(document)
 									'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; OpenStreetMap contributors, CC-BY-SA',
-										maxZoom : 11
+										maxZoom : 20
 									});
 
 					mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 					mapquestLink = '<a href="http://www.mapquest.com//">MapQuest</a>';
 					mapquestPic = '<img src="http://developer.mapquest.com/content/osm/mq_logo.png">';
 
-					var mapSatellite = L
+					/*var mapSatellite = L
 							.tileLayer(
 									'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; ' + mapLink
 												+ '. Tiles courtesy of '
 												+ mapquestLink + mapquestPic,
-										maxZoom : 11,
+										maxZoom : 20,
 										subdomains : '1234',
-									});
+									});*/
+					
+					var mapStandard2 = L
+							.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}',
+								{
+									maxZoom : 20,
+									attribution : 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+								}
+							);
+					
+					var mapSatellite = L
+							.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+									{		
+						 				attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'		
+									}
+							);
 
 					var mapNoLabels = L
 							.tileLayer(
 									'https://cartocdn_{s}.global.ssl.fastly.net/base-midnight/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 11
+										maxZoom : 20
 									});
 
 					var mapWithLabels = L
@@ -87,7 +102,7 @@ $(document)
 									'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
 									{
 										attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-										maxZoom : 11
+										maxZoom : 20
 									});
 
 					/** ****Pulse Logo****** */
@@ -116,7 +131,7 @@ $(document)
 					/** ***************Layer Control********************* */
 					var baseMaps = {
 						"Standard Map" : mapStandard,
-						"Standard Map 2" : mapSatellite,
+						"Satellite Map" : mapSatellite,
 						"Dark no labels Map" : mapNoLabels,
 						"Dark with labels Map" : mapWithLabels
 					};
@@ -124,12 +139,12 @@ $(document)
 					var groupedOverlays = {
 						"Sensors" : {
 
-							"Light" : lightMarkers,
-							"Sound" : noiseMarkers,
-							"Temperature" : temperatureMarkers,
-							"Acceleration" : accelerometerMarkers,
-							"Gyroscope" : gyroMarkers,
-							"Messages" : msgMarkers
+							"Light" : lightMarkers, //0
+							"Sound" : noiseMarkers, //1
+							"Temperature" : tempMarkers, //2
+							"Accelerometer" : accelMarkers, //3
+							"Gyroscope" : gyroMarkers, //4
+							"Messages" : msgMarkers //5
 
 						}
 					};
@@ -198,7 +213,7 @@ $(document)
 						div.style.backgroundColor = "#2A2A2A";
 						div.style.color = "#ffffff";
 						div.style.fontSize = "80%";
-						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Light Level (lux)&nbsp;&nbsp;&nbsp;&nbsp;</p><br>';
+						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Light Level (lux)</p><br>';
 
 						for (var i = 0; i < lightGrades.length; i++) {
 
@@ -264,7 +279,7 @@ $(document)
 						div.style.backgroundColor = "#2A2A2A";
 						div.style.color = "#ffffff";
 						div.style.fontSize = "80%";
-						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Temperature Level (Celsius)</p>  <br>';
+						div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Temperature Level (&deg;C)</p>  <br>';
 
 						for (var i = 0; i < tempGrades.length; i++) {
 
@@ -394,29 +409,22 @@ $(document)
 												control.state("realTime");
 
 												if (current_layer == 0) {
-
-													resetToMessagesOverlay();
+													resetToLightReadings();
 													last_layer = 0;
 												} else if (current_layer == 1) {
-
-													resetToLightReadings();
-
+													resetToNoiseReadings();
 													last_layer = 1;
 												} else if (current_layer == 2) {
-
-													resetToNoiseReadings();
+													resetToAccelOverlay();
 													last_layer = 2;
 												} else if (current_layer == 3) {
-
-													resetToTemperatureReadings();
+													resetToTempOverlay();
 													last_layer = 3;
 												} else if (current_layer == 4) {
-
-													resetToAccelerometerReadings();
+													resetToGyroOverlay();
 													last_layer = 4;
 												} else if (current_layer == 5) {
-
-													resetToGyroReadings();
+													resetToMessagesOverlay();
 													last_layer = 5;
 												}
 												changeSocketToRealTime();
@@ -470,29 +478,22 @@ $(document)
 												control.state("allValues");
 
 												if (current_layer == 0) {
-
-													resetToMessagesOverlay();
+													resetToLightReadings();
 													last_layer = 0;
 												} else if (current_layer == 1) {
-
-													resetToLightReadings();
-
+													resetToNoiseReadings();
 													last_layer = 1;
 												} else if (current_layer == 2) {
-
-													resetToNoiseReadings();
+													resetToAccelOverlay();
 													last_layer = 2;
 												} else if (current_layer == 3) {
-
-													resetToTemperatureReadings();
+													resetToTempOverlay();
 													last_layer = 3;
 												} else if (current_layer == 4) {
-
-													resetToAccelerometerReadings();
+													resetToGyroOverlay();
 													last_layer = 4;
 												} else if (current_layer == 5) {
-
-													resetToGyroReadings();
+													resetToMessagesOverlay();
 													last_layer = 5;
 												}
 												changeSocketToRealTime();
@@ -575,13 +576,12 @@ $(document)
 							'overlayadd',
 							function(a) {
 								if (a.name == "Light"
-										&& current_layer != 1) {
+										&& current_layer != 0) {
 									resetToLightReadings();
-									last_layer = 1;
+									last_layer = 0;
 
 									hideSpinner();
 									if (current_state == 0) {
-
 										initialReq = true;
 										makeInitialRequest();
 									}
@@ -590,62 +590,29 @@ $(document)
 													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">LIGHT</span></p>');
 
 								} else if (a.name == "Sound"
-										&& current_layer != 2) {
+										&& current_layer != 1) {
 
 									resetToNoiseReadings();
-									last_layer = 2;
+									last_layer = 1;
 									$('#statusmsgs')
 											.html(
 													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">SOUND</span></p>');
 
 									hideSpinner();
 									if (current_state == 0) {
-
 										initialReq = true;
 										makeInitialRequest();
 									}
-								} else if (a.name == "Messages"
-										&& current_layer != 0) {
+								} else if (a.name == "Accelerometer"
+										&& current_layer != 2) {
 
-									// current_layer = 2;
-									resetToMessagesOverlay();
-									last_layer = 0;
+									resetToAccelOverlay();
+									last_layer = 2;
 									$('#statusmsgs')
 											.html(
-													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MESSAGES</span></p>');
+													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MERCALLI INTENSITY SCALE (USING ACCELEROMETER READINGS)</span></p>');
 									hideSpinner();
 									if (current_state == 0) {
-
-										initialReq = true;
-										makeInitialRequest();
-									}
-
-								} else if (a.name == "Acceleration"
-										&& current_layer != 4) {
-
-									resetToAccelerometerReadings();
-									last_layer = 4;
-									$('#statusmsgs')
-											.html(
-													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">ACCELERATION</span></p>');
-									hideSpinner();
-									if (current_state == 0) {
-
-										initialReq = true;
-										makeInitialRequest();
-									}
-
-								} else if (a.name == "Gyroscope"
-										&& current_layer != 5) {
-
-									resetToGyroReadings();
-									last_layer = 5;
-									$('#statusmsgs')
-											.html(
-													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">GYROSCOPE</span></p>');
-									hideSpinner();
-									if (current_state == 0) {
-
 										initialReq = true;
 										makeInitialRequest();
 									}
@@ -653,132 +620,147 @@ $(document)
 								} else if (a.name == "Temperature"
 										&& current_layer != 3) {
 
-									resetToTemperatureReadings();
+									resetToTempOverlay();
 									last_layer = 3;
 									$('#statusmsgs')
 											.html(
 													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">TEMPERATURE</span></p>');
 									hideSpinner();
 									if (current_state == 0) {
-
 										initialReq = true;
 										makeInitialRequest();
 									}
+								} else if (a.name == "Gyroscope"
+										&& current_layer != 4) {
+
+									resetToGyroOverlay();
+									last_layer = 4;
+									$('#statusmsgs')
+											.html(
+													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">GYROSCOPE</span></p>');
+									hideSpinner();
+									if (current_state == 0) {
+										initialReq = true;
+										makeInitialRequest();
+									}
+
+								} else if (a.name == "Messages"
+										&& current_layer != 5) {
+									resetToMessagesOverlay();
+									last_layer = 5;
+									$('#statusmsgs')
+											.html(
+													'<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MESSAGES</span></p>');
+									hideSpinner();
+									if (current_state == 0) {
+										initialReq = true;
+										makeInitialRequest();
+									}
+
 								}
 							}
 						);
 
 					function resetToLightReadings() {
 						removeAllMarkers();
-						if (current_layer != 1)
+						if (current_layer != 0)
 							legendLight.addTo(map);
-						
-						if (last_layer == 2)
+						if (last_layer == 1)
 							legendSound.removeFrom(map);
+						else if (last_layer == 2)
+							legendAccel.removeFrom(map);
 						else if (last_layer == 3)
 							legendTemp.removeFrom(map);
 						else if (last_layer == 4)
-							legendAccel.removeFrom(map);
-						else if (last_layer == 5)
 							legendGyro.removeFrom(map);
-						current_layer = 1;
+						current_layer = 0;
 						lightMarkers.addLayer(pruneCluster);
 						map.addLayer(lightMarkers);
 					}
 
 					function resetToNoiseReadings() {
 						removeAllMarkers();
-						if (current_layer != 2)
+						if (current_layer != 1)
 							legendSound.addTo(map);
-
-						if (last_layer == 1)
+						if (last_layer == 0)
 							legendLight.removeFrom(map);
+						else if (last_layer == 2)
+							legendAccel.removeFrom(map);
 						else if (last_layer == 3)
 							legendTemp.removeFrom(map);
 						else if (last_layer == 4)
-							legendAccel.removeFrom(map);
-						else if (last_layer == 5)
 							legendGyro.removeFrom(map);
-						current_layer = 2;
+						current_layer = 1;
 						noiseMarkers.addLayer(pruneCluster);
 						map.addLayer(noiseMarkers);
 					}
 
-					function resetToMessagesOverlay() {
+					function resetToAccelOverlay() {
 						removeAllMarkers();
-
-						if (last_layer == 2)
-							legendSound.removeFrom(map);
-						else if (last_layer == 1)
+						if (current_layer != 2)
+							legendAccel.addTo(map);
+						if (last_layer == 0)
 							legendLight.removeFrom(map);
+						else if (last_layer == 1)
+							legendSound.removeFrom(map);
 						else if (last_layer == 3)
 							legendTemp.removeFrom(map);
 						else if (last_layer == 4)
-							legendAccel.removeFrom(map);
-						else if (last_layer == 5)
 							legendGyro.removeFrom(map);
-						current_layer = 0;
-						msgMarkers.addLayer(pruneCluster);
-						map.addLayer(msgMarkers);
+						current_layer = 2;
+						accelMarkers.addLayer(pruneCluster);
+						map.addLayer(accelMarkers);
 					}
 					
-					function resetToTemperatureReadings() {
+					function resetToTempOverlay() {
 						removeAllMarkers();
 						if (current_layer != 3)
 							legendTemp.addTo(map);
-
-						if (last_layer == 1)
+						if (last_layer == 0)
 							legendLight.removeFrom(map);
-						else if (last_layer == 2)
+						else if (last_layer == 1)
 							legendSound.removeFrom(map);
-						else if (last_layer == 4)
+						else if (last_layer == 2)
 							legendAccel.removeFrom(map);
-						else if (last_layer == 5)
+						else if (last_layer == 4)
 							legendGyro.removeFrom(map);
 						current_layer = 3;
-
-						temperatureMarkers.addLayer(pruneCluster);
-						map.addLayer(temperatureMarkers);
+						tempMarkers.addLayer(pruneCluster);
+						map.addLayer(tempMarkers);
 					}
 					
-					function resetToAccelerometerReadings() {
+					function resetToGyroOverlay() {
 						removeAllMarkers();
 						if (current_layer != 4)
-							legendAccel.addTo(map);
-
-						if (last_layer == 1)
+							legendGyro.addTo(map);
+						if (last_layer == 0)
 							legendLight.removeFrom(map);
+						else if (last_layer == 1)
+							legendSound.removeFrom(map);
+						else if (last_layer == 2)
+							legendAccel.removeFrom(map);
 						else if (last_layer == 3)
 							legendTemp.removeFrom(map);
-						else if (last_layer == 2)
-							legendSound.removeFrom(map);
-						else if (last_layer == 5)
-							legendGyro.removeFrom(map);
-
 						current_layer = 4;
-
-						accelerometerMarkers.addLayer(pruneCluster);
-						map.addLayer(accelerometerMarkers);
+						gyroMarkers.addLayer(pruneCluster);
+						map.addLayer(gyroMarkers);
 					}
 					
-					function resetToGyroReadings() {
+					function resetToMessagesOverlay() {
 						removeAllMarkers();
-						if (current_layer != 5)
-							legendGyro.addTo(map);
-
-						if (last_layer == 1)
+						if (last_layer == 0)
 							legendLight.removeFrom(map);
+						else if (last_layer == 1)
+							legendSound.removeFrom(map);
+						else if (last_layer == 2)
+							legendAccel.removeFrom(map);
 						else if (last_layer == 3)
 							legendTemp.removeFrom(map);
 						else if (last_layer == 4)
-							legendAccel.removeFrom(map);
-						else if (last_layer == 2)
-							legendSound.removeFrom(map);
-
+							legendGyro.removeFrom(map);
 						current_layer = 5;
-
-						gyroMarkers.addLayer(pruneCluster);
-						map.addLayer(gyroMarkers);
+						msgMarkers.addLayer(pruneCluster);
+						map.addLayer(msgMarkers);
 					}
 
 					function removeAllMarkers() {
@@ -791,16 +773,16 @@ $(document)
 						pruneCluster.RemoveMarkers();
 						lightMarkers.clearLayers();
 						noiseMarkers.clearLayers();
-						accelerometerMarkers.clearLayers();
-						temperatureMarkers.clearLayers();
+						accelMarkers.clearLayers();
+						tempMarkers.clearLayers();
 						gyroMarkers.clearLayers();
 						msgMarkers.clearLayers();
 						map.removeLayer(lightMarkers);
 						map.removeLayer(noiseMarkers);
-						map.removeLayer(accelerometerMarkers);
-						map.removeLayer(msgMarkers);
-						map.removeLayer(temperatureMarkers);
+						map.removeLayer(accelMarkers);
+						map.removeLayer(tempMarkers);
 						map.removeLayer(gyroMarkers);
+						map.removeLayer(msgMarkers);
 						counter = 0;
 						if (DEBUG) {
 							console
@@ -844,15 +826,22 @@ $(document)
 					}
 
 					function getTempId(d) {
-						return  d > 100 ? 11
-								:  d > 80 ? 10 : d > 60 ? 9 : d > 40? 8
+						return  d > 80 ? 10 : d > 60 ? 9 : d > 40? 8
 										: d > 20 ? 7 : d > 0 ? 6 : d > -20? 5
 								: d > -40 ? 4 : d > -60 ? 3 : d > -80 ? 2
 										: d > -100 ? 1 : 0;
 					}
 
 					function getAccelId(d) {
-						return d
+						var g = 9.81;
+						return d > 2*g ? 11 : d > g ? 10
+								: d > 0.5*g ? 9 : d > 0.2*g ? 8
+										:d > 0.1*g ? 7 : d > 0.05*g ? 6
+								: d > 0.02*g ? 5 : d > 0.01*g ? 4
+										: d > 0.005*g ? 3
+												: d > 0.002*g ? 2
+														: d > 0.001*g ? 1
+																: 0;
 					}
 
 					function getGyroId(d) {
@@ -871,25 +860,25 @@ $(document)
 					}
 					
 					function getTempColor(d) {
-						return d > 100 ? '#800026' : d > 80 ? '#BD0026'
+						return d > 100 ? '#200026' : d > 80 ? '#400026'
 								: d > 60 ? '#800026' : d > 40 ? '#BD0026'
-										:d > 20 ? '#800026' : d > 0 ? '#BD0026'
-								: d > -20 ? '#E31A1C' : d > -40 ? '#FC4E2A'
-										: d > -60 ? '#FD8D3C'
-												: d > -80 ? '#FEB24C'
-														: d > -100 ? '#fff2f5'
-																: '#ffffff';
+										:d > 20 ? '#E31A1C' : d > 0 ? '#FC4E2A'
+								: d > -20 ? '#FD8D3C' : d > -40 ? '#FEB24C'
+										: d > -60 ? '#FED976'
+												: d > -80 ? '#FFEDA0'
+														: d > -100 ? '#FFFDF2'
+																: '#FFFFFF';
 					}
 					
 					function getAccelColor(d) {
-						return d > 12 ? '#800026' : d > 11 ? '#BD0026'
-								: d > 10 ? '#800026' : d > 9 ? '#BD0026'
-										:d > 8 ? '#800026' : d > 7 ? '#BD0026'
-								: d > 5 ? '#E31A1C' : d > 6 ? '#FC4E2A'
-										: d > 4 ? '#FD8D3C'
-												: d > 3 ? '#FEB24C'
-														: d > 2 ? '#FED976'
-																: '#FFEDA0';
+						return d > 11 ? '#400026' : d > 10 ? '#800026'
+								: d > 9 ? '#D00026' : d > 8 ? '#F00026'
+										:d > 7 ? '#FF9100' : d > 6 ? '#FC0'
+								: d > 5 ? '#FF0' : d > 4 ? '#7DF894'
+										: d > 3 ? '#8FF'
+												: d > 2 ? '#99F'
+														: d > 1 ? '#BFCCFF'
+																: '#FFFFFF';
 					}
 
 					function getGyroColor(d) {
@@ -991,10 +980,16 @@ $(document)
 						}
 						var avg = sum / markers.length;
 
-						// if (lightLayerFlag)
-						// return getLightColor(avg);
-						// else
-						return getNoiseColor(avg);
+						if(current_layer == 0)
+							return getLightColor(avg);
+						else if(current_layer == 1)
+							return getNoiseColor(avg);
+						else if(current_layer == 2)		
+							return getAccelColor(avg);		
+						else if(current_layer == 3)		
+							return getTempColor(avg);
+						else if(current_layer == 4)		
+							return getGyroColor(avg);
 					}
 					;
 
@@ -1029,7 +1024,7 @@ $(document)
 							}
 							counter++;
 							if (msg.properties.readingType == 0
-									&& current_layer == 1) {
+									&& current_layer == 0) {
 
 								var lightMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
@@ -1072,7 +1067,7 @@ $(document)
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), lightMarker.data.popup);
 
 							} else if (msg.properties.readingType == 1
-									&& current_layer == 2) {
+									&& current_layer == 1) {
 								var noiseMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
@@ -1110,7 +1105,7 @@ $(document)
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), noiseMarker.data.popup);
 
 							} else if (msg.properties.readingType == 2
-									&& current_layer == 0) {
+									&& current_layer == 5) {
 
 								var msgMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
@@ -1154,10 +1149,10 @@ $(document)
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), msgMarker.data.popup);
 							} else if (msg.properties.readingType == 5
 									&& current_layer == 3) {
-								var temperatureMarker = new PruneCluster.Marker(
+								var tempMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
-								temperatureMarker.data.popup = '<p style="color:black"  ><strong>'
+								tempMarker.data.popup = '<p style="color:black"  ><strong>'
 										+ msg.properties.level
 										+ '</strong> &deg;C<br>';
 								// +msg.geometry.coordinates[0]+',
@@ -1169,12 +1164,12 @@ $(document)
 								// undefined, set it to current time. This might
 								// cause problem with Time-machine feature.
 								if (msg.properties.recordTime === undefined) {
-									temperatureMarker.data.name = new Date()
+									tempMarker.data.name = new Date()
 											.getTime();
 								} else
-									temperatureMarker.data.name = msg.properties.recordTime;
+									tempMarker.data.name = msg.properties.recordTime;
 
-								temperatureMarker.data.weight = getTemperatureId(msg.properties.level); // Weight
+								tempMarker.data.weight = getTempId(msg.properties.level); // Weight
 								// is
 								// the
 								// level
@@ -1182,22 +1177,22 @@ $(document)
 								// Light
 								// or
 								// Temperature
-								temperatureMarker.data.category = msg.properties.readingType; // Category
+								tempMarker.data.category = msg.properties.readingType; // Category
 								// is
 								// readingType
-								temperatureMarker.weight = getTemperatureId(msg.properties.level);
-								markerArray.push(temperatureMarker);
-								pruneCluster.RegisterMarker(temperatureMarker);
-								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), temperatureMarker.data.popup);
+								tempMarker.weight = getTempId(msg.properties.level);
+								markerArray.push(tempMarker);
+								pruneCluster.RegisterMarker(tempMarker);
+								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), tempMarker.data.popup);
 
 							} else if (msg.properties.readingType == 3
-									&& current_layer == 4) {
-								var accelerometerMarker = new PruneCluster.Marker(
+									&& current_layer == 2) {
+								var accelMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
-								accelerometerMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>'
+								accelMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>'
 										+ msg.properties.magnitude
-										+ '</strong> m<sup>2</sup>/s</td></tr><tr><td>x-axis</td><td><strong>' 
+										+ '</strong> m/s<sup>2</sup></td></tr><tr><td>x-axis</td><td><strong>' 
 										+ msg.properties.x + '</strong></td></tr><tr><td>y-axis</td><td><strong>' 
 										+ msg.properties.y + '</strong></td></tr><tr><td>z-axis</td><td><strong>' 
 										+ msg.properties.z + '</strong></td></tr></table>';
@@ -1210,12 +1205,12 @@ $(document)
 								// undefined, set it to current time. This might
 								// cause problem with Time-machine feature.
 								if (msg.properties.recordTime === undefined) {
-									accelerometerMarker.data.name = new Date()
+									accelMarker.data.name = new Date()
 											.getTime();
 								} else
-									accelerometerMarker.data.name = msg.properties.recordTime;
+									accelMarker.data.name = msg.properties.recordTime;
 
-								accelerometerMarker.data.weight = getAccelerometerId(msg.properties.magnitude); // Weight
+								accelMarker.data.weight = getAccelId(msg.properties.magnitude); // Weight
 								// is
 								// the
 								// level
@@ -1223,16 +1218,16 @@ $(document)
 								// Light
 								// or
 								// Accelerometer
-								accelerometerMarker.data.category = msg.properties.readingType; // Category
+								accelMarker.data.category = msg.properties.readingType; // Category
 								// is
 								// readingType
-								accelerometerMarker.weight = getAccelerometerId(msg.properties.level);
-								markerArray.push(accelerometerMarker);
-								pruneCluster.RegisterMarker(accelerometerMarker);
-								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), accelerometerMarker.data.popup);
+								accelMarker.weight = getAccelId(msg.properties.level);
+								markerArray.push(accelMarker);
+								pruneCluster.RegisterMarker(accelMarker);
+								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), accelMarker.data.popup);
 
 							} else if (msg.properties.readingType == 4
-									&& current_layer == 5) {
+									&& current_layer == 4) {
 								var gyroMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
@@ -1433,7 +1428,7 @@ $(document)
 						if (initialReq) {
 							changeSocketToTimeMachine();
 							var date = new Date();
-							sendTimeMachineRequest(current_layer == 0 ? 2 : current_layer == 1 ? 0 : current_layer == 2 ? 1 : current_layer == 3 ? 5 : current_layer == 4 ? 3 : 4, date.getTime() - (60000 * 300000), date.getTime());
+							sendTimeMachineRequest(current_layer == 0 ? 0 : current_layer == 1 ? 1 : current_layer == 2 ? 3 : current_layer == 3 ? 5 : current_layer == 4 ? 4 : 5, date.getTime() - (60000 * 300000), date.getTime());
 
 						}
 						/** ************* */
@@ -1538,48 +1533,48 @@ $(document)
 					function resetBeforeSendingTimeMachineRequest() {
 						removeAllMarkers();
 
-						if (current_layer == 1) {
+						if (current_layer == 0) {
 							lightMarkers.addLayer(pruneCluster);
 							map.addLayer(lightMarkers)
-						} else if (current_layer == 2) {
+						} else if (current_layer == 1) {
 							noiseMarkers.addLayer(pruneCluster);
 							map.addLayer(noiseMarkers)
-						} else if (current_layer == 0) {
-							msgMarkers.addLayer(pruneCluster);
-							map.addLayer(msgMarkers);
+						} else if (current_layer == 2) {
+							accelMarkers.addLayer(pruneCluster);
+							map.addLayer(accelMarkers)
 						} else if (current_layer == 3) {
-							temperatureMarkers.addLayer(pruneCluster);
-							map.addLayer(temperatureMarkers)
+							tempMarkers.addLayer(pruneCluster);
+							map.addLayer(tempMarkers)
 						} else if (current_layer == 4) {
-							accelerometerMarkers.addLayer(pruneCluster);
-							map.addLayer(accelerometerMarkers)
-						} else if (current_layer == 5) {
 							gyroMarkers.addLayer(pruneCluster);
 							map.addLayer(gyroMarkers)
+						} else if (current_layer == 5) {
+							msgMarkers.addLayer(pruneCluster);
+							map.addLayer(msgMarkers);
 						}
 					}
 					
 					function resetBeforeSendingValueRequest() {
 						removeAllMarkers();
 
-						if (current_layer == 1) {
+						if (current_layer == 0) {
 							lightMarkers.addLayer(pruneCluster);
 							map.addLayer(lightMarkers)
-						} else if (current_layer == 2) {
+						} else if (current_layer == 1) {
 							noiseMarkers.addLayer(pruneCluster);
 							map.addLayer(noiseMarkers)
-						} else if (current_layer == 0) {
-							msgMarkers.addLayer(pruneCluster);
-							map.addLayer(msgMarkers);
+						} else if (current_layer == 2) {
+							accelMarkers.addLayer(pruneCluster);
+							map.addLayer(accelMarkers)
 						} else if (current_layer == 3) {
-							temperatureMarkers.addLayer(pruneCluster);
-							map.addLayer(temperatureMarkers)
+							tempMarkers.addLayer(pruneCluster);
+							map.addLayer(tempMarkers)
 						} else if (current_layer == 4) {
-							accelerometerMarkers.addLayer(pruneCluster);
-							map.addLayer(accelerometerMarkers)
-						} else if (current_layer == 5) {
 							gyroMarkers.addLayer(pruneCluster);
 							map.addLayer(gyroMarkers)
+						} else if (current_layer == 5) {
+							msgMarkers.addLayer(pruneCluster);
+							map.addLayer(msgMarkers);
 						}
 					}
 
@@ -1606,7 +1601,7 @@ $(document)
 							var millisec = dateAsObject.getTime()
 									+ timeAsObject.getTime()
 							var date = new Date(millisec);
-							sendTimeMachineRequest(current_layer == 0 ? 2 : current_layer == 1 ? 0 : current_layer == 2 ? 1 : current_layer == 3 ? 5 : current_layer == 4 ? 3 : 4, date.getTime(), date.getTime() + (60000 * 30));
+							sendTimeMachineRequest(current_layer == 0 ? 0 : current_layer == 1 ? 1 : current_layer == 2 ? 3 : current_layer == 3 ? 5 : current_layer == 4 ? 4 : 5, date.getTime(), date.getTime() + (60000 * 30));
 
 						}
 
@@ -1630,7 +1625,7 @@ $(document)
 						} else {
 							var startValue = txtStart;
 							var endValue = txtEnd;
-							sendValueRequest(current_layer == 0 ? 2 : current_layer == 1 ? 0 : current_layer == 2 ? 1 : current_layer == 3 ? 5 : current_layer == 4 ? 3 : 4, startValue, endValue);
+							sendValueRequest(current_layer == 0 ? 0 : current_layer == 1 ? 1 : current_layer == 2 ? 3 : current_layer == 3 ? 5 : current_layer == 4 ? 4 : 5, startValue, endValue);
 
 						}
 
@@ -1861,15 +1856,16 @@ $(document)
 						}
 
 						if (current_layer == 0) {
-							c += "-1-";
-							c += 1;
-						} else if (current_layer == 1) {
 							c += "-1-"; // IMP - changing 0 to 1 as we want
 										// Light and noise color legends to be
 										// same.
 							c += ((cluster.totalWeight / cluster.population)
 									.toFixed());
-						} else if (current_layer == 2) {
+						} else if (current_layer == 1) {
+							c += "-1-"
+							c += ((cluster.totalWeight / cluster.population)
+									.toFixed());
+						}/* else if (current_layer == 2) {
 							c += "-1-"
 							c += ((cluster.totalWeight / cluster.population)
 									.toFixed());
@@ -1881,11 +1877,7 @@ $(document)
 							c += "-1-"
 							c += ((cluster.totalWeight / cluster.population)
 									.toFixed());
-						} else if (current_layer == 5) {
-							c += "-1-"
-							c += ((cluster.totalWeight / cluster.population)
-									.toFixed());
-						}
+						}*/
 
 						return new L.DivIcon({
 							html : "<div><span>" + cluster.population
@@ -2002,8 +1994,7 @@ $(document)
 //					});
 						
 						
-					resetToMessagesOverlay();
+					resetToLightReadings();
 					$('#datePicker').hide(0);
 					$('#valuePicker').hide(0);
-
 				});
