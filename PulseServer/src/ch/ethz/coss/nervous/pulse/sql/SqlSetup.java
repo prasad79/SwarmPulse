@@ -109,6 +109,22 @@ public class SqlSetup {
 		return con.prepareStatement(sb.toString());
 
 	}
+	
+	/**
+	 * 
+	 * SELECT * FROM `Element_` WHERE Value BETWEEN x and y
+	 */
+
+	public PreparedStatement getSensorValuesFetchStatement2(Connection con, int readingType, long startTime,
+			long endTime) throws SQLException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT * FROM `SENSOR-" + PulseConstants.getLabel(readingType) + "` WHERE " + PulseConstants.getValueName(readingType) + " BETWEEN "
+				+ startTime + " AND " + endTime + ";");
+
+		// System.out.println(" ---- ---- "+sb.toString());
+		return con.prepareStatement(sb.toString());
+
+	}
 
 	private void setupPulseTables() {
 		for (PulseElementConfiguration element : config.getSensors()) {

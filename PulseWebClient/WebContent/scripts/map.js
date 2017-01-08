@@ -26,7 +26,7 @@
 $(document)
 		.ready(
 				function() {
-					var DEBUG = true;
+					var DEBUG = false;
 					var websocket;
 					var counter = 0;
 					var current_state = 0; // 0 - Real-Time, 1 - Time-Machine, 2 - Value-Picker
@@ -1023,7 +1023,7 @@ $(document)
 								console.log("*****LOG***** ADDING MARKER");
 							}
 							counter++;
-							if (msg.properties.readingType == 0
+							if (msg.properties.readingType == 3
 									&& current_layer == 0) {
 
 								var lightMarker = new PruneCluster.Marker(
@@ -1066,7 +1066,7 @@ $(document)
 								
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), lightMarker.data.popup);
 
-							} else if (msg.properties.readingType == 1
+							} else if (msg.properties.readingType == 5
 									&& current_layer == 1) {
 								var noiseMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
@@ -1104,7 +1104,7 @@ $(document)
 								pruneCluster.RegisterMarker(noiseMarker);
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), noiseMarker.data.popup);
 
-							} else if (msg.properties.readingType == 2
+							} else if (msg.properties.readingType == 8
 									&& current_layer == 5) {
 
 								var msgMarker = new PruneCluster.Marker(
@@ -1147,7 +1147,7 @@ $(document)
 								markerArray.push(msgMarker);
 								pruneCluster.RegisterMarker(msgMarker);
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), msgMarker.data.popup);
-							} else if (msg.properties.readingType == 5
+							} else if (msg.properties.readingType == 7
 									&& current_layer == 3) {
 								var tempMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
@@ -1185,7 +1185,7 @@ $(document)
 								pruneCluster.RegisterMarker(tempMarker);
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), tempMarker.data.popup);
 
-							} else if (msg.properties.readingType == 3
+							} else if (msg.properties.readingType == 1
 									&& current_layer == 2) {
 								var accelMarker = new PruneCluster.Marker(
 										msg.geometry.coordinates[0],
@@ -1210,7 +1210,7 @@ $(document)
 								} else
 									accelMarker.data.name = msg.properties.recordTime;
 
-								accelMarker.data.weight = getAccelId(msg.properties.magnitude); // Weight
+								accelMarker.data.weight = msg.properties.mercalli - 1; // Weight
 								// is
 								// the
 								// level
@@ -1221,7 +1221,7 @@ $(document)
 								accelMarker.data.category = msg.properties.readingType; // Category
 								// is
 								// readingType
-								accelMarker.weight = getAccelId(msg.properties.level);
+								accelMarker.weight = msg.properties.mercalli - 1;
 								markerArray.push(accelMarker);
 								pruneCluster.RegisterMarker(accelMarker);
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), accelMarker.data.popup);
@@ -1428,7 +1428,7 @@ $(document)
 						if (initialReq) {
 							changeSocketToTimeMachine();
 							var date = new Date();
-							sendTimeMachineRequest(current_layer == 0 ? 0 : current_layer == 1 ? 1 : current_layer == 2 ? 3 : current_layer == 3 ? 5 : current_layer == 4 ? 4 : 5, date.getTime() - (60000 * 300000), date.getTime());
+							sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 1 : current_layer == 3 ? 7 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 300000), date.getTime());
 
 						}
 						/** ************* */
@@ -1601,7 +1601,7 @@ $(document)
 							var millisec = dateAsObject.getTime()
 									+ timeAsObject.getTime()
 							var date = new Date(millisec);
-							sendTimeMachineRequest(current_layer == 0 ? 0 : current_layer == 1 ? 1 : current_layer == 2 ? 3 : current_layer == 3 ? 5 : current_layer == 4 ? 4 : 5, date.getTime(), date.getTime() + (60000 * 30));
+							sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 1 : current_layer == 3 ? 7 : current_layer == 4 ? 4 : 8, date.getTime(), date.getTime() + (60000 * 30));
 
 						}
 
@@ -1625,7 +1625,7 @@ $(document)
 						} else {
 							var startValue = txtStart;
 							var endValue = txtEnd;
-							sendValueRequest(current_layer == 0 ? 0 : current_layer == 1 ? 1 : current_layer == 2 ? 3 : current_layer == 3 ? 5 : current_layer == 4 ? 4 : 5, startValue, endValue);
+							sendValueRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 1 : current_layer == 3 ? 7 : current_layer == 4 ? 4 : 8, startValue, endValue);
 
 						}
 

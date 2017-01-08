@@ -25,14 +25,12 @@
  *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.sql;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -43,7 +41,6 @@ import ch.ethz.coss.nervous.pulse.socket.ConcurrentSocketWorker;
 import ch.ethz.coss.nervous.pulse.utils.Log;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
@@ -106,7 +103,13 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 
 					if (json.length() <= 0)
 						continue;
-					
+					//Edit JSON STRING
+					if(json.indexOf("HTTP") != -1) {
+						json = json.substring(json.indexOf("{"));
+						System.out.println("NEW JSON STRING = " + json);
+						System.out.println("NEW JSON Length = " + json.length());
+						connected = false;
+					}
 					
 					JsonObject jsonObj = null;
 					try {
@@ -151,16 +154,27 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 					if (id == 1) { //Accelerometer
 						// System.out.println("Reading instance of Accelerometer");
 						properties.addProperty("readingType", "" + id);
-						properties.addProperty("level", "" + (Float.parseFloat(jsonObj.get("x").toString())+Float.parseFloat(jsonObj.get("y").toString())+ Float.parseFloat(jsonObj.get("z").toString())));
+						double x = Double.parseDouble(jsonObj.get("x").toString());
+						double y = Double.parseDouble(jsonObj.get("y").toString());
+						double z = Double.parseDouble(jsonObj.get("z").toString());
+						double magnitude = Math.sqrt(x*x + y*y + z*z);
+						properties.addProperty("level", "" + magnitude);
 					} else if (id == 3) { //Light
 						properties.addProperty("readingType", "" + id);
 						properties.addProperty("level", "" + Float.parseFloat(jsonObj.get("lux").toString()));
+					} else if (id == 4) { //Gyroscope
+						properties.addProperty("readingType", "" + id);
+						double x = Double.parseDouble(jsonObj.get("x").toString());
+						double y = Double.parseDouble(jsonObj.get("y").toString());
+						double z = Double.parseDouble(jsonObj.get("z").toString());
+						double magnitude = Math.sqrt(x*x + y*y + z*z);
+						properties.addProperty("level", "" + magnitude);
 					} else if (id == 5) { // Noise
 						properties.addProperty("readingType", "" + id);
-						properties.addProperty("message", "" + Float.parseFloat(jsonObj.get("Db").toString()));
+						properties.addProperty("level", "" + Float.parseFloat(jsonObj.get("Db").toString()));
 					} else if (id == 7) { // Temperature
 						properties.addProperty("readingType", "" + id);
-						properties.addProperty("message", "" + Float.parseFloat(jsonObj.get("Db").toString()));
+						properties.addProperty("level", "" + Float.parseFloat(jsonObj.get("celsius").toString()));
 					} else {
 						// System.out.println("Reading instance not known");
 					}
@@ -187,13 +201,33 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 							datastmt.setDouble(4, Double.parseDouble(jsonObj.get("lat").toString()));
 							datastmt.setDouble(5, Double.parseDouble(jsonObj.get("long").toString()));
 							if (id == 1) {
-								datastmt.setDouble(6, Double.parseDouble(jsonObj.get("x").toString()));
-								datastmt.setDouble(7, Double.parseDouble(jsonObj.get("y").toString()));
-								datastmt.setDouble(8, Double.parseDouble(jsonObj.get("z").toString()));
-								datastmt.setDouble(9, Integer.parseInt(jsonObj.get("Mercalli").toString()));
-							}else 
-							if (id == 3) {
+								double x = Double.parseDouble(jsonObj.get("x").toString());
+								double y = Double.parseDouble(jsonObj.get("y").toString());
+								double z = Double.parseDouble(jsonObj.get("z").toString());
+								double magnitude = Math.sqrt(x*x + y*y + z*z);
+								x /= magnitude;
+								y /= magnitude;
+								z /= magnitude;
+								datastmt.setDouble(6, x);
+								datastmt.setDouble(7, y);
+								datastmt.setDouble(8, z);
+								//datastmt.setDouble(9, Integer.parseInt(jsonObj.get("Mercalli").toString()));
+								datastmt.setDouble(9, calculateMercalliValue(magnitude));
+								datastmt.setDouble(10, magnitude);
+							} else if (id == 3) {
 								datastmt.setDouble(6, Double.parseDouble(jsonObj.get("lux").toString()));
+							} else if (id == 4) {
+								double x = Double.parseDouble(jsonObj.get("x").toString());
+								double y = Double.parseDouble(jsonObj.get("y").toString());
+								double z = Double.parseDouble(jsonObj.get("z").toString());
+								double magnitude = Math.sqrt(x*x + y*y + z*z);
+								x /= magnitude;
+								y /= magnitude;
+								z /= magnitude;
+								datastmt.setDouble(6, x);
+								datastmt.setDouble(7, y);
+								datastmt.setDouble(8, z);
+								datastmt.setDouble(9, magnitude);
 							} else if (id == 5) {
 								datastmt.setDouble(6, Double.parseDouble(jsonObj.get("Db").toString()));
 							} else if (id == 7) {
@@ -256,5 +290,21 @@ public class SqlUploadWorker extends ConcurrentSocketWorker {
 		} catch (SQLException e) {
 			Log.getInstance().append(Log.FLAG_ERROR, " Error in closing connection.");
 		}
+	}
+	
+	private int calculateMercalliValue(double magnitude) {
+		final float G = 9.81f;
+		if(magnitude > 2*G) return 12;
+		if(magnitude > G) return 11;
+		if(magnitude > 0.5*G) return 10;
+		if(magnitude > 0.2*G) return 9;
+		if(magnitude > 0.1*G) return 8;
+		if(magnitude > 0.05*G) return 7;
+		if(magnitude > 0.02*G) return 6;
+		if(magnitude > 0.01*G) return 5;
+		if(magnitude > 0.005*G) return 4;
+		if(magnitude > 0.002*G) return 3;
+		if(magnitude > 0.001*G) return 2;
+		return 1;
 	}
 }
