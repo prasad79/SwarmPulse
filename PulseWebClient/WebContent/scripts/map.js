@@ -1072,7 +1072,7 @@ $(document)
 										msg.geometry.coordinates[0],
 										msg.geometry.coordinates[1]);
 								noiseMarker.data.popup = '<p style="color:black"  ><strong>'
-										+ msg.properties.level
+										+ msg.properties.message
 										+ '</strong> db<br>';
 								// +msg.geometry.coordinates[0]+',
 								// '+msg.geometry.coordinates[1];
@@ -1088,7 +1088,7 @@ $(document)
 								} else
 									noiseMarker.data.name = msg.properties.recordTime;
 
-								noiseMarker.data.weight = getNoiseId(msg.properties.level); // Weight
+								noiseMarker.data.weight = getNoiseId(msg.properties.message); // Weight
 								// is
 								// the
 								// level
@@ -1099,7 +1099,7 @@ $(document)
 								noiseMarker.data.category = msg.properties.readingType; // Category
 								// is
 								// readingType
-								noiseMarker.weight = getNoiseId(msg.properties.level);
+								noiseMarker.weight = getNoiseId(msg.properties.message);
 								markerArray.push(noiseMarker);
 								pruneCluster.RegisterMarker(noiseMarker);
 								showPopup(L.latLng(msg.geometry.coordinates[0],msg.geometry.coordinates[1]), noiseMarker.data.popup);
@@ -1389,8 +1389,8 @@ $(document)
 							return;
 						}
 
-						//websocket = new WebSocket("ws://129.132.255.27:8446"); 
-						websocket = new WebSocket("ws://localhost:8446");//TODO IP
+						websocket = new WebSocket("ws://129.132.255.27:8446"); 
+//						websocket = new WebSocket("ws://localhost:8446");//TODO IP
 						websocket.onopen = function(evt) {
 							onOpen(evt)
 						};
