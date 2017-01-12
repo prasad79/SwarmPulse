@@ -996,7 +996,12 @@ $(document)
 					lightMarkers.addLayer(pruneCluster);
 
 					function addMarker(msg) {
+   if (msg) {
+                    if (DEBUG) {
+                        console
+                            .log("*****LOG***** inside method addMarker -- lat = " + msg.geometry.coordinates[0] + ", long = " + msg.geometry.coordinates[1])
 
+                    }
 						if (DEBUG) {
 							console
 									.log("*****LOG***** inside method addMarker -- lat = "
@@ -1271,7 +1276,10 @@ $(document)
 
 							return true;
 						}
-
+   } else {
+       hideSpinner();
+       return false;
+   }
 					}
 
 					function createIcon(data, category) {
