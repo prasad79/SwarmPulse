@@ -989,7 +989,7 @@ $(document)
                             var noiseMarker = new PruneCluster.Marker(
                                 msg.geometry.coordinates[0],
                                 msg.geometry.coordinates[1]);
-                            noiseMarker.data.popup = '<p style="color:black"  ><strong>' + msg.properties.message + '</strong> db<br>';
+                            noiseMarker.data.popup = '<p style="color:black"  ><strong>' + msg.properties.level + '</strong> db<br>';
                             // +msg.geometry.coordinates[0]+',
                             // '+msg.geometry.coordinates[1];
 
