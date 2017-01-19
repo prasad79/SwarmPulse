@@ -135,7 +135,7 @@ $(document)
                     "Light": lightMarkers, //0
                     "Sound": noiseMarkers, //1
                     "Temperature": tempMarkers, //2
-                    "Accelerometer": accelMarkers, //3
+                    "Mercalli Intensity Scale": accelMarkers, //3
                     "Gyroscope": gyroMarkers, //4
                     "Messages": msgMarkers //5
 
@@ -175,7 +175,7 @@ $(document)
                 div.style.backgroundColor = "#2A2A2A";
                 div.style.color = "#ffffff";
                 div.style.fontSize = "80%";
-                div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Sound Level (db)</p>  <br>';
+                div.innerHTML = '<p align: \'bottom\'  style=\'color: #FFFFFF;   display:inline-block;\'> Sound Level (dB)</p>  <br>';
 
                 for (var i = 0; i < grades.length; i++) {
                     div.innerHTML += '<img align = "left"  width=\'10px\' height=\'10px\' style="background-color:' + getNoiseColor(grades[i] + 1) + '"> <p align: \'left\' style=\'color: #FFA500; display:inline-block; \'>' + labels[i] + ' </p><br>';
@@ -579,13 +579,13 @@ $(document)
                                 initialReq = true;
                                 makeInitialRequest();
                             }
-                        } else if (a.name == "Accelerometer" && current_layer != 2) {
+                        } else if (a.name == "Mercalli Intensity Scale" && current_layer != 2) {
 
                             resetToAccelOverlay();
                             last_layer = 2;
                             $('#statusmsgs')
                                 .html(
-                                    '<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MERCALLI INTENSITY SCALE (USING ACCELEROMETER READINGS)</span></p>');
+                                    '<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">MERCALLI INTENSITY SCALE</span></p>');
                             hideSpinner();
                             if (current_state == 0) {
                                 initialReq = true;
@@ -989,7 +989,7 @@ $(document)
                             var noiseMarker = new PruneCluster.Marker(
                                 msg.geometry.coordinates[0],
                                 msg.geometry.coordinates[1]);
-                            noiseMarker.data.popup = '<p style="color:black"  ><strong>' + msg.properties.level + '</strong> db<br>';
+                            noiseMarker.data.popup = '<p style="color:black"  ><strong>' + msg.properties.message + '</strong> dB<br>';
                             // +msg.geometry.coordinates[0]+',
                             // '+msg.geometry.coordinates[1];
 
@@ -1213,7 +1213,7 @@ $(document)
                     // box.show('Counter :' + counter);
                 },
                 position: 'bottomright',
-                interval: 10000
+                interval: 9000
             }).addTo(map).startUpdating();
 
             function updateMarkerArray() {
@@ -1222,6 +1222,7 @@ $(document)
                         .log("*****LOG***** + inside updateMarkerArray()");
                 }
                 var currentTime = new Date().getTime();
+                var myArray = [];
                 showSpinner();
                 for (var i = 0; i < markerArray.length; i++) {
                     var marker = markerArray[i];
@@ -1230,17 +1231,13 @@ $(document)
                             console
                                 .log("*****LOG***** + marker.data.volatility = " + marker.data.volatility);
                         }
-                        if (currentTime - marker.data.name >= 60000 * 30) { // 10
-                            // minutes
+                        if (currentTime - marker.data.name >= 10000) { // 10 seconds
                             if (DEBUG) {
                                 console
                                     .log("*****LOG***** + clear this marker");
                             }
-                            var myArray = [];
+
                             myArray.push(marker);
-                            pruneCluster.RemoveMarkers(myArray);
-                            pruneCluster.ProcessView();
-                            markerArray.splice(i, 1);
                             counter--;
                         } else {
                             // Permanent marker.
@@ -1259,6 +1256,12 @@ $(document)
                     }
 
                 }
+
+
+                pruneCluster.RemoveMarkers(myArray);
+                pruneCluster.ProcessView();
+                markerArray.splice(i, 1);
+                hidePopup();
                 hideSpinner();
 
             }
