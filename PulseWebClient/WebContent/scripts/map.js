@@ -26,7 +26,7 @@
 $(document)
     .ready(
         function() {
-            var DEBUG = false;
+            var DEBUG = true;
             var websocket;
             var counter = 0;
             var current_state = 0; // 0 - Real-Time, 1 - Time-Machine, 2 - Value-Picker
@@ -386,6 +386,7 @@ $(document)
                                 console
                                     .log("******LOG*******Inside onClick timeMachine button");
                             }
+
                             control.state("realTime");
 
                             if (current_layer == 0) {
@@ -964,7 +965,7 @@ $(document)
                             } else
                                 lightMarker.data.name = msg.properties.recordTime;
 
-                            // lightMarker.data.id =
+                            lightMarker.data.id = msg.properties.uuid;
                             // msg.properties.readingType;
                             //TODO msg.properties.level says the value of the marker
                             lightMarker.data.weight = getLightId(msg.properties.level); // Weight
@@ -979,7 +980,7 @@ $(document)
                             // is
                             // readingType
                             lightMarker.weight = getLightId(msg.properties.level);
-
+                            lightMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(lightMarker);
                             pruneCluster.RegisterMarker(lightMarker);
 
@@ -1003,7 +1004,7 @@ $(document)
                                     .getTime();
                             } else
                                 noiseMarker.data.name = msg.properties.recordTime;
-
+                            noiseMarker.data.id = msg.properties.uuid;
                             noiseMarker.data.weight = getNoiseId(msg.properties.message); // Weight
                             // is
                             // the
@@ -1016,6 +1017,7 @@ $(document)
                             // is
                             // readingType
                             noiseMarker.weight = getNoiseId(msg.properties.message);
+                            noiseMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(noiseMarker);
                             pruneCluster.RegisterMarker(noiseMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), noiseMarker.data.popup);
@@ -1050,6 +1052,7 @@ $(document)
                                 msgMarker.data.name = new Date().getTime();
                             } else
                                 msgMarker.data.name = msg.properties.recordTime;
+                            msgMarker.data.id = msg.properties.uuid;
                             msgMarker.data.volatility = msg.properties.volatility;
                             msgMarker.data.category = msg.properties.readingType; // Category
                             // is
@@ -1076,7 +1079,7 @@ $(document)
                                     .getTime();
                             } else
                                 tempMarker.data.name = msg.properties.recordTime;
-
+                            tempMarker.data.id = msg.properties.uuid;
                             tempMarker.data.weight = getTempId(msg.properties.level); // Weight
                             // is
                             // the
@@ -1097,7 +1100,8 @@ $(document)
                             var accelMarker = new PruneCluster.Marker(
                                 msg.geometry.coordinates[0],
                                 msg.geometry.coordinates[1]);
-                            accelMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>' + msg.properties.magnitude + '</strong> m/s<sup>2</sup></td></tr><tr><td>x-axis</td><td><strong>' + msg.properties.x + '</strong></td></tr><tr><td>y-axis</td><td><strong>' + msg.properties.y + '</strong></td></tr><tr><td>z-axis</td><td><strong>' + msg.properties.z + '</strong></td></tr></table>';
+
+                            accelMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>' + msg.properties.mercalli + '</strong> m/s<sup>2</sup></td></tr><tr><td>x-axis</td><td><strong>' + msg.properties.x + '</strong></td></tr><tr><td>y-axis</td><td><strong>' + msg.properties.y + '</strong></td></tr><tr><td>z-axis</td><td><strong>' + msg.properties.z + '</strong></td></tr></table>';
                             // +msg.geometry.coordinates[0]+',
                             // '+msg.geometry.coordinates[1];
 
@@ -1111,7 +1115,7 @@ $(document)
                                     .getTime();
                             } else
                                 accelMarker.data.name = msg.properties.recordTime;
-
+                            accelMarker.data.id = msg.properties.uuid;
                             accelMarker.data.weight = msg.properties.mercalli - 1; // Weight
                             // is
                             // the
@@ -1124,6 +1128,7 @@ $(document)
                             // is
                             // readingType
                             accelMarker.weight = msg.properties.mercalli - 1;
+                            aceelMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(accelMarker);
                             pruneCluster.RegisterMarker(accelMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), accelMarker.data.popup);
@@ -1132,6 +1137,7 @@ $(document)
                             var gyroMarker = new PruneCluster.Marker(
                                 msg.geometry.coordinates[0],
                                 msg.geometry.coordinates[1]);
+                            //                            gyroMarker.data.id = ;
                             gyroMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>' + msg.properties.magnitude + '</strong> Nm</td></tr><tr><td>x-axis</td><td><strong>' + msg.properties.x + '</strong></td></tr><tr><td>y-axis</td><td><strong>' + msg.properties.y + '</strong></td></tr><tr><td>z-axis</td><td><strong>' + msg.properties.z + '</strong></td></tr></table>';
                             // +msg.geometry.coordinates[0]+',
                             // '+msg.geometry.coordinates[1];
@@ -1146,7 +1152,7 @@ $(document)
                                     .getTime();
                             } else
                                 gyroMarker.data.name = msg.properties.recordTime;
-
+                            gyroMarker.data.id = msg.properties.uuid;
                             gyroMarker.data.weight = getGyroId(msg.properties.magnitude); // Weight
                             // is
                             // the
@@ -1159,6 +1165,7 @@ $(document)
                             // is
                             // readingType
                             gyroMarker.weight = getGyroId(msg.properties.level);
+                            gyroMarkerupdat.data.volatility = msg.properties.volatility;
                             markerArray.push(gyroMarker);
                             pruneCluster.RegisterMarker(gyroMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), gyroMarker.data.popup);
@@ -1223,6 +1230,7 @@ $(document)
                 }
                 var currentTime = new Date().getTime();
                 var myArray = [];
+                var spliceCounter = -1;
                 showSpinner();
                 for (var i = 0; i < markerArray.length; i++) {
                     var marker = markerArray[i];
@@ -1238,6 +1246,9 @@ $(document)
                             }
 
                             myArray.push(marker);
+                            if (spliceCounter == -1)
+                                spliceCounter == i;
+
                             counter--;
                         } else {
                             // Permanent marker.
@@ -1257,10 +1268,22 @@ $(document)
 
                 }
 
-
+                if (DEBUG) {
+                    console
+                        .log("*****LOG***** +  myArray size " + myArray.length);
+                }
                 pruneCluster.RemoveMarkers(myArray);
                 pruneCluster.ProcessView();
-                markerArray.splice(i, 1);
+                if (DEBUG) {
+                    console
+                        .log("*****LOG***** +  PruneCluster size " + pruneCluster.Cluster.Size);
+                }
+                markerArray.splice(spliceCounter, myArray.length);
+
+                if (DEBUG) {
+                    console
+                        .log("*****LOG***** +  Marker Array size " + markerArray.length);
+                }
                 hidePopup();
                 hideSpinner();
 
@@ -1281,7 +1304,7 @@ $(document)
                 }
 
                 websocket = new WebSocket("ws://129.132.255.27:8446");
-                //						websocket = new WebSocket("ws://localhost:8446");//TODO IP
+
                 websocket.onopen = function(evt) {
                     onOpen(evt)
                 };
@@ -1319,7 +1342,7 @@ $(document)
                 if (initialReq) {
                     changeSocketToTimeMachine();
                     var date = new Date();
-                    sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 1 : current_layer == 3 ? 7 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 300000), date.getTime());
+                    sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 7 : current_layer == 3 ? 1 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 3000), date.getTime());
 
                 }
                 /** ************* */
@@ -1766,11 +1789,14 @@ $(document)
 
             pruneCluster.PrepareLeafletMarker = function(marker, data,
                 category) {
-                marker.setIcon(L.icon({
-                    iconUrl: getIcon(data.category, data.weight),
-                    iconRetinaUrl: getRetinaIcon(data.category,
-                        data.weight),
-                    iconAnchor: [20, 40]
+
+                marker.setIcon(L.divIcon({
+                    html: '<div style=\"background: #fc0a0a; \" class=\"badge\">p</div>',
+                    //                    iconUrl: getIcon(data.category, data.weight),
+                    //                    iconRetinaUrl: getRetinaIcon(data.category,
+                    //                        data.weight),
+                    iconAnchor: L.point(0, 0)
+                        //                    html: '<div style="background: #fff;border: 1px solid #666"/>'   
                 }));
 
                 marker.on('mouseover', function(e) {

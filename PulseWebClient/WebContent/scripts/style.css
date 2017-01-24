@@ -1290,3 +1290,38 @@ opacity
     filter: alpha(opacity=100);
     opacity: 1;
 }
+
+
+.leaflet-div-icon {
+        background: #fff;
+        border: 1px solid #666;
+        }
+
+
+.badge {
+    background:             radial-gradient( 5px -9px, circle, white 8%, red 26px );
+        background:    -moz-radial-gradient( 5px -9px, circle, white 8%, red 26px );
+        background:     -ms-radial-gradient( 5px -9px, circle, white 8%, red 26px );
+        background:      -o-radial-gradient( 5px -9px, circle, white 8%, red 26px );
+        background: -webkit-radial-gradient( 5px -9px, circle, white 8%, red 26px );
+    background-color: red;
+    border: 2px solid white;
+    border-radius: 12px; /* one half of ( (border * 2) + height + padding ) */
+    box-shadow: 1px 1px 1px black;
+    color: white;
+    font: bold 15px/13px Helvetica, Verdana, Tahoma;
+    height: 16px; 
+    padding: 4px 3px 0 3px;
+    text-align: center;
+    min-width: 14px;
+}
+
+/* only needed for this sample */
+.badge {
+    float: left;
+    left: 25px;
+    margin: 6px;
+    position: relative;
+    top: 25px; 
+}
+
