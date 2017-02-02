@@ -31,3 +31,11 @@ Use the SwarmPulse mobile app:<br>
  &nbsp;&nbsp;     .  This mode shows data that is 30 minutes from the time chosen by the user.
 
 </p>
+
+### Support or Contact
+For more information or support check out our website at www.swarmpulse.net or email us at nervousnet@ethz.ch
+
+### Author 
+ Prasad P. Pulikal - prasad.pulikal(AT)gess(DOT)ethz(DOT)ch<br>
+ (Swarmpulse Platform Architecture / Android Client / Pulse Servers / Swarmpulse website)
+<br>
