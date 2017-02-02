@@ -36,6 +36,6 @@ Use the SwarmPulse mobile app:<br>
 For more information or support check out our website at www.swarmpulse.net or email us at nervousnet@ethz.ch
 
 ### Author 
- Prasad P. Pulikal - prasad.pulikal(AT)gess(DOT)ethz(DOT)ch<br>
+ <b>Prasad P. Pulikal</b> - <i>prasad.pulikal(AT)gess(DOT)ethz(DOT)ch</i><br>
  (Swarmpulse Platform Architecture / Android Client / Pulse Servers / Swarmpulse website)
 <br>
