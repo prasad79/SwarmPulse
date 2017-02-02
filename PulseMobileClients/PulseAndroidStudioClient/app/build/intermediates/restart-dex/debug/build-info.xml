@@ -4,30 +4,32 @@
     api-level="22"
     density="xhdpi"
     format="7"
-    timestamp="431865607679524"
+    timestamp="1892320056660"
     token="-7639970372311330392" >
 
     <task
         name="javac"
-        duration="535" />
+        duration="975" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="202" />
+        duration="35" />
     <task
         name="verifier"
-        duration="31" />
+        duration="38" />
 
     <artifact
         location="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/outputs/apk/app-debug.apk"
         type="MAIN" />
 
-    <build timestamp="431865607679524" >
+    <build
+        timestamp="507520124883332"
+        verifier="COMPATIBLE" >
         <artifact
-            location="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/outputs/apk/app-debug.apk"
-            type="MAIN" />
+            location="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/builds/debug/507520124883332/classes.dex"
+            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

@@ -69,14 +69,14 @@ public class SqlSetup {
 		return elementsHash.get(sensorId);
 	}
 
-	public PreparedStatement getSensorInsertStatement(Connection con, int readingType) throws SQLException {
+	public PreparedStatement getSensorInsertStatement(Connection con, long readingType) throws SQLException {
 		// System.out.println("inside getSensorInsertStatement - "+readingType);
 		// System.out.println("elementsHash - "+elementsHash.size());
 
-		List<Integer> types = elementsHash.get((long) readingType);
+		List<Integer> types = elementsHash.get(readingType);
 		if (types != null) {
 			StringBuilder sb = new StringBuilder();
-			sb.append("INSERT INTO `ELEMENT_" + PulseConstants.getLabel(readingType) + "` VALUES (DEFAULT,?,?,?,");
+			sb.append("INSERT INTO `SENSOR-" + PulseConstants.getLabel((int)readingType) + "` VALUES (DEFAULT,?,?,?,");
 			for (int i = 0; i < types.size() - 1; i++) {
 				sb.append("?,");
 			}
@@ -102,7 +102,23 @@ public class SqlSetup {
 	public PreparedStatement getSensorValuesFetchStatement(Connection con, int readingType, long startTime,
 			long endTime) throws SQLException {
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT * FROM `ELEMENT_" + PulseConstants.getLabel(readingType) + "` WHERE RecordTime BETWEEN "
+		sb.append("SELECT * FROM `SENSOR-" + PulseConstants.getLabel(readingType) + "` WHERE RecordTime BETWEEN "
+				+ startTime + " AND " + endTime + ";");
+
+		// System.out.println(" ---- ---- "+sb.toString());
+		return con.prepareStatement(sb.toString());
+
+	}
+	
+	/**
+	 * 
+	 * SELECT * FROM `Element_` WHERE Value BETWEEN x and y
+	 */
+
+	public PreparedStatement getSensorValuesFetchStatement2(Connection con, int readingType, long startTime,
+			long endTime) throws SQLException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT * FROM `SENSOR-" + PulseConstants.getLabel(readingType) + "` WHERE " + PulseConstants.getValueName(readingType) + " BETWEEN "
 				+ startTime + " AND " + endTime + ";");
 
 		// System.out.println(" ---- ---- "+sb.toString());
@@ -118,12 +134,12 @@ public class SqlSetup {
 			List<Integer> types = new ArrayList<Integer>(element.getAttributes().size());
 			StringBuilder sb = new StringBuilder();
 
-			sb.append("CREATE TABLE IF NOT EXISTS `" + config.getSqlDatabase() + "`.`ELEMENT_"
+			sb.append("CREATE TABLE IF NOT EXISTS `" + config.getSqlDatabase() + "`.`SENSOR-"
 					+ PulseConstants.getLabel(element.getElementID().intValue()) + "` (\n");
 			sb.append("`RecordID` INT NOT NULL UNIQUE AUTO_INCREMENT,\n");
 			sb.append("`UUID` VARCHAR(38) NOT NULL,\n");
 			sb.append("`RecordTime` BIGINT UNSIGNED NOT NULL,\n");
-			sb.append("`Volatility` BIGINT UNSIGNED NOT NULL,\n");
+			sb.append("`Volatility` BIGINT SIGNED NOT NULL,\n");
 			for (PulseElementAttribute attribute : element.getAttributes()) {
 				types.add(attribute.getType());
 				String sqlType = "";

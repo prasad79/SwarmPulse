@@ -1,0 +1,2 @@
+CHANGED,/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/ch/ethz/coss/nervous/pulse/Constants$override.class
+CHANGED,/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/android/tools/fd/runtime/AppPatchesLoaderImpl.class

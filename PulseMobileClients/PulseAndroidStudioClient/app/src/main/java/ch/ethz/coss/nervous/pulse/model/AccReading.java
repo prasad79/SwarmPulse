@@ -25,13 +25,18 @@
  *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.model;
 
-import java.io.Serializable;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class AccReading extends Visual implements Serializable {
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class AccReading extends Visual implements Serializable{
 
 	public double x, y, z;
 
 	public AccReading(String uuid, double x, double y, double z, long timestamp, VisualLocation location) {
+		type = 1;
 		this.uuid = uuid;
 		this.x = x;
 		this.y = y;
@@ -41,8 +46,34 @@ public class AccReading extends Visual implements Serializable {
 		serialVersionUID = 1L;
 	}
 
+	public  String getJsonString() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("uuid", uuid);
+			json.put("id", type);
+			json.put("x", x);
+			json.put("y", y);
+			json.put("z", z);
+			json.put("timestamp", timestamp);
+			json.put("lat", location.latnLong[0]);
+			json.put("long", location.latnLong[1]);
+			json.put("volatility", volatility);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return json.toString();
+
+	}
+
 	@Override
 	public String toString() {
-		return "AccReading = (" + "," + timestamp + ") -> " + "(" + x + "," + y + "," + z + ")";
+		return "AccReading = (" + "," + timestamp + ") -> " + "(" + x + "," + y + "," + z + "), GPS coordinates -> " + Arrays.toString(location.latnLong);
 	}
+
+
+
+
+
 }

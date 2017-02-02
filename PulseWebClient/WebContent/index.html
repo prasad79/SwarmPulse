@@ -9,7 +9,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SwarmPulse - beta</title>
-<link rel="stylesheet" href="leaflet.css" />
+<link rel="stylesheet" href="scripts/leaflet.css" />
 <link href='http://fonts.googleapis.com/css?family=Dosis:300'
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet"
@@ -17,9 +17,9 @@
 <link
 	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
 	rel="stylesheet" />
-<link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="leaflet.groupedlayercontrol.min.css" />
-<link rel="stylesheet" href="easy-button.css" />
+<link rel="stylesheet" href="scripts/style.css" />
+<link rel="stylesheet" href="scripts/leaflet.groupedlayercontrol.min.css" />
+<link rel="stylesheet" href="scripts/easy-button.css" />
 <link rel="stylesheet" href="dist/jquery.timepicker.css" />
 
 <link rel="stylesheet"
@@ -45,6 +45,15 @@
 				id="txtTime" type="text" style="background: #333d3f" />
 			<button type="submit" name="button1"
 				onclick="window.prepareTimeMachineReq()"
+				style="background-color: #555555; color: #fff;">Fetch</button>
+		</div>
+		<div id="valuePicker"
+			style="background: #555555; z-index: 900 !important; text-align: center;">
+			Value Request: (Choose a start and end value)&nbsp;&nbsp;&nbsp;<input
+				id="txtStart" type="text" style="background: #333d3f" /> <input
+				id="txtEnd" type="text" style="background: #333d3f" />
+			<button type="submit" name="button1"
+				onclick="window.prepareValueReq()"
 				style="background-color: #555555; color: #fff;">Fetch</button>
 		</div>
 
@@ -94,7 +103,7 @@
 				<li>This mode shows data that is 30 minutes from the time
 					chosen by the user.</li>
 			</ul>
-			</p>
+		
 			<b>********************</b><br>
 		</div>
 		<div id="info" style="display: none;" title="About">
@@ -109,17 +118,17 @@
 		</div>
 		<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
 		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-		<script type="text/javascript" src="socket.io-1.3.5.js"></script>
-		<script src="leaflet.js"></script>
+		<script type="text/javascript" src="scripts/socket.io-1.3.5.js"></script>
+		<script src="scripts/leaflet.js"></script>
 
-		<script type='text/javascript' src="PruneCluster.js"></script>
-		<script type="text/javascript" src="leaflet-liveupdate.js"></script>
-		<script type="text/javascript" src="leaflet-messagebox.js"></script>
-		<script type="text/javascript" src="leaflet.markercluster.js"></script>
-		<script type="text/javascript" src="map.js"></script>
+		<script type='text/javascript' src="scripts/PruneCluster.js"></script>
+		<script type="text/javascript" src="scripts/leaflet-liveupdate.js"></script>
+		<script type="text/javascript" src="scripts/leaflet-messagebox.js"></script>
+		<script type="text/javascript" src="scripts/leaflet.markercluster.js"></script>
+		<script type="text/javascript" src="scripts/map.js"></script>
 		<script type="text/javascript"
-			src="leaflet.groupedlayercontrol.min.js"></script>
-		<script type="text/javascript" src="easy-button.js"></script>
+			src="scripts/leaflet.groupedlayercontrol.min.js"></script>
+		<script type="text/javascript" src="scripts/easy-button.js"></script>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="dist/jquery.datepair.min.js"></script>
 		<script type="text/javascript" src="dist/jquery.timepicker.min.js"></script>
@@ -153,8 +162,8 @@
 			});
 		</script>
 
-		<script type='text/javascript' src="leaflet.spin.js"></script>
-		<script type='text/javascript' src="spin.min.js"></script>
+		<script type='text/javascript' src="scripts/leaflet.spin.js"></script>
+		<script type='text/javascript' src="scripts/spin.min.js"></script>
 		<script type="text/javascript" src="http://rawgithub.com/joergdietrich/Leaflet.Terminator/master/L.Terminator.js"></script>
 		
 		

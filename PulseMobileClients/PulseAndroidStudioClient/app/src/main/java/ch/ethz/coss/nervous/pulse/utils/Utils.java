@@ -102,30 +102,7 @@ public class Utils {
 
 	};
 
-	private static String jokes_header = "";
 
-	private static String jokes[] = {
-			"1. Just changed my Facebook name to 'No one' so when I see stupid posts I can click like and it will say 'No one likes this'.",
-			"2. I am a nobody, nobody is perfect, therefore I am perfect.",
-			"3.  How do you make holy water? You boil the hell out of it.",
-			"4.  What do you call a bear with no teeth? -- A gummy bear!.",
-			"5. If con is the opposite of pro, it must mean Congress is the opposite of progress?",
-			"6.  I wondered why the frisbee was getting bigger, and then it hit me.",
-			"7.  I used to like my neighbors, until they put a password on their Wi-Fi.",
-			"8. If practice makes perfect, and nobody's perfect, why practice?",
-			"9.  What did the fish say when he swam into the wall? -- Damn",
-			"10. Light travels faster than sound. This is why some people appear bright until they speak.",
-			"11. Why did the duck go to rehab? Because he was a quack addict!",
-			"12.  I asked God for a bike, but I know God doesn't work that way. So I stole a bike and asked for forgiveness.",
-			"13. The early bird might get the worm, but the second mouse gets the cheese.",
-			"14. Why can't an idiot dial 911? -- He can't find the 11 on the phone!",
-			"15.  What did the ocean say to the beach? Nothing, it just waved.", "16.  Smile.  All the time.",
-			"25 I say no to alcohol, it just doesn't listen.", "17. https://www.youtube.com/watch?v=_OBlgSz8sSM",
-			"18. https://www.youtube.com/watch?v=dMH0bHeiRNg", "19. https://www.youtube.com/watch?v=txqiwrbYGrs",
-			"20. https://www.youtube.com/watch?v=oHg5SJYRHA0", "21. https://www.youtube.com/watch?v=6bVa6jn4rpE",
-			"22. https://www.youtube.com/watch?v=J---aiyznGQ", "23. https://www.youtube.com/watch?v=a1Y73sPHKxw"
-
-	};
 
 	private static double cities[][] = { { 121.47, 31.23 }, { 72.82, 18.96 }, { 67.01, 24.86 }, { -58.37, -34.61 },
 			{ 77.21, 28.67 }, { 29, 41.1 }, { 120.97, 14.62 }, { -46.63, -23.53 }, { 37.62, 55.75 }, { 90.39, 23.7 },
@@ -760,14 +737,5 @@ public class Utils {
 
 	}
 
-	public static String generateRandomJoke() {
-		Random randomGenerator = new Random();
-		String joke;
-		int random = 0;
-		random = randomGenerator.nextInt(jokes.length);
-		joke = jokes_header + "<br> #" + jokes[random];
-
-		return joke;
-	}
 
 }

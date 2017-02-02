@@ -39,7 +39,6 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import ch.ethz.coss.nervous.pulse.model.Visual;
 import ch.ethz.coss.nervous.pulse.utils.Utils;
-import flexjson.JSONSerializer;
 
 public class SynchWriter {
 
@@ -134,7 +133,7 @@ public class SynchWriter {
 
 			try {
 				for (Visual o : buffer) {
-					String json = new JSONSerializer().deepSerialize(o);
+					String json = o.getJsonString();
 
 					// System.out.println("SENDING JSON -- " + json);
 					byte[] jsonBytes = json.getBytes();

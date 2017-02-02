@@ -25,10 +25,13 @@
  *******************************************************************************/
 package ch.ethz.coss.nervous.pulse.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class NoiseReading extends Visual implements Serializable {
+public class NoiseReading extends Visual implements Serializable{
 
 	public double soundVal;
 
@@ -37,13 +40,34 @@ public class NoiseReading extends Visual implements Serializable {
 	}
 
 	public NoiseReading(String uuid, double soundVal, long timestamp, long volatility, VisualLocation loc) {
-		type = 1;
+		type = 5;
 		this.uuid = uuid;
 		this.soundVal = soundVal;
 		this.timestamp = timestamp;
 		this.volatility = volatility;
 		this.location = loc;
 		serialVersionUID = 3L;
+	}
+
+
+
+	public  String getJsonString() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("uuid", uuid);
+			json.put("id", type);
+			json.put("Db", soundVal);
+			json.put("timestamp", timestamp);
+			json.put("lat", location.latnLong[0]);
+			json.put("long", location.latnLong[1]);
+			json.put("volatility", volatility);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return json.toString();
+
 	}
 
 	@Override

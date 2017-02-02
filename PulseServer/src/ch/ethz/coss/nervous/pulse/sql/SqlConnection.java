@@ -113,7 +113,7 @@ public final class SqlConnection {
 		System.out.println("***********SqlConnection************");
 		System.out.println("hostname - " + hostname);
 		System.out.println("username - " + username);
-		System.out.println("password - " + password);
+		System.out.println("password - **********" );
 		System.out.println("database - " + database);
 		System.out.println("************************************");
 	}

@@ -18,5 +18,4 @@ android {
 }
 
 dependencies {
-    compile files('lib/flexjson-2.1.jar')
 }

@@ -5,21 +5,14 @@
         jar="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.2"
-        sha1="81af0059ac5457dcca21c2d83cc86a75ff621d28">
+        sha1="af68a9e74c924c5157623661af2bbbc5e5115e12">
         <dex dex="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_d3f0669e01846b3bc198f51f1f23980d4bbea548/classes.dex" />
-    </item>
-    <item
-        jar="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/lib/flexjson-2.1.jar"
-        jumboMode="true"
-        revision="23.0.2"
-        sha1="37b5edffcb52e273c3e642d71b468e851f4960f7">
-        <dex dex="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/transforms/dex/debug/folders/1000/2/flexjson-2.1_9a7c41119766f0a7188a636c8586fe70fbdd6346/classes.dex" />
     </item>
     <item
         jar="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="23.0.2"
-        sha1="37d068d58221f61d023027b9b45f5a4d96a841bc">
+        sha1="cf22133ccdadb7b84c70b0bfdb915be51d95767c">
         <dex dex="/Users/prasad/Root/4_Development/GithubNEW/SwarmPulse/PulseMobileClients/PulseAndroidStudioClient/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_b6ebb746d7e4613e88800f3afd073a961a8eff76/classes.dex" />
     </item>
 
