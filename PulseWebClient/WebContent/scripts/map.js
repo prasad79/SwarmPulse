@@ -768,13 +768,15 @@ $(document)
 
             function getIcon(category, weight) {
 
-                return "images/marker_" + category + "_" + weight + ".png";
-
+                //return "images/marker_" + category + "_" + weight + ".png";
+            	return "images/marker_bg.png";
+            	
             }
 
             function getRetinaIcon(category, weight) {
 
-                return "images/marker_" + category + "_" + weight + ".png";
+                //return "images/marker_" + category + "_" + weight + ".png";
+                return "images/marker_bg.png";
 
             }
 
@@ -980,6 +982,7 @@ $(document)
                             // is
                             // readingType
                             lightMarker.weight = getLightId(msg.properties.level);
+                            lightMarker.data.color = getLightColor(msg.properties.level);
                             lightMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(lightMarker);
                             pruneCluster.RegisterMarker(lightMarker);
@@ -1017,6 +1020,7 @@ $(document)
                             // is
                             // readingType
                             noiseMarker.weight = getNoiseId(msg.properties.message);
+                            lightMarker.data.color = getNoiseColor(msg.properties.level);
                             noiseMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(noiseMarker);
                             pruneCluster.RegisterMarker(noiseMarker);
@@ -1128,6 +1132,7 @@ $(document)
                             // is
                             // readingType
                             accelMarker.weight = msg.properties.mercalli - 1;
+                            lightMarker.data.color = getAccelColor(msg.properties.level);
                             aceelMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(accelMarker);
                             pruneCluster.RegisterMarker(accelMarker);
@@ -1165,6 +1170,7 @@ $(document)
                             // is
                             // readingType
                             gyroMarker.weight = getGyroId(msg.properties.level);
+                            lightMarker.data.color = getGyroColor(msg.properties.level);
                             gyroMarkerupdat.data.volatility = msg.properties.volatility;
                             markerArray.push(gyroMarker);
                             pruneCluster.RegisterMarker(gyroMarker);
@@ -1303,8 +1309,9 @@ $(document)
                     return;
                 }
 
-                websocket = new WebSocket("ws://129.132.255.27:8446");
-
+                //websocket = new WebSocket("ws://129.132.255.27:8446");
+                websocket = new WebSocket("ws://localhost:8446");
+                
                 websocket.onopen = function(evt) {
                     onOpen(evt)
                 };
@@ -1787,15 +1794,15 @@ $(document)
                 });
             }
 
+
             pruneCluster.PrepareLeafletMarker = function(marker, data,
                 category) {
 
                 marker.setIcon(L.divIcon({
-                    html: '<div style=\"background: #fc0a0a; \" class=\"badge\">p</div>',
-                    //                    iconUrl: getIcon(data.category, data.weight),
-                    //                    iconRetinaUrl: getRetinaIcon(data.category,
-                    //                        data.weight),
-                    iconAnchor: L.point(0, 0)
+                    html: '<img src="' + getIcon(data.category, data.weight) + '"><div style=\"background: ' + data.color + '; \" class=\"badge\">&nbsp;&nbsp;</div>',
+                    //iconUrl: getIcon(data.category, data.weight),
+                    //iconRetinaUrl: getRetinaIcon(data.category, data.weight),
+                    iconAnchor: L.point(18, 36)
                         //                    html: '<div style="background: #fff;border: 1px solid #666"/>'   
                 }));
 

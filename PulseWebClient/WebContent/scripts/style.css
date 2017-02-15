@@ -1305,7 +1305,7 @@ opacity
         background:      -o-radial-gradient( 5px -9px, circle, white 8%, red 26px );
         background: -webkit-radial-gradient( 5px -9px, circle, white 8%, red 26px );
     background-color: red;
-    border: 2px solid white;
+    border: 2px solid black;
     border-radius: 12px; /* one half of ( (border * 2) + height + padding ) */
     box-shadow: 1px 1px 1px black;
     color: white;
@@ -1319,9 +1319,9 @@ opacity
 /* only needed for this sample */
 .badge {
     float: left;
-    left: 25px;
-    margin: 6px;
+    left: 8px;
+    margin: 0px;
     position: relative;
-    top: 25px; 
+    top: -43px; 
 }
 
