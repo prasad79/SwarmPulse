@@ -993,7 +993,7 @@ $(document)
                             var noiseMarker = new PruneCluster.Marker(
                                 msg.geometry.coordinates[0],
                                 msg.geometry.coordinates[1]);
-                            noiseMarker.data.popup = '<p style="color:black"  ><strong>' + msg.properties.message + '</strong> dB<br>';
+                            noiseMarker.data.popup = '<p style="color:black"  ><strong>' + msg.properties.level + '</strong> dB<br>';
                             // +msg.geometry.coordinates[0]+',
                             // '+msg.geometry.coordinates[1];
 
@@ -1008,8 +1008,8 @@ $(document)
                             } else
                                 noiseMarker.data.name = msg.properties.recordTime;
                             noiseMarker.data.id = msg.properties.uuid;
-                            noiseMarker.data.weight = getNoiseId(msg.properties.message); // Weight
-                            // isweb
+                            noiseMarker.data.weight = getNoiseId(msg.properties.level); // Weight
+                            // is
                             // the
                             // level
                             // of
@@ -1019,8 +1019,8 @@ $(document)
                             noiseMarker.data.category = msg.properties.readingType; // Category
                             // is
                             // readingType
-                            noiseMarker.weight = getNoiseId(msg.properties.message);
-                            lightMarker.data.color = getNoiseColor(msg.properties.level);
+                            noiseMarker.weight = getNoiseId(msg.properties.level);
+                            noiseMarker.data.color = getNoiseColor(msg.properties.level);
                             noiseMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(noiseMarker);
                             pruneCluster.RegisterMarker(noiseMarker);
@@ -1096,6 +1096,7 @@ $(document)
                             // is
                             // readingType
                             tempMarker.weight = getTempId(msg.properties.level);
+                            tempMarker.data.color = getTempColor(msg.properties.level);
                             markerArray.push(tempMarker);
                             pruneCluster.RegisterMarker(tempMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), tempMarker.data.popup);
@@ -1104,8 +1105,7 @@ $(document)
                             var accelMarker = new PruneCluster.Marker(
                                 msg.geometry.coordinates[0],
                                 msg.geometry.coordinates[1]);
-
-                            accelMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>' + msg.properties.mercalli + '</strong> m/s<sup>2</sup></td></tr><tr><td>x-axis</td><td><strong>' + msg.properties.x + '</strong></td></tr><tr><td>y-axis</td><td><strong>' + msg.properties.y + '</strong></td></tr><tr><td>z-axis</td><td><strong>' + msg.properties.z + '</strong></td></tr></table>';
+                            accelMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>' + msg.properties.magnitude + '</strong> m/s<sup>2</sup></td></tr><tr><td>x-axis</td><td><strong>' + msg.properties.x + '</strong></td></tr><tr><td>y-axis</td><td><strong>' + msg.properties.y + '</strong></td></tr><tr><td>z-axis</td><td><strong>' + msg.properties.z + '</strong></td></tr></table>';
                             // +msg.geometry.coordinates[0]+',
                             // '+msg.geometry.coordinates[1];
 
@@ -1132,8 +1132,8 @@ $(document)
                             // is
                             // readingType
                             accelMarker.weight = msg.properties.mercalli - 1;
-                            lightMarker.data.color = getAccelColor(msg.properties.level);
-                            aceelMarker.data.volatility = msg.properties.volatility;
+                            accelMarker.data.color = getAccelColor(msg.properties.mercalli);
+                            accelMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(accelMarker);
                             pruneCluster.RegisterMarker(accelMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), accelMarker.data.popup);
@@ -1169,9 +1169,9 @@ $(document)
                             gyroMarker.data.category = msg.properties.readingType; // Category
                             // is
                             // readingType
-                            gyroMarker.weight = getGyroId(msg.properties.level);
-                            lightMarker.data.color = getGyroColor(msg.properties.level);
-                            gyroMarkerupdat.data.volatility = msg.properties.volatility;
+                            gyroMarker.weight = getGyroId(msg.properties.magnitude);
+                            gyroMarker.data.color = getGyroColor(msg.properties.magnitude);
+                            gyroMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(gyroMarker);
                             pruneCluster.RegisterMarker(gyroMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), gyroMarker.data.popup);
@@ -1241,6 +1241,7 @@ $(document)
                 for (var i = 0; i < markerArray.length; i++) {
                     var marker = markerArray[i];
                     if (marker.data.volatility != -2) {
+                    	DEBUG = true;
                         if (DEBUG) {
                             console
                                 .log("*****LOG***** + marker.data.volatility = " + marker.data.volatility);
@@ -1309,8 +1310,8 @@ $(document)
                     return;
                 }
 
-                websocket = new WebSocket("ws://129.132.255.27:8446");
-//                websocket = new WebSocket("ws://localhost:8446");
+                //websocket = new WebSocket("ws://129.132.255.27:8446");
+                websocket = new WebSocket("ws://localhost:8446");
                 
                 websocket.onopen = function(evt) {
                     onOpen(evt)
@@ -1349,7 +1350,7 @@ $(document)
                 if (initialReq) {
                     changeSocketToTimeMachine();
                     var date = new Date();
-                    sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 7 : current_layer == 3 ? 1 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 3000), date.getTime());
+                    sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 1 : current_layer == 3 ? 7 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 3000), date.getTime());
 
                 }
                 /** ************* */

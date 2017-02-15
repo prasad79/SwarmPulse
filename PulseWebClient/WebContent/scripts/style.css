@@ -1292,13 +1292,11 @@ opacity
 }
 
 
-/*
-.leaflet-div-icon {
-        background: #fff;
+/*.leaflet-div-icon {
+        background: #ff1500;
         border: 1px solid #666;
         }
 */
-
 
 .badge {
     background:             radial-gradient( 5px -9px, circle, white 8%, red 26px );
