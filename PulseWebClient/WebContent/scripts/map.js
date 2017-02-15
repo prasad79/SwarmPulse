@@ -1009,7 +1009,7 @@ $(document)
                                 noiseMarker.data.name = msg.properties.recordTime;
                             noiseMarker.data.id = msg.properties.uuid;
                             noiseMarker.data.weight = getNoiseId(msg.properties.message); // Weight
-                            // is
+                            // isweb
                             // the
                             // level
                             // of
@@ -1309,8 +1309,8 @@ $(document)
                     return;
                 }
 
-                //websocket = new WebSocket("ws://129.132.255.27:8446");
-                websocket = new WebSocket("ws://localhost:8446");
+                websocket = new WebSocket("ws://129.132.255.27:8446");
+//                websocket = new WebSocket("ws://localhost:8446");
                 
                 websocket.onopen = function(evt) {
                     onOpen(evt)
