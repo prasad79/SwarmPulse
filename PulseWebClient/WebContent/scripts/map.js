@@ -26,7 +26,7 @@
 $(document)
     .ready(
         function() {
-            var DEBUG = true;
+            var DEBUG = false;
             var websocket;
             var counter = 0;
             var current_state = 0; // 0 - Real-Time, 1 - Time-Machine, 2 - Value-Picker
@@ -769,8 +769,8 @@ $(document)
             function getIcon(category, weight) {
 
                 //return "images/marker_" + category + "_" + weight + ".png";
-            	return "images/marker_bg.png";
-            	
+                return "images/marker_bg.png";
+
             }
 
             function getRetinaIcon(category, weight) {
@@ -1310,9 +1310,11 @@ $(document)
                     return;
                 }
 
-                //websocket = new WebSocket("ws://129.132.255.27:8446");
-                websocket = new WebSocket("ws://localhost:8446");
-                
+
+                websocket = new WebSocket("ws://129.132.255.27:8446");
+                //websocket = new WebSocket("ws://localhost:8446");
+
+
                 websocket.onopen = function(evt) {
                     onOpen(evt)
                 };
@@ -1358,7 +1360,7 @@ $(document)
 
             function onClose(evt) {
                 conButton.state('disconnected');
-                showAlert("Server disconnected.\nIf you want to reconnect again, please click on the broken chain icon on the right top corner.");
+                showAlert("Server disconnected.\n It might be possible that the server is down for maintenance. Please try again later.");
             }
 
             function onMessage(evt) {
