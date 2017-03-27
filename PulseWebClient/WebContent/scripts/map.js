@@ -21,9 +21,9 @@
  *
  *
  * 	Author:
- * 	Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation
+ * 	Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation for Website. Lead developer Swarmpulse platform.
  *******************************************************************************/
-$(document)
+$(document) 
     .ready(
         function() {
             var DEBUG = false;
@@ -46,6 +46,7 @@ $(document)
             var accelMarkers = new L.LayerGroup();
             var gyroMarkers = new L.LayerGroup();
             var msgMarkers = new L.LayerGroup();
+            var communityMarkers = new L.LayerGroup();
 
             new L.Control.Zoom({
                 position: 'topright'
@@ -137,7 +138,8 @@ $(document)
                     "Temperature": tempMarkers, //2
                     "Mercalli Intensity Scale": accelMarkers, //3
                     "Gyroscope": gyroMarkers, //4
-                    "Messages": msgMarkers //5
+                    "Messages": msgMarkers, //5
+                    "Community": communityMarkers //10
 
                 }
             };
@@ -407,6 +409,9 @@ $(document)
                             } else if (current_layer == 5) {
                                 resetToMessagesOverlay();
                                 last_layer = 5;
+                            } else if (current_layer == 10) {
+                                resetToCommunityOverlay();
+                                last_layer = 10;
                             }
                             changeSocketToRealTime();
 
@@ -474,6 +479,9 @@ $(document)
                             } else if (current_layer == 5) {
                                 resetToMessagesOverlay();
                                 last_layer = 5;
+                            } else if (current_layer == 10) {
+                                resetToCommunityOverlay();
+                                last_layer = 10;
                             }
                             changeSocketToRealTime();
 
@@ -630,6 +638,18 @@ $(document)
                                 makeInitialRequest();
                             }
 
+                        } else if (a.name == "Community" && current_layer != 10) {
+                            resetToCommunityOverlay();
+                            last_layer = 10;
+                            $('#statusmsgs')
+                                .html(
+                                    '<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">Nervousnet User Community</span></p>');
+                            hideSpinner();
+                            if (current_state == 0) {
+                                initialReq = true;
+                                makeInitialRequest();
+                            }
+
                         }
                     }
                 );
@@ -734,6 +754,23 @@ $(document)
                 current_layer = 5;
                 msgMarkers.addLayer(pruneCluster);
                 map.addLayer(msgMarkers);
+            }
+            
+            function resetToCommunityOverlay() {
+                removeAllMarkers();
+                if (last_layer == 0)
+                    legendLight.removeFrom(map);
+                else if (last_layer == 1)
+                    legendSound.removeFrom(map);
+                else if (last_layer == 2)
+                    legendAccel.removeFrom(map);
+                else if (last_layer == 3)
+                    legendTemp.removeFrom(map);
+                else if (last_layer == 4)
+                    legendGyro.removeFrom(map);
+                current_layer = 10;
+                communityMarkers.addLayer(pruneCluster);
+                map.addLayer(communityMarkers);
             }
 
             function removeAllMarkers() {
@@ -1241,12 +1278,12 @@ $(document)
                 for (var i = 0; i < markerArray.length; i++) {
                     var marker = markerArray[i];
                     if (marker.data.volatility != -2) {
-                    	DEBUG = true;
+                    	
                         if (DEBUG) {
                             console
                                 .log("*****LOG***** + marker.data.volatility = " + marker.data.volatility);
                         }
-                        if (currentTime - marker.data.name >= 10000) { // 10 seconds
+                        if (currentTime - marker.data.name >= 30000) { // 30 seconds
                             if (DEBUG) {
                                 console
                                     .log("*****LOG***** + clear this marker");
@@ -1352,7 +1389,7 @@ $(document)
                 if (initialReq) {
                     changeSocketToTimeMachine();
                     var date = new Date();
-                    sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 1 : current_layer == 3 ? 7 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 3000), date.getTime());
+                    sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 1 : current_layer == 3 ? 7 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 100000), date.getTime());
 
                 }
                 /** ************* */
