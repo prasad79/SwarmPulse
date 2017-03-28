@@ -21,12 +21,12 @@
  *
  *
  * 	Author:
- * 	Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation
+ * 	Prasad Pulikal - prasad.pulikal@gess.ethz.ch  - Initial design and implementation for Website. Lead developer Swarmpulse platform.
  *******************************************************************************/
-$(document)
+$(document) 
     .ready(
         function() {
-            var DEBUG = true;
+            var DEBUG = false;
             var websocket;
             var counter = 0;
             var current_state = 0; // 0 - Real-Time, 1 - Time-Machine, 2 - Value-Picker
@@ -46,6 +46,7 @@ $(document)
             var accelMarkers = new L.LayerGroup();
             var gyroMarkers = new L.LayerGroup();
             var msgMarkers = new L.LayerGroup();
+            var communityMarkers = new L.LayerGroup();
 
             new L.Control.Zoom({
                 position: 'topright'
@@ -137,7 +138,8 @@ $(document)
                     "Temperature": tempMarkers, //2
                     "Mercalli Intensity Scale": accelMarkers, //3
                     "Gyroscope": gyroMarkers, //4
-                    "Messages": msgMarkers //5
+                    "Messages": msgMarkers, //5
+                    "Community": communityMarkers //10
 
                 }
             };
@@ -407,6 +409,9 @@ $(document)
                             } else if (current_layer == 5) {
                                 resetToMessagesOverlay();
                                 last_layer = 5;
+                            } else if (current_layer == 10) {
+                                resetToCommunityOverlay();
+                                last_layer = 10;
                             }
                             changeSocketToRealTime();
 
@@ -474,6 +479,9 @@ $(document)
                             } else if (current_layer == 5) {
                                 resetToMessagesOverlay();
                                 last_layer = 5;
+                            } else if (current_layer == 10) {
+                                resetToCommunityOverlay();
+                                last_layer = 10;
                             }
                             changeSocketToRealTime();
 
@@ -630,6 +638,18 @@ $(document)
                                 makeInitialRequest();
                             }
 
+                        } else if (a.name == "Community" && current_layer != 10) {
+                            resetToCommunityOverlay();
+                            last_layer = 10;
+                            $('#statusmsgs')
+                                .html(
+                                    '<p style="text-align:center;"><span style="font-family:Helvetica;font-size:16px;font-style:normal;font-weight:bold;text-decoration:none;text-transform:uppercase;color:FFFFFF;">Nervousnet User Community</span></p>');
+                            hideSpinner();
+                            if (current_state == 0) {
+                                initialReq = true;
+                                makeInitialRequest();
+                            }
+
                         }
                     }
                 );
@@ -735,6 +755,23 @@ $(document)
                 msgMarkers.addLayer(pruneCluster);
                 map.addLayer(msgMarkers);
             }
+            
+            function resetToCommunityOverlay() {
+                removeAllMarkers();
+                if (last_layer == 0)
+                    legendLight.removeFrom(map);
+                else if (last_layer == 1)
+                    legendSound.removeFrom(map);
+                else if (last_layer == 2)
+                    legendAccel.removeFrom(map);
+                else if (last_layer == 3)
+                    legendTemp.removeFrom(map);
+                else if (last_layer == 4)
+                    legendGyro.removeFrom(map);
+                current_layer = 10;
+                communityMarkers.addLayer(pruneCluster);
+                map.addLayer(communityMarkers);
+            }
 
             function removeAllMarkers() {
                 if (DEBUG) {
@@ -768,13 +805,15 @@ $(document)
 
             function getIcon(category, weight) {
 
-                return "images/marker_" + category + "_" + weight + ".png";
+                //return "images/marker_" + category + "_" + weight + ".png";
+                return "images/marker_bg.png";
 
             }
 
             function getRetinaIcon(category, weight) {
 
-                return "images/marker_" + category + "_" + weight + ".png";
+                //return "images/marker_" + category + "_" + weight + ".png";
+                return "images/marker_bg.png";
 
             }
 
@@ -980,6 +1019,7 @@ $(document)
                             // is
                             // readingType
                             lightMarker.weight = getLightId(msg.properties.level);
+                            lightMarker.data.color = getLightColor(msg.properties.level);
                             lightMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(lightMarker);
                             pruneCluster.RegisterMarker(lightMarker);
@@ -990,7 +1030,7 @@ $(document)
                             var noiseMarker = new PruneCluster.Marker(
                                 msg.geometry.coordinates[0],
                                 msg.geometry.coordinates[1]);
-                            noiseMarker.data.popup = '<p style="color:black"  ><strong>' + msg.properties.message + '</strong> dB<br>';
+                            noiseMarker.data.popup = '<p style="color:black"  ><strong>' + msg.properties.level + '</strong> dB<br>';
                             // +msg.geometry.coordinates[0]+',
                             // '+msg.geometry.coordinates[1];
 
@@ -1005,7 +1045,7 @@ $(document)
                             } else
                                 noiseMarker.data.name = msg.properties.recordTime;
                             noiseMarker.data.id = msg.properties.uuid;
-                            noiseMarker.data.weight = getNoiseId(msg.properties.message); // Weight
+                            noiseMarker.data.weight = getNoiseId(msg.properties.level); // Weight
                             // is
                             // the
                             // level
@@ -1016,7 +1056,8 @@ $(document)
                             noiseMarker.data.category = msg.properties.readingType; // Category
                             // is
                             // readingType
-                            noiseMarker.weight = getNoiseId(msg.properties.message);
+                            noiseMarker.weight = getNoiseId(msg.properties.level);
+                            noiseMarker.data.color = getNoiseColor(msg.properties.level);
                             noiseMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(noiseMarker);
                             pruneCluster.RegisterMarker(noiseMarker);
@@ -1092,6 +1133,7 @@ $(document)
                             // is
                             // readingType
                             tempMarker.weight = getTempId(msg.properties.level);
+                            tempMarker.data.color = getTempColor(msg.properties.level);
                             markerArray.push(tempMarker);
                             pruneCluster.RegisterMarker(tempMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), tempMarker.data.popup);
@@ -1100,8 +1142,7 @@ $(document)
                             var accelMarker = new PruneCluster.Marker(
                                 msg.geometry.coordinates[0],
                                 msg.geometry.coordinates[1]);
-
-                            accelMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>' + msg.properties.mercalli + '</strong> m/s<sup>2</sup></td></tr><tr><td>x-axis</td><td><strong>' + msg.properties.x + '</strong></td></tr><tr><td>y-axis</td><td><strong>' + msg.properties.y + '</strong></td></tr><tr><td>z-axis</td><td><strong>' + msg.properties.z + '</strong></td></tr></table>';
+                            accelMarker.data.popup = '<table id="marker"><tr><td>Magnitude</td><td><strong>' + msg.properties.magnitude + '</strong> m/s<sup>2</sup></td></tr><tr><td>x-axis</td><td><strong>' + msg.properties.x + '</strong></td></tr><tr><td>y-axis</td><td><strong>' + msg.properties.y + '</strong></td></tr><tr><td>z-axis</td><td><strong>' + msg.properties.z + '</strong></td></tr></table>';
                             // +msg.geometry.coordinates[0]+',
                             // '+msg.geometry.coordinates[1];
 
@@ -1128,7 +1169,8 @@ $(document)
                             // is
                             // readingType
                             accelMarker.weight = msg.properties.mercalli - 1;
-                            aceelMarker.data.volatility = msg.properties.volatility;
+                            accelMarker.data.color = getAccelColor(msg.properties.mercalli);
+                            accelMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(accelMarker);
                             pruneCluster.RegisterMarker(accelMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), accelMarker.data.popup);
@@ -1164,8 +1206,9 @@ $(document)
                             gyroMarker.data.category = msg.properties.readingType; // Category
                             // is
                             // readingType
-                            gyroMarker.weight = getGyroId(msg.properties.level);
-                            gyroMarkerupdat.data.volatility = msg.properties.volatility;
+                            gyroMarker.weight = getGyroId(msg.properties.magnitude);
+                            gyroMarker.data.color = getGyroColor(msg.properties.magnitude);
+                            gyroMarker.data.volatility = msg.properties.volatility;
                             markerArray.push(gyroMarker);
                             pruneCluster.RegisterMarker(gyroMarker);
                             showPopup(L.latLng(msg.geometry.coordinates[0], msg.geometry.coordinates[1]), gyroMarker.data.popup);
@@ -1235,11 +1278,12 @@ $(document)
                 for (var i = 0; i < markerArray.length; i++) {
                     var marker = markerArray[i];
                     if (marker.data.volatility != -2) {
+                    	
                         if (DEBUG) {
                             console
                                 .log("*****LOG***** + marker.data.volatility = " + marker.data.volatility);
                         }
-                        if (currentTime - marker.data.name >= 10000) { // 10 seconds
+                        if (currentTime - marker.data.name >= 30000) { // 30 seconds
                             if (DEBUG) {
                                 console
                                     .log("*****LOG***** + clear this marker");
@@ -1303,7 +1347,10 @@ $(document)
                     return;
                 }
 
+
                 websocket = new WebSocket("ws://129.132.255.27:8446");
+                //websocket = new WebSocket("ws://localhost:8446");
+
 
                 websocket.onopen = function(evt) {
                     onOpen(evt)
@@ -1342,7 +1389,7 @@ $(document)
                 if (initialReq) {
                     changeSocketToTimeMachine();
                     var date = new Date();
-                    sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 7 : current_layer == 3 ? 1 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 3000), date.getTime());
+                    sendTimeMachineRequest(current_layer == 0 ? 3 : current_layer == 1 ? 5 : current_layer == 2 ? 1 : current_layer == 3 ? 7 : current_layer == 4 ? 4 : 8, date.getTime() - (60000 * 100000), date.getTime());
 
                 }
                 /** ************* */
@@ -1350,7 +1397,7 @@ $(document)
 
             function onClose(evt) {
                 conButton.state('disconnected');
-                showAlert("Server disconnected.\nIf you want to reconnect again, please click on the broken chain icon on the right top corner.");
+                showAlert("Server disconnected.\n It might be possible that the server is down for maintenance. Please try again later.");
             }
 
             function onMessage(evt) {
@@ -1787,15 +1834,15 @@ $(document)
                 });
             }
 
+
             pruneCluster.PrepareLeafletMarker = function(marker, data,
                 category) {
 
                 marker.setIcon(L.divIcon({
-                    html: '<div style=\"background: #fc0a0a; \" class=\"badge\">p</div>',
-                    //                    iconUrl: getIcon(data.category, data.weight),
-                    //                    iconRetinaUrl: getRetinaIcon(data.category,
-                    //                        data.weight),
-                    iconAnchor: L.point(0, 0)
+                    html: '<img src="' + getIcon(data.category, data.weight) + '"><div style=\"background: ' + data.color + '; \" class=\"badge\">&nbsp;&nbsp;</div>',
+                    //iconUrl: getIcon(data.category, data.weight),
+                    //iconRetinaUrl: getRetinaIcon(data.category, data.weight),
+                    iconAnchor: L.point(18, 36)
                         //                    html: '<div style="background: #fff;border: 1px solid #666"/>'   
                 }));
 
