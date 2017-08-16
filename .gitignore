@@ -232,3 +232,4 @@ PulseServer/pulse_configbackup.xml
 # End of https://www.gitignore.io/api/android,intellij,java,eclipse,gradle,macos
 
 
+Pulse_Server/res/pulse_config.xml
